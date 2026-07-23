@@ -1,0 +1,1675 @@
+{
+  "translation": {
+    "id": "ind_ayt",
+    "name": "Alkitab Yang Terbuka",
+    "website": "https://ebible.org/Scriptures/details.php?id=indayt",
+    "licenseUrl": "https://ebible.org/Scriptures/details.php?id=indayt",
+    "shortName": "AYT",
+    "englishName": "Indonesian AYT Bible",
+    "language": "ind",
+    "textDirection": "ltr",
+    "sha256": "a8a161bb9a8166d1ad3da50b47345c1ebb787acb913fd2c7a2af2de65f2dfcac",
+    "availableFormats": [
+      "json"
+    ],
+    "listOfBooksApiLink": "/api/ind_ayt/books.json",
+    "completeTranslationApiLink": "/api/ind_ayt/complete.json",
+    "numberOfBooks": 66,
+    "totalNumberOfChapters": 1189,
+    "totalNumberOfVerses": 31102,
+    "languageName": "Indonesia",
+    "languageEnglishName": "Indonesian"
+  },
+  "books": [
+    {
+      "id": "GEN",
+      "translationId": "ind_ayt",
+      "name": "KEJADIAN",
+      "commonName": "KEJADIAN",
+      "title": "KEJADIAN",
+      "order": 1,
+      "numberOfChapters": 50,
+      "sha256": "4f6422c216832f6e4697ea8fba4bedcd192ed1429d2e9954254a477342c32e57",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/GEN/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "GEN",
+        "chapter": 1
+      },
+      "lastChapterNumber": 50,
+      "lastChapterApiLink": "/api/ind_ayt/GEN/50.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "GEN",
+        "chapter": 50
+      },
+      "totalNumberOfVerses": 1533
+    },
+    {
+      "id": "EXO",
+      "translationId": "ind_ayt",
+      "name": "KELUARAN",
+      "commonName": "KELUARAN",
+      "title": "Keluaran",
+      "order": 2,
+      "numberOfChapters": 40,
+      "sha256": "7749e08ae5e55f8bd1111e9eb34cb20ca77562a9aa7cfd34b4e0ea5b0625a276",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/EXO/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "EXO",
+        "chapter": 1
+      },
+      "lastChapterNumber": 40,
+      "lastChapterApiLink": "/api/ind_ayt/EXO/40.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "EXO",
+        "chapter": 40
+      },
+      "totalNumberOfVerses": 1213
+    },
+    {
+      "id": "LEV",
+      "translationId": "ind_ayt",
+      "name": "IMAMAT",
+      "commonName": "IMAMAT",
+      "title": "Imamat",
+      "order": 3,
+      "numberOfChapters": 27,
+      "sha256": "93512a04edba4b49b2b23a7739d4880d169ccd3f6d5514de8a8acd4f8727842b",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/LEV/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "LEV",
+        "chapter": 1
+      },
+      "lastChapterNumber": 27,
+      "lastChapterApiLink": "/api/ind_ayt/LEV/27.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "LEV",
+        "chapter": 27
+      },
+      "totalNumberOfVerses": 859
+    },
+    {
+      "id": "NUM",
+      "translationId": "ind_ayt",
+      "name": "BILANGAN",
+      "commonName": "BILANGAN",
+      "title": "Bilangan",
+      "order": 4,
+      "numberOfChapters": 36,
+      "sha256": "6a25538c6758142bc04e3de79aa09e5e8f9f8070ffad5aae7b0e3ff9de578353",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/NUM/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "NUM",
+        "chapter": 1
+      },
+      "lastChapterNumber": 36,
+      "lastChapterApiLink": "/api/ind_ayt/NUM/36.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "NUM",
+        "chapter": 36
+      },
+      "totalNumberOfVerses": 1288
+    },
+    {
+      "id": "DEU",
+      "translationId": "ind_ayt",
+      "name": "ULANGAN",
+      "commonName": "ULANGAN",
+      "title": "ULANGAN",
+      "order": 5,
+      "numberOfChapters": 34,
+      "sha256": "41956b2131c9151c5d80c780ca6b34a69875b358270ec29a9258c6a288e11b52",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/DEU/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "DEU",
+        "chapter": 1
+      },
+      "lastChapterNumber": 34,
+      "lastChapterApiLink": "/api/ind_ayt/DEU/34.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "DEU",
+        "chapter": 34
+      },
+      "totalNumberOfVerses": 959
+    },
+    {
+      "id": "JOS",
+      "translationId": "ind_ayt",
+      "name": "YOSUA",
+      "commonName": "YOSUA",
+      "title": "Yosua",
+      "order": 6,
+      "numberOfChapters": 24,
+      "sha256": "2c95463acb8cfad9a17df0c2a9608cb3666f019dcd28b62e15e6a7de578dc9ef",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/JOS/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JOS",
+        "chapter": 1
+      },
+      "lastChapterNumber": 24,
+      "lastChapterApiLink": "/api/ind_ayt/JOS/24.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JOS",
+        "chapter": 24
+      },
+      "totalNumberOfVerses": 658
+    },
+    {
+      "id": "JDG",
+      "translationId": "ind_ayt",
+      "name": "HAKIM-HAKIM",
+      "commonName": "HAKIM-HAKIM",
+      "title": "Hakim-hakim",
+      "order": 7,
+      "numberOfChapters": 21,
+      "sha256": "9b67eb03f5623d25bf38dbb63734e48c840b4bb2ea2284f82ba66e4d075e61f2",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/JDG/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JDG",
+        "chapter": 1
+      },
+      "lastChapterNumber": 21,
+      "lastChapterApiLink": "/api/ind_ayt/JDG/21.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JDG",
+        "chapter": 21
+      },
+      "totalNumberOfVerses": 618
+    },
+    {
+      "id": "RUT",
+      "translationId": "ind_ayt",
+      "name": "RUT",
+      "commonName": "RUT",
+      "title": "Rut",
+      "order": 8,
+      "numberOfChapters": 4,
+      "sha256": "5db0c04e500cfb7e4e8d9a4920b98bb64427ef683724536dd483138bdf5df679",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/RUT/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "RUT",
+        "chapter": 1
+      },
+      "lastChapterNumber": 4,
+      "lastChapterApiLink": "/api/ind_ayt/RUT/4.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "RUT",
+        "chapter": 4
+      },
+      "totalNumberOfVerses": 85
+    },
+    {
+      "id": "1SA",
+      "translationId": "ind_ayt",
+      "name": "1 SAMUEL",
+      "commonName": "1 SAMUEL",
+      "title": "1 Samuel",
+      "order": 9,
+      "numberOfChapters": 31,
+      "sha256": "54c5d9040f752b7dc084b4bb84def1fe3ca1abe864f943717ef2dd89ff807f0f",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/1SA/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1SA",
+        "chapter": 1
+      },
+      "lastChapterNumber": 31,
+      "lastChapterApiLink": "/api/ind_ayt/1SA/31.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1SA",
+        "chapter": 31
+      },
+      "totalNumberOfVerses": 810
+    },
+    {
+      "id": "2SA",
+      "translationId": "ind_ayt",
+      "name": "2 SAMUEL",
+      "commonName": "2 SAMUEL",
+      "title": "2 Samuel",
+      "order": 10,
+      "numberOfChapters": 24,
+      "sha256": "fa569d776688e00bb73589789e711254252d057974265e5f26885abc4ee3ddc4",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/2SA/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2SA",
+        "chapter": 1
+      },
+      "lastChapterNumber": 24,
+      "lastChapterApiLink": "/api/ind_ayt/2SA/24.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2SA",
+        "chapter": 24
+      },
+      "totalNumberOfVerses": 695
+    },
+    {
+      "id": "1KI",
+      "translationId": "ind_ayt",
+      "name": "1 RAJA-RAJA",
+      "commonName": "1 RAJA-RAJA",
+      "title": "1 Raja-Raja",
+      "order": 11,
+      "numberOfChapters": 22,
+      "sha256": "889a85110f95095559b2c801652c890a101aa1ce7af0a32ed994f66640736b07",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/1KI/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1KI",
+        "chapter": 1
+      },
+      "lastChapterNumber": 22,
+      "lastChapterApiLink": "/api/ind_ayt/1KI/22.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1KI",
+        "chapter": 22
+      },
+      "totalNumberOfVerses": 816
+    },
+    {
+      "id": "2KI",
+      "translationId": "ind_ayt",
+      "name": "2 RAJA-RAJA",
+      "commonName": "2 RAJA-RAJA",
+      "title": "2 Raja-Raja",
+      "order": 12,
+      "numberOfChapters": 25,
+      "sha256": "3b410e721958f94bc1ca98f83b03ce109d93d580e067a75b9ff35ef48e33ebe2",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/2KI/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2KI",
+        "chapter": 1
+      },
+      "lastChapterNumber": 25,
+      "lastChapterApiLink": "/api/ind_ayt/2KI/25.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2KI",
+        "chapter": 25
+      },
+      "totalNumberOfVerses": 719
+    },
+    {
+      "id": "1CH",
+      "translationId": "ind_ayt",
+      "name": "1 TAWARIKH",
+      "commonName": "1 TAWARIKH",
+      "title": "1 Tawarikh",
+      "order": 13,
+      "numberOfChapters": 29,
+      "sha256": "04cc8851769b76d99fd393cb4411a5f2813f13f49e651ed4acb5124b9e01e2c5",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/1CH/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1CH",
+        "chapter": 1
+      },
+      "lastChapterNumber": 29,
+      "lastChapterApiLink": "/api/ind_ayt/1CH/29.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1CH",
+        "chapter": 29
+      },
+      "totalNumberOfVerses": 942
+    },
+    {
+      "id": "2CH",
+      "translationId": "ind_ayt",
+      "name": "2 TAWARIKH",
+      "commonName": "2 TAWARIKH",
+      "title": "2 Tawarikh",
+      "order": 14,
+      "numberOfChapters": 36,
+      "sha256": "dc94d086ef22e563f6d1e723a350493f600845ed9cca062afaddafb7fd6d2d2f",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/2CH/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2CH",
+        "chapter": 1
+      },
+      "lastChapterNumber": 36,
+      "lastChapterApiLink": "/api/ind_ayt/2CH/36.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2CH",
+        "chapter": 36
+      },
+      "totalNumberOfVerses": 822
+    },
+    {
+      "id": "EZR",
+      "translationId": "ind_ayt",
+      "name": "EZRA",
+      "commonName": "EZRA",
+      "title": "Ezra",
+      "order": 15,
+      "numberOfChapters": 10,
+      "sha256": "354f43ba300bc796885337239900768196067c96298ca7e3a890f6223ee14c79",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/EZR/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "EZR",
+        "chapter": 1
+      },
+      "lastChapterNumber": 10,
+      "lastChapterApiLink": "/api/ind_ayt/EZR/10.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "EZR",
+        "chapter": 10
+      },
+      "totalNumberOfVerses": 280
+    },
+    {
+      "id": "NEH",
+      "translationId": "ind_ayt",
+      "name": "NEHEMIA",
+      "commonName": "NEHEMIA",
+      "title": "Nehemia",
+      "order": 16,
+      "numberOfChapters": 13,
+      "sha256": "a75d02600165ad3dff03d960572f2f886379908e854f5256bddfe5ad2a701c83",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/NEH/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "NEH",
+        "chapter": 1
+      },
+      "lastChapterNumber": 13,
+      "lastChapterApiLink": "/api/ind_ayt/NEH/13.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "NEH",
+        "chapter": 13
+      },
+      "totalNumberOfVerses": 406
+    },
+    {
+      "id": "EST",
+      "translationId": "ind_ayt",
+      "name": "ESTER",
+      "commonName": "ESTER",
+      "title": "Ester",
+      "order": 17,
+      "numberOfChapters": 10,
+      "sha256": "2c5816f1c6b71256885cacd9bfc2b55fc77ae6fa1d8d65d46913269c6f124f3b",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/EST/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "EST",
+        "chapter": 1
+      },
+      "lastChapterNumber": 10,
+      "lastChapterApiLink": "/api/ind_ayt/EST/10.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "EST",
+        "chapter": 10
+      },
+      "totalNumberOfVerses": 167
+    },
+    {
+      "id": "JOB",
+      "translationId": "ind_ayt",
+      "name": "AYUB",
+      "commonName": "AYUB",
+      "title": "Ayub",
+      "order": 18,
+      "numberOfChapters": 42,
+      "sha256": "b9bae911b0ef8e8b19b3a726b1638177d115bb4026e627cebc9d465f7bff9f30",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/JOB/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JOB",
+        "chapter": 1
+      },
+      "lastChapterNumber": 42,
+      "lastChapterApiLink": "/api/ind_ayt/JOB/42.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JOB",
+        "chapter": 42
+      },
+      "totalNumberOfVerses": 1070
+    },
+    {
+      "id": "PSA",
+      "translationId": "ind_ayt",
+      "name": "MAZMUR",
+      "commonName": "MAZMUR",
+      "title": "Mazmur",
+      "order": 19,
+      "numberOfChapters": 150,
+      "sha256": "efdf424f086c5462fd16540c2222667b6a775cb1cd892ee6fc993c522a6d7409",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/PSA/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "PSA",
+        "chapter": 1
+      },
+      "lastChapterNumber": 150,
+      "lastChapterApiLink": "/api/ind_ayt/PSA/150.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "PSA",
+        "chapter": 150
+      },
+      "totalNumberOfVerses": 2461
+    },
+    {
+      "id": "PRO",
+      "translationId": "ind_ayt",
+      "name": "AMSAL",
+      "commonName": "AMSAL",
+      "title": "Amsal",
+      "order": 20,
+      "numberOfChapters": 31,
+      "sha256": "4860b9586076baf59a9cc8864122ef05c628b58aa8cec362f162e187514bf928",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/PRO/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "PRO",
+        "chapter": 1
+      },
+      "lastChapterNumber": 31,
+      "lastChapterApiLink": "/api/ind_ayt/PRO/31.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "PRO",
+        "chapter": 31
+      },
+      "totalNumberOfVerses": 915
+    },
+    {
+      "id": "ECC",
+      "translationId": "ind_ayt",
+      "name": "PENGKHOTBAH",
+      "commonName": "PENGKHOTBAH",
+      "title": "Pengkhotbah",
+      "order": 21,
+      "numberOfChapters": 12,
+      "sha256": "fdc19838a7b95e9a45f2d4ebcadb6a3598f3aec37b05a9eaf20e32093ee7d962",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/ECC/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "ECC",
+        "chapter": 1
+      },
+      "lastChapterNumber": 12,
+      "lastChapterApiLink": "/api/ind_ayt/ECC/12.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "ECC",
+        "chapter": 12
+      },
+      "totalNumberOfVerses": 222
+    },
+    {
+      "id": "SNG",
+      "translationId": "ind_ayt",
+      "name": "KIDUNG AGUNG",
+      "commonName": "KIDUNG AGUNG",
+      "title": "Kidung Agung",
+      "order": 22,
+      "numberOfChapters": 8,
+      "sha256": "865ee19113fcbaf4bf7a83fe29531825fd6f98d9581aec9b93979bf66a519f78",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/SNG/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "SNG",
+        "chapter": 1
+      },
+      "lastChapterNumber": 8,
+      "lastChapterApiLink": "/api/ind_ayt/SNG/8.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "SNG",
+        "chapter": 8
+      },
+      "totalNumberOfVerses": 117
+    },
+    {
+      "id": "ISA",
+      "translationId": "ind_ayt",
+      "name": "YESAYA",
+      "commonName": "YESAYA",
+      "title": "Yesaya",
+      "order": 23,
+      "numberOfChapters": 66,
+      "sha256": "857d67a1bd93312337767e748ae571a2ca4f9735faebc9a11f0815ce7bbda3da",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/ISA/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "ISA",
+        "chapter": 1
+      },
+      "lastChapterNumber": 66,
+      "lastChapterApiLink": "/api/ind_ayt/ISA/66.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "ISA",
+        "chapter": 66
+      },
+      "totalNumberOfVerses": 1292
+    },
+    {
+      "id": "JER",
+      "translationId": "ind_ayt",
+      "name": "YEREMIA",
+      "commonName": "YEREMIA",
+      "title": "Yeremia",
+      "order": 24,
+      "numberOfChapters": 52,
+      "sha256": "57b2e971764b3300149c0d70f24640e65b73fb0be84ca6d2d53af654a43ea228",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/JER/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JER",
+        "chapter": 1
+      },
+      "lastChapterNumber": 52,
+      "lastChapterApiLink": "/api/ind_ayt/JER/52.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JER",
+        "chapter": 52
+      },
+      "totalNumberOfVerses": 1364
+    },
+    {
+      "id": "LAM",
+      "translationId": "ind_ayt",
+      "name": "RATAPAN",
+      "commonName": "RATAPAN",
+      "title": "Ratapan",
+      "order": 25,
+      "numberOfChapters": 5,
+      "sha256": "ad6d56bc42160855071ffa10182a88d2aeb7f86661e95c206783a1d13a6ecd21",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/LAM/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "LAM",
+        "chapter": 1
+      },
+      "lastChapterNumber": 5,
+      "lastChapterApiLink": "/api/ind_ayt/LAM/5.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "LAM",
+        "chapter": 5
+      },
+      "totalNumberOfVerses": 154
+    },
+    {
+      "id": "EZK",
+      "translationId": "ind_ayt",
+      "name": "YEHEZKIEL",
+      "commonName": "YEHEZKIEL",
+      "title": "YEHEZKIEL",
+      "order": 26,
+      "numberOfChapters": 48,
+      "sha256": "b1498d19c6cfc2306ef7606f1625b10d1e010ce92e741b3520fe3d5d3494a579",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/EZK/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "EZK",
+        "chapter": 1
+      },
+      "lastChapterNumber": 48,
+      "lastChapterApiLink": "/api/ind_ayt/EZK/48.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "EZK",
+        "chapter": 48
+      },
+      "totalNumberOfVerses": 1273
+    },
+    {
+      "id": "DAN",
+      "translationId": "ind_ayt",
+      "name": "DANIEL",
+      "commonName": "DANIEL",
+      "title": "Daniel",
+      "order": 27,
+      "numberOfChapters": 12,
+      "sha256": "54a42acc75517042cc0e53b630ec46476b38333896d58ef34dc19c3bc0933b9b",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/DAN/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "DAN",
+        "chapter": 1
+      },
+      "lastChapterNumber": 12,
+      "lastChapterApiLink": "/api/ind_ayt/DAN/12.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "DAN",
+        "chapter": 12
+      },
+      "totalNumberOfVerses": 357
+    },
+    {
+      "id": "HOS",
+      "translationId": "ind_ayt",
+      "name": "HOSEA",
+      "commonName": "HOSEA",
+      "title": "Hosea",
+      "order": 28,
+      "numberOfChapters": 14,
+      "sha256": "ddb0ee4ad1b7765b7c050bee6d3f3a572d625b54be51d07ffa5ddaf0736877f1",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/HOS/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "HOS",
+        "chapter": 1
+      },
+      "lastChapterNumber": 14,
+      "lastChapterApiLink": "/api/ind_ayt/HOS/14.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "HOS",
+        "chapter": 14
+      },
+      "totalNumberOfVerses": 197
+    },
+    {
+      "id": "JOL",
+      "translationId": "ind_ayt",
+      "name": "YOEL",
+      "commonName": "YOEL",
+      "title": "Yoel",
+      "order": 29,
+      "numberOfChapters": 3,
+      "sha256": "ce84ad27c385cfe2098024cf79adedd8b3d4244799ec5d6a68ff314f6fa238ae",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/JOL/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JOL",
+        "chapter": 1
+      },
+      "lastChapterNumber": 3,
+      "lastChapterApiLink": "/api/ind_ayt/JOL/3.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JOL",
+        "chapter": 3
+      },
+      "totalNumberOfVerses": 73
+    },
+    {
+      "id": "AMO",
+      "translationId": "ind_ayt",
+      "name": "AMOS",
+      "commonName": "AMOS",
+      "title": "Amos",
+      "order": 30,
+      "numberOfChapters": 9,
+      "sha256": "c1872d58cafea1beee1ea5baca2bac58385ad7ac694f78e4f7c02a399cb207ea",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/AMO/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "AMO",
+        "chapter": 1
+      },
+      "lastChapterNumber": 9,
+      "lastChapterApiLink": "/api/ind_ayt/AMO/9.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "AMO",
+        "chapter": 9
+      },
+      "totalNumberOfVerses": 146
+    },
+    {
+      "id": "OBA",
+      "translationId": "ind_ayt",
+      "name": "OBAJA",
+      "commonName": "OBAJA",
+      "title": "Obaja",
+      "order": 31,
+      "numberOfChapters": 1,
+      "sha256": "3b2c31210ffb9ae11042e736c2c1a076a09bd311454b0b0cfd889d3bad212adc",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/OBA/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "OBA",
+        "chapter": 1
+      },
+      "lastChapterNumber": 1,
+      "lastChapterApiLink": "/api/ind_ayt/OBA/1.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "OBA",
+        "chapter": 1
+      },
+      "totalNumberOfVerses": 21
+    },
+    {
+      "id": "JON",
+      "translationId": "ind_ayt",
+      "name": "YUNUS",
+      "commonName": "YUNUS",
+      "title": "Yunus",
+      "order": 32,
+      "numberOfChapters": 4,
+      "sha256": "435c10973d7df3a604923a696403c2383a3706fb322ecf4704f377dd2ef152a5",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/JON/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JON",
+        "chapter": 1
+      },
+      "lastChapterNumber": 4,
+      "lastChapterApiLink": "/api/ind_ayt/JON/4.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JON",
+        "chapter": 4
+      },
+      "totalNumberOfVerses": 48
+    },
+    {
+      "id": "MIC",
+      "translationId": "ind_ayt",
+      "name": "MIKHA",
+      "commonName": "MIKHA",
+      "title": "Mikha",
+      "order": 33,
+      "numberOfChapters": 7,
+      "sha256": "8894071fd5e9bf34866ab69133ae32de18b88beb72ca2eaddbffc0b584c91e7f",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/MIC/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "MIC",
+        "chapter": 1
+      },
+      "lastChapterNumber": 7,
+      "lastChapterApiLink": "/api/ind_ayt/MIC/7.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "MIC",
+        "chapter": 7
+      },
+      "totalNumberOfVerses": 105
+    },
+    {
+      "id": "NAM",
+      "translationId": "ind_ayt",
+      "name": "NAHUM",
+      "commonName": "NAHUM",
+      "title": "Nahum",
+      "order": 34,
+      "numberOfChapters": 3,
+      "sha256": "3cfb65c5d42c471032f3ce5f63dc9ed10f8a0a1e97ac11c8afd798d87dcab031",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/NAM/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "NAM",
+        "chapter": 1
+      },
+      "lastChapterNumber": 3,
+      "lastChapterApiLink": "/api/ind_ayt/NAM/3.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "NAM",
+        "chapter": 3
+      },
+      "totalNumberOfVerses": 47
+    },
+    {
+      "id": "HAB",
+      "translationId": "ind_ayt",
+      "name": "HABAKUK",
+      "commonName": "HABAKUK",
+      "title": "Habakuk",
+      "order": 35,
+      "numberOfChapters": 3,
+      "sha256": "25c168117fac86830ed5bc48a2713ea09678959277b93b9cdd63048252dad62a",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/HAB/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "HAB",
+        "chapter": 1
+      },
+      "lastChapterNumber": 3,
+      "lastChapterApiLink": "/api/ind_ayt/HAB/3.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "HAB",
+        "chapter": 3
+      },
+      "totalNumberOfVerses": 56
+    },
+    {
+      "id": "ZEP",
+      "translationId": "ind_ayt",
+      "name": "ZEFANYA",
+      "commonName": "ZEFANYA",
+      "title": "Zefanya",
+      "order": 36,
+      "numberOfChapters": 3,
+      "sha256": "8e6e6d00a7a9f57ab0a68cbdd6b4de8ee337d1ec361963cb21fe12c843c37577",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/ZEP/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "ZEP",
+        "chapter": 1
+      },
+      "lastChapterNumber": 3,
+      "lastChapterApiLink": "/api/ind_ayt/ZEP/3.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "ZEP",
+        "chapter": 3
+      },
+      "totalNumberOfVerses": 53
+    },
+    {
+      "id": "HAG",
+      "translationId": "ind_ayt",
+      "name": "HAGAI",
+      "commonName": "HAGAI",
+      "title": "Hagai",
+      "order": 37,
+      "numberOfChapters": 2,
+      "sha256": "252020fce93fd57b5eeff8d9d1b86d60a5dfcca4c7767df25b6e717aa1618d68",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/HAG/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "HAG",
+        "chapter": 1
+      },
+      "lastChapterNumber": 2,
+      "lastChapterApiLink": "/api/ind_ayt/HAG/2.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "HAG",
+        "chapter": 2
+      },
+      "totalNumberOfVerses": 38
+    },
+    {
+      "id": "ZEC",
+      "translationId": "ind_ayt",
+      "name": "ZAKHARIA",
+      "commonName": "ZAKHARIA",
+      "title": "Zakharia",
+      "order": 38,
+      "numberOfChapters": 14,
+      "sha256": "6b6e4690050443ffd43c780d958656ac64adb3cf18cfa03f90b2e17f4ced07cc",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/ZEC/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "ZEC",
+        "chapter": 1
+      },
+      "lastChapterNumber": 14,
+      "lastChapterApiLink": "/api/ind_ayt/ZEC/14.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "ZEC",
+        "chapter": 14
+      },
+      "totalNumberOfVerses": 211
+    },
+    {
+      "id": "MAL",
+      "translationId": "ind_ayt",
+      "name": "MALEAKHI",
+      "commonName": "MALEAKHI",
+      "title": "Maleakhi",
+      "order": 39,
+      "numberOfChapters": 4,
+      "sha256": "0d524929e5b8246401b0c86390fa788247ea70a83cd85f3e9a0dfec8521c1ca3",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/MAL/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "MAL",
+        "chapter": 1
+      },
+      "lastChapterNumber": 4,
+      "lastChapterApiLink": "/api/ind_ayt/MAL/4.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "MAL",
+        "chapter": 4
+      },
+      "totalNumberOfVerses": 55
+    },
+    {
+      "id": "MAT",
+      "translationId": "ind_ayt",
+      "name": "MATIUS",
+      "commonName": "MATIUS",
+      "title": "INJIL MATIUS",
+      "order": 40,
+      "numberOfChapters": 28,
+      "sha256": "4810a1d1853e9115aab9599e27b54e470a13ef1c2ed5fec59e0f08e7e4fb8ee6",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/MAT/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "MAT",
+        "chapter": 1
+      },
+      "lastChapterNumber": 28,
+      "lastChapterApiLink": "/api/ind_ayt/MAT/28.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "MAT",
+        "chapter": 28
+      },
+      "totalNumberOfVerses": 1071
+    },
+    {
+      "id": "MRK",
+      "translationId": "ind_ayt",
+      "name": "MARKUS",
+      "commonName": "MARKUS",
+      "title": "INJIL MARKUS",
+      "order": 41,
+      "numberOfChapters": 16,
+      "sha256": "6d17845c3e54ce0e15ef183e48e1449bd18fd175d3720e3eb0b4a5a047b2ffe3",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/MRK/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "MRK",
+        "chapter": 1
+      },
+      "lastChapterNumber": 16,
+      "lastChapterApiLink": "/api/ind_ayt/MRK/16.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "MRK",
+        "chapter": 16
+      },
+      "totalNumberOfVerses": 678
+    },
+    {
+      "id": "LUK",
+      "translationId": "ind_ayt",
+      "name": "LUKAS",
+      "commonName": "LUKAS",
+      "title": "INJIL LUKAS",
+      "order": 42,
+      "numberOfChapters": 24,
+      "sha256": "c2b1fad17e54492719b90a87f1ce6dbfc18c6cca894fc77d9a3dd21e14bfb29b",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/LUK/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "LUK",
+        "chapter": 1
+      },
+      "lastChapterNumber": 24,
+      "lastChapterApiLink": "/api/ind_ayt/LUK/24.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "LUK",
+        "chapter": 24
+      },
+      "totalNumberOfVerses": 1151
+    },
+    {
+      "id": "JHN",
+      "translationId": "ind_ayt",
+      "name": "YOHANES",
+      "commonName": "YOHANES",
+      "title": "INJIL YOHANES",
+      "order": 43,
+      "numberOfChapters": 21,
+      "sha256": "2d553604014004aaaaef019e64752100bb59f1b7f1309494f7ceff84a7ef8927",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/JHN/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JHN",
+        "chapter": 1
+      },
+      "lastChapterNumber": 21,
+      "lastChapterApiLink": "/api/ind_ayt/JHN/21.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JHN",
+        "chapter": 21
+      },
+      "totalNumberOfVerses": 879
+    },
+    {
+      "id": "ACT",
+      "translationId": "ind_ayt",
+      "name": "KISAH PARA RASUL",
+      "commonName": "KISAH PARA RASUL",
+      "title": "Kisah Para Rasul",
+      "order": 44,
+      "numberOfChapters": 28,
+      "sha256": "ba6b655c377f86ff0aa8521271b07819fafa11690db6db0dc1d413ce691cd8fb",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/ACT/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "ACT",
+        "chapter": 1
+      },
+      "lastChapterNumber": 28,
+      "lastChapterApiLink": "/api/ind_ayt/ACT/28.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "ACT",
+        "chapter": 28
+      },
+      "totalNumberOfVerses": 1007
+    },
+    {
+      "id": "ROM",
+      "translationId": "ind_ayt",
+      "name": "ROMA",
+      "commonName": "ROMA",
+      "title": "SURAT PAULUS KEPADA JEMAAT DI ROMA",
+      "order": 45,
+      "numberOfChapters": 16,
+      "sha256": "db644e4b364812894ae38de503a22d23bde1e71d8fe65ce4b2a1d1bad8842159",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/ROM/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "ROM",
+        "chapter": 1
+      },
+      "lastChapterNumber": 16,
+      "lastChapterApiLink": "/api/ind_ayt/ROM/16.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "ROM",
+        "chapter": 16
+      },
+      "totalNumberOfVerses": 433
+    },
+    {
+      "id": "1CO",
+      "translationId": "ind_ayt",
+      "name": "1 KORINTUS",
+      "commonName": "1 KORINTUS",
+      "title": "SURAT PAULUS YANG PERTAMA KEPADA JEMAAT DI KORINTUS",
+      "order": 46,
+      "numberOfChapters": 16,
+      "sha256": "c7dfaccf61f4eef2401737ca6db521f83a10d2371fe2281fce6a31b3cc9374ed",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/1CO/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1CO",
+        "chapter": 1
+      },
+      "lastChapterNumber": 16,
+      "lastChapterApiLink": "/api/ind_ayt/1CO/16.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1CO",
+        "chapter": 16
+      },
+      "totalNumberOfVerses": 437
+    },
+    {
+      "id": "2CO",
+      "translationId": "ind_ayt",
+      "name": "2 KORINTUS",
+      "commonName": "2 KORINTUS",
+      "title": "SURAT PAULUS YANG KEDUA KEPADA JEMAAT DI KORINTUS",
+      "order": 47,
+      "numberOfChapters": 13,
+      "sha256": "fae4784288436b028e47fc5a41fc22b1fb397ad33eddfcc854ebe5f801159248",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/2CO/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2CO",
+        "chapter": 1
+      },
+      "lastChapterNumber": 13,
+      "lastChapterApiLink": "/api/ind_ayt/2CO/13.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2CO",
+        "chapter": 13
+      },
+      "totalNumberOfVerses": 257
+    },
+    {
+      "id": "GAL",
+      "translationId": "ind_ayt",
+      "name": "GALATIA",
+      "commonName": "GALATIA",
+      "title": "SURAT PAULUS KEPADA JEMAAT DI GALATIA",
+      "order": 48,
+      "numberOfChapters": 6,
+      "sha256": "405ab5cef3a075463e0858e857bb831cdd2ffe374709f9f745a5eea949ba49db",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/GAL/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "GAL",
+        "chapter": 1
+      },
+      "lastChapterNumber": 6,
+      "lastChapterApiLink": "/api/ind_ayt/GAL/6.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "GAL",
+        "chapter": 6
+      },
+      "totalNumberOfVerses": 149
+    },
+    {
+      "id": "EPH",
+      "translationId": "ind_ayt",
+      "name": "EFESUS",
+      "commonName": "EFESUS",
+      "title": "SURAT PAULUS KEPADA JEMAAT DI EFESUS",
+      "order": 49,
+      "numberOfChapters": 6,
+      "sha256": "45a09ac66f3483f7a43b847ed2982a70b5b2468b0126d7fdd68181208f8668ee",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/EPH/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "EPH",
+        "chapter": 1
+      },
+      "lastChapterNumber": 6,
+      "lastChapterApiLink": "/api/ind_ayt/EPH/6.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "EPH",
+        "chapter": 6
+      },
+      "totalNumberOfVerses": 155
+    },
+    {
+      "id": "PHP",
+      "translationId": "ind_ayt",
+      "name": "FILIPI",
+      "commonName": "FILIPI",
+      "title": "SURAT PAULUS KEPADA JEMAAT DI FILIPI",
+      "order": 50,
+      "numberOfChapters": 4,
+      "sha256": "be0848995179523c9a1578a03cbf0f47753671b2efd1cb8e167f96cb77634d15",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/PHP/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "PHP",
+        "chapter": 1
+      },
+      "lastChapterNumber": 4,
+      "lastChapterApiLink": "/api/ind_ayt/PHP/4.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "PHP",
+        "chapter": 4
+      },
+      "totalNumberOfVerses": 104
+    },
+    {
+      "id": "COL",
+      "translationId": "ind_ayt",
+      "name": "KOLOSE",
+      "commonName": "KOLOSE",
+      "title": "SURAT PAULUS KEPADA JEMAAT DI KOLOSE",
+      "order": 51,
+      "numberOfChapters": 4,
+      "sha256": "149c2a0eb53a73a72f3d79a773fdf7ce5afc1ba8760712ea00af2b929648af1f",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/COL/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "COL",
+        "chapter": 1
+      },
+      "lastChapterNumber": 4,
+      "lastChapterApiLink": "/api/ind_ayt/COL/4.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "COL",
+        "chapter": 4
+      },
+      "totalNumberOfVerses": 95
+    },
+    {
+      "id": "1TH",
+      "translationId": "ind_ayt",
+      "name": "1 TESALONIKA",
+      "commonName": "1 TESALONIKA",
+      "title": "SURAT PAULUS YANG PERTAMA KEPADA JEMAAT DI TESALONIKA",
+      "order": 52,
+      "numberOfChapters": 5,
+      "sha256": "742af62d58a3ae51a02577cb0b567460b72d94040240d0e956bf343ecb07d516",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/1TH/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1TH",
+        "chapter": 1
+      },
+      "lastChapterNumber": 5,
+      "lastChapterApiLink": "/api/ind_ayt/1TH/5.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1TH",
+        "chapter": 5
+      },
+      "totalNumberOfVerses": 89
+    },
+    {
+      "id": "2TH",
+      "translationId": "ind_ayt",
+      "name": "2 TESALONIKA",
+      "commonName": "2 TESALONIKA",
+      "title": "SURAT PAULUS YANG KEDUA KEPADA JEMAAT DI TESALONIKA",
+      "order": 53,
+      "numberOfChapters": 3,
+      "sha256": "7e7a8357dd86c7d39d365ea2c769f3183b072cb55c1f2d4b612b24f4c101c75d",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/2TH/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2TH",
+        "chapter": 1
+      },
+      "lastChapterNumber": 3,
+      "lastChapterApiLink": "/api/ind_ayt/2TH/3.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2TH",
+        "chapter": 3
+      },
+      "totalNumberOfVerses": 47
+    },
+    {
+      "id": "1TI",
+      "translationId": "ind_ayt",
+      "name": "1 TIMOTIUS",
+      "commonName": "1 TIMOTIUS",
+      "title": "SURAT PAULUS YANG PERTAMA KEPADA TIMOTIUS",
+      "order": 54,
+      "numberOfChapters": 6,
+      "sha256": "cb361113767c5c0a873e00bd0ea594d6b8c5af1ad9f8e6788fa5555f12d4aca3",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/1TI/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1TI",
+        "chapter": 1
+      },
+      "lastChapterNumber": 6,
+      "lastChapterApiLink": "/api/ind_ayt/1TI/6.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1TI",
+        "chapter": 6
+      },
+      "totalNumberOfVerses": 113
+    },
+    {
+      "id": "2TI",
+      "translationId": "ind_ayt",
+      "name": "2 TIMOTIUS",
+      "commonName": "2 TIMOTIUS",
+      "title": "SURAT PAULUS YANG KEDUA KEPADA TIMOTIUS",
+      "order": 55,
+      "numberOfChapters": 4,
+      "sha256": "d57fcfd988ce56f1cc97dd6f2f3d03cefa40ab7e5dae1c941ee4d71ca63c6511",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/2TI/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2TI",
+        "chapter": 1
+      },
+      "lastChapterNumber": 4,
+      "lastChapterApiLink": "/api/ind_ayt/2TI/4.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2TI",
+        "chapter": 4
+      },
+      "totalNumberOfVerses": 83
+    },
+    {
+      "id": "TIT",
+      "translationId": "ind_ayt",
+      "name": "TITUS",
+      "commonName": "TITUS",
+      "title": "SURAT PAULUS KEPADA TITUS",
+      "order": 56,
+      "numberOfChapters": 3,
+      "sha256": "f995840bff22ad495527a82e08620875d6f97440e12b9bb6800f934a4ceaa79a",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/TIT/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "TIT",
+        "chapter": 1
+      },
+      "lastChapterNumber": 3,
+      "lastChapterApiLink": "/api/ind_ayt/TIT/3.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "TIT",
+        "chapter": 3
+      },
+      "totalNumberOfVerses": 46
+    },
+    {
+      "id": "PHM",
+      "translationId": "ind_ayt",
+      "name": "FILEMON",
+      "commonName": "FILEMON",
+      "title": "SURAT PAULUS KEPADA FILEMON",
+      "order": 57,
+      "numberOfChapters": 1,
+      "sha256": "89571bfcd4e55299f7d22bb6c9d56e618fe8543c7d9651003ef113501035f93d",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/PHM/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "PHM",
+        "chapter": 1
+      },
+      "lastChapterNumber": 1,
+      "lastChapterApiLink": "/api/ind_ayt/PHM/1.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "PHM",
+        "chapter": 1
+      },
+      "totalNumberOfVerses": 25
+    },
+    {
+      "id": "HEB",
+      "translationId": "ind_ayt",
+      "name": "IBRANI",
+      "commonName": "IBRANI",
+      "title": "SURAT KEPADA ORANG IBRANI",
+      "order": 58,
+      "numberOfChapters": 13,
+      "sha256": "32083a9770c55daaaa5b31bb5641cc15bd0b04b2e2a82a83d9b3b0d3ece81499",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/HEB/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "HEB",
+        "chapter": 1
+      },
+      "lastChapterNumber": 13,
+      "lastChapterApiLink": "/api/ind_ayt/HEB/13.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "HEB",
+        "chapter": 13
+      },
+      "totalNumberOfVerses": 303
+    },
+    {
+      "id": "JAS",
+      "translationId": "ind_ayt",
+      "name": "YAKOBUS",
+      "commonName": "YAKOBUS",
+      "title": "SURAT YAKOBUS",
+      "order": 59,
+      "numberOfChapters": 5,
+      "sha256": "8613411be4bc7cf566f43a71da2886469c5ac61f591b576501183ff249d6e093",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/JAS/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JAS",
+        "chapter": 1
+      },
+      "lastChapterNumber": 5,
+      "lastChapterApiLink": "/api/ind_ayt/JAS/5.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JAS",
+        "chapter": 5
+      },
+      "totalNumberOfVerses": 108
+    },
+    {
+      "id": "1PE",
+      "translationId": "ind_ayt",
+      "name": "1 PETRUS",
+      "commonName": "1 PETRUS",
+      "title": "SURAT PETRUS YANG PERTAMA",
+      "order": 60,
+      "numberOfChapters": 5,
+      "sha256": "f9b3e61fc4e0dfe946d39cb6c4a54591b4736ef90a3712809e9ec945afee7260",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/1PE/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1PE",
+        "chapter": 1
+      },
+      "lastChapterNumber": 5,
+      "lastChapterApiLink": "/api/ind_ayt/1PE/5.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1PE",
+        "chapter": 5
+      },
+      "totalNumberOfVerses": 105
+    },
+    {
+      "id": "2PE",
+      "translationId": "ind_ayt",
+      "name": "2 PETRUS",
+      "commonName": "2 PETRUS",
+      "title": "SURAT PETRUS YANG KEDUA",
+      "order": 61,
+      "numberOfChapters": 3,
+      "sha256": "a785034a4d68008a27b95d0bae51b2f42261549df056d4b39ed22893588f2587",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/2PE/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2PE",
+        "chapter": 1
+      },
+      "lastChapterNumber": 3,
+      "lastChapterApiLink": "/api/ind_ayt/2PE/3.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2PE",
+        "chapter": 3
+      },
+      "totalNumberOfVerses": 61
+    },
+    {
+      "id": "1JN",
+      "translationId": "ind_ayt",
+      "name": "1 YOHANES",
+      "commonName": "1 YOHANES",
+      "title": "SURAT YOHANES YANG PERTAMA",
+      "order": 62,
+      "numberOfChapters": 5,
+      "sha256": "7866860580cf23059efb077d3ac721d6c14fc0101dd5aa1d55c0d62b6b00d6c8",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/1JN/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1JN",
+        "chapter": 1
+      },
+      "lastChapterNumber": 5,
+      "lastChapterApiLink": "/api/ind_ayt/1JN/5.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "1JN",
+        "chapter": 5
+      },
+      "totalNumberOfVerses": 105
+    },
+    {
+      "id": "2JN",
+      "translationId": "ind_ayt",
+      "name": "2 YOHANES",
+      "commonName": "2 YOHANES",
+      "title": "SURAT YOHANES YANG KEDUA",
+      "order": 63,
+      "numberOfChapters": 1,
+      "sha256": "da5a7427fa0704587a083a31df7c0aa206050dadf796e503994ffbe4cbe5f5c9",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/2JN/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2JN",
+        "chapter": 1
+      },
+      "lastChapterNumber": 1,
+      "lastChapterApiLink": "/api/ind_ayt/2JN/1.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "2JN",
+        "chapter": 1
+      },
+      "totalNumberOfVerses": 13
+    },
+    {
+      "id": "3JN",
+      "translationId": "ind_ayt",
+      "name": "3 YOHANES",
+      "commonName": "3 YOHANES",
+      "title": "SURAT YOHANES YANG KETIGA",
+      "order": 64,
+      "numberOfChapters": 1,
+      "sha256": "37bea82eda606115a0e85eb3e336aa2eadb7dcd598787d89e67773a115a92af7",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/3JN/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "3JN",
+        "chapter": 1
+      },
+      "lastChapterNumber": 1,
+      "lastChapterApiLink": "/api/ind_ayt/3JN/1.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "3JN",
+        "chapter": 1
+      },
+      "totalNumberOfVerses": 14
+    },
+    {
+      "id": "JUD",
+      "translationId": "ind_ayt",
+      "name": "YUDAS",
+      "commonName": "YUDAS",
+      "title": "SURAT YUDAS",
+      "order": 65,
+      "numberOfChapters": 1,
+      "sha256": "31cb59040c82a3e43fbbd19848f3392c4b46448d53c8c999961ad539c3bda6ed",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/JUD/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JUD",
+        "chapter": 1
+      },
+      "lastChapterNumber": 1,
+      "lastChapterApiLink": "/api/ind_ayt/JUD/1.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "JUD",
+        "chapter": 1
+      },
+      "totalNumberOfVerses": 25
+    },
+    {
+      "id": "REV",
+      "translationId": "ind_ayt",
+      "name": "WAHYU",
+      "commonName": "WAHYU",
+      "title": "WAHYU KEPADA YOHANES",
+      "order": 66,
+      "numberOfChapters": 22,
+      "sha256": "35790b25440873c132898e6256a5fd77dffbe668367efa4fca609bf63810f76a",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/ind_ayt/REV/1.json",
+      "firstChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "REV",
+        "chapter": 1
+      },
+      "lastChapterNumber": 22,
+      "lastChapterApiLink": "/api/ind_ayt/REV/22.json",
+      "lastChapterReference": {
+        "translationId": "ind_ayt",
+        "book": "REV",
+        "chapter": 22
+      },
+      "totalNumberOfVerses": 404
+    }
+  ]
+}

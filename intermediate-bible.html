@@ -1,0 +1,2479 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Intermediate Bible</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+:root{
+  --bg:#FBF9F4; --panel:#FFFFFF; --panel2:#F4F0E7; --line:#E2DBCC;
+  --ink:#221E18; --ink2:#6E655A; --accent:#8A6D1F; --accentSoft:#F2EAD4;
+  --hl-kuning:#FCE7A2; --hl-hijau:#BFE3C9; --hl-biru:#BCD8EC; --hl-merah:#F2C4C0; --hl-ungu:#DDCBEC;
+  --font-size:18px; --line-height:1.85;
+  --body-font:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+html[data-theme="dark"]{
+  --bg:#12100E; --panel:#1B1815; --panel2:#232019; --line:#332E27;
+  --ink:#EDE6DA; --ink2:#A79C8C; --accent:#C8A24A; --accentSoft:#3A3220;
+  --hl-kuning:#6B5A1E; --hl-hijau:#2C5138; --hl-biru:#274A5E; --hl-merah:#63302C; --hl-ungu:#43305C;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Inter",-apple-system,"Segoe UI",system-ui,sans-serif}
+button,select,input,textarea{font-family:inherit}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,
+[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---------- topbar ---------- */
+.topbar{position:sticky;top:0;z-index:40;background:var(--panel);
+  border-bottom:1px solid var(--line);padding:env(safe-area-inset-top) 0 0}
+.tbrow{display:flex;align-items:center;gap:8px;padding:9px 14px;flex-wrap:wrap}
+.brand{font-weight:800;letter-spacing:-.02em;font-size:15px;color:var(--accent);margin-right:4px}
+.refbtn{display:flex;align-items:center;gap:8px;padding:7px 12px;background:var(--panel2);
+  border:1px solid var(--line);border-radius:8px;cursor:pointer;color:var(--ink);font-size:13px;font-weight:600}
+.icobtn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;
+  border:1px solid var(--line);background:var(--panel2);color:var(--ink2);cursor:pointer;flex-shrink:0;font-size:14px}
+.icobtn.on{background:var(--accentSoft);color:var(--accent);border-color:var(--accent)}
+.spacer{flex:1}
+.savestate{font-size:11px;color:var(--ink2);white-space:nowrap}
+.savestate.err{color:#C0554A}
+
+/* version rail */
+.vrail{display:flex;gap:6px;padding:0 14px 9px;overflow-x:auto}
+.vrail::-webkit-scrollbar{display:none}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:20px;
+  border:1px solid var(--line);background:var(--panel2);color:var(--ink2);cursor:pointer;
+  font-size:12px;white-space:nowrap;flex:none}
+.pill.on{background:var(--accentSoft);color:var(--accent);border-color:var(--accent);font-weight:600}
+.pill .x{opacity:.6;font-size:13px;line-height:1}
+
+/* ---------- layout ---------- */
+.wrap{max-width:820px;margin:0 auto;padding:24px 16px 90px}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:6px}
+h1.title{margin:0;font-family:var(--body-font);font-size:32px;font-weight:400;letter-spacing:-.01em}
+h1.title span{color:var(--ink2)}
+.intro{margin:8px 0 22px;font-size:12.5px;line-height:1.6;color:var(--ink2)}
+
+/* ---------- verse rows (sejajar antar versi) ---------- */
+.vrow{display:grid;gap:0 14px;border-radius:8px;padding:2px 0;margin-bottom:2px;
+  align-items:start;transition:background 140ms ease}
+.vrow:hover{background:var(--panel2)}
+.vrow.sel{background:var(--accentSoft);box-shadow:inset 0 0 0 1px var(--accent)}
+/* stabilo = isi warna */
+.vrow.stab{background:var(--stab)}
+/* sorot = outline */
+.vrow.mark{box-shadow:inset 0 0 0 2px var(--mark)}
+.vrow.mark.sel{box-shadow:inset 0 0 0 2px var(--mark),inset 0 0 0 4px var(--accent)}
+.vcell{padding:7px 9px;cursor:pointer;min-width:0}
+.vcell p{margin:0;font-family:var(--body-font);font-size:var(--font-size);line-height:var(--line-height);
+  overflow-wrap:break-word}
+.vcell.zh p{font-family:"Songti SC","SimSun","Noto Serif SC",serif;line-height:calc(var(--line-height) + .15)}
+.vnum{color:var(--accent);font-weight:700;font-size:.62em;margin-right:6px;
+  font-family:"Inter",sans-serif;vertical-align:super;user-select:none}
+.vmark{font-size:11px;margin-left:6px;color:var(--accent)}
+.miss{color:var(--ink2);font-style:italic;font-size:13px;font-family:"Inter",sans-serif}
+
+/* kolom judul versi — ikut lebar grid */
+.vhead{display:grid;gap:0 14px;position:sticky;top:0;z-index:5;
+  background:var(--bg);padding:6px 0 8px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.vhcell{padding:0 9px;font-size:10.5px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:6px;min-width:0}
+.vhcell span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.swapb{border:none;background:none;color:var(--ink2);cursor:pointer;font-size:12px;padding:2px;flex:none}
+.swapb:hover{color:var(--accent)}
+
+/* ---------- interlinear di bawah ayat ---------- */
+.inter{display:flex;flex-wrap:wrap;gap:5px;margin:6px 9px 12px;padding-top:10px;
+  border-top:1px dashed var(--line)}
+.inter.rtl{flex-direction:row-reverse;justify-content:flex-end}
+.iw{background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:6px 9px;
+  cursor:pointer;text-align:center;min-width:64px;display:flex;flex-direction:column;gap:2px}
+.iw:hover{border-color:var(--accent)}
+.iw .o{font-size:18px;color:var(--ink);font-family:"Times New Roman","SBL Hebrew","SBL Greek",serif;line-height:1.5}
+.iw .tr{font-size:9.5px;color:var(--ink2);font-style:italic}
+.iw .gl{font-size:10.5px;color:var(--ink);line-height:1.35}
+.iw .gl.zh{font-family:"Songti SC","SimSun","Noto Serif SC",serif;font-size:12px}
+.iw .gl.dim{color:var(--ink2);font-size:9.5px}
+.iw .st{font-size:8.5px;color:var(--accent);font-weight:700}
+.ilnote{font-size:11px;color:var(--ink2);margin:0 9px 14px;line-height:1.5}
+
+/* ---------- tools ---------- */
+.tools{position:sticky;bottom:0;margin-top:20px;background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;padding:14px;box-shadow:0 -6px 24px rgba(0,0,0,.07);z-index:20}
+html[data-theme="dark"] .tools{box-shadow:0 -6px 24px rgba(0,0,0,.4)}
+.toolhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px}
+.toolref{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.tlabel{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink2);margin:10px 0 6px}
+.swrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.swatch{width:26px;height:26px;border-radius:50%;cursor:pointer;border:1px solid var(--line)}
+.swatch.on{border:2px solid var(--accent);transform:scale(1.1)}
+.swatch.ring{background:transparent!important}
+.swatch.none{background:transparent;border-style:dashed;display:flex;align-items:center;
+  justify-content:center;color:var(--ink2);font-size:13px}
+textarea.note{width:100%;padding:10px;border-radius:8px;border:1px solid var(--line);
+  background:var(--panel2);color:var(--ink);font-size:13px;resize:vertical;outline:none;min-height:74px}
+.trow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.btn{padding:9px 15px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);
+  color:var(--bg);font-size:12.5px;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line);font-weight:600}
+.btn.warn{background:transparent;color:#C0554A;border-color:#C0554A}
+
+/* ---------- overlay ---------- */
+.ov{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.42);display:none;
+  align-items:flex-start;justify-content:center;padding:5vh 14px 14px;overflow-y:auto}
+.ov.on{display:flex}
+.ovbox{background:var(--panel);border-radius:14px;border:1px solid var(--line);width:100%;
+  max-width:580px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.ovhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px}
+.ovtitle{margin:0;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.srch{width:100%;padding:11px 13px;border-radius:9px;border:1px solid var(--line);
+  background:var(--panel2);color:var(--ink);font-size:14.5px;outline:none;margin-bottom:12px}
+.res{display:flex;gap:10px;align-items:center;width:100%;text-align:left;cursor:pointer;background:var(--panel2);
+  border:1px solid var(--line);border-radius:9px;padding:11px;margin-bottom:7px;color:var(--ink)}
+.res.on{border-color:var(--accent);background:var(--accentSoft)}
+.res .t{flex:1;min-width:0}
+.res .t b{display:block;font-size:13px;font-weight:600}
+.res .t i{display:block;font-size:11px;color:var(--ink2);font-style:normal;margin-top:2px}
+.tag{font-size:9.5px;border:1px solid var(--line);border-radius:4px;padding:2px 5px;color:var(--ink2);flex:none}
+.tag.full{color:var(--accent);border-color:var(--accent)}
+.tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.chapbtn{min-width:38px;padding:8px 6px;justify-content:center;font-weight:600;color:var(--ink);
+  border:1px solid var(--line);background:var(--panel2);border-radius:7px;cursor:pointer;font-size:12.5px}
+.chapbtn.on{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.grid-b{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px}
+.grid-c{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:6px}
+.fld{display:block;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink2);margin:12px 0 5px}
+.inp{width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);
+  background:var(--panel2);color:var(--ink);font-size:13.5px;outline:none}
+.hint{font-size:11.5px;color:var(--ink2);line-height:1.6;margin:8px 0 0}
+.sechead{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink2);margin:16px 0 8px}
+.sechead:first-child{margin-top:0}
+.vrow.pinned{position:relative}
+.pinbadge{position:absolute;top:2px;right:4px;font-size:12px;line-height:1;z-index:2;
+  pointer-events:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))}
+.vcell{position:relative;-webkit-user-select:none;user-select:none}
+.chk{width:22px;height:22px;border-radius:6px;flex:none;cursor:pointer;border:1.5px solid var(--line);
+  background:transparent;display:flex;align-items:center;justify-content:center;
+  color:transparent;font-size:13px;font-weight:900}
+.chk.on{border-color:var(--accent);background:var(--accent);color:var(--bg)}
+.diag{display:flex;gap:8px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line);font-size:12px;line-height:1.5}
+.diag b{flex:none;width:18px}
+.diag .d{flex:1;color:var(--ink2)}
+.diag.ok b{color:#3E8E5A}.diag.bad b{color:#C0554A}.diag.wait b{color:var(--ink2)}
+.skel{height:1.05em;background:var(--line);border-radius:4px;opacity:.4;margin:10px 9px;animation:p 1.3s ease-in-out infinite}
+.skel:nth-child(2n){width:86%}.skel:nth-child(3n){width:72%}
+@keyframes p{50%{opacity:.15}}
+.foot{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--panel);
+  border-top:1px solid var(--line);display:flex;gap:8px;
+  padding:8px 14px calc(8px + env(safe-area-inset-bottom))}
+.foot button{flex:1;padding:10px 0;border-radius:8px;border:1px solid var(--line);
+  background:var(--panel2);color:var(--ink);font-size:12.5px;font-weight:600;cursor:pointer}
+.foot button:disabled{opacity:.35}
+.toast{position:fixed;left:50%;bottom:74px;transform:translateX(-50%);z-index:80;
+  background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:9px;
+  font-size:12.5px;max-width:82vw;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tbrow">
+    <span class="brand">Intermediate Bible</span>
+    <button class="refbtn" id="refBtn">📖 <span id="refT">Kejadian 1</span></button>
+    <button class="icobtn" id="ilBtn" title="Bahasa asli di bawah ayat">א</button>
+    <span class="spacer"></span>
+    <span class="savestate" id="sync"></span>
+    <button class="icobtn" id="planBtn" title="Renungan harian">📅</button>
+    <button class="icobtn" id="sylBtn" title="Silabus Alkitab">🎓</button>
+    <button class="icobtn" id="findBtn" title="Cari ayat">🔍</button>
+    <button class="icobtn" id="dlBtn" title="Unduhan offline">⬇</button>
+    <button class="icobtn" id="listBtn" title="Catatan tersimpan">📑</button>
+    <button class="icobtn" id="accBtn" title="Akun &amp; sinkronisasi">👤</button>
+    <button class="icobtn" id="setBtn" title="Pengaturan">⚙</button>
+  </div>
+  <div class="vrail" id="vrail"></div>
+</div>
+
+<div class="wrap">
+  <div class="eyebrow" id="eyeb">Perjanjian Lama</div>
+  <h1 class="title" id="title">Kejadian <span>1</span></h1>
+  <p class="intro" id="intro"></p>
+  <div id="reader"></div>
+  <div class="tools" id="tools" style="display:none"></div>
+</div>
+
+<div class="foot">
+  <button id="prev">‹ Sebelumnya</button>
+  <button id="next">Berikutnya ›</button>
+</div>
+
+<div class="ov" id="ov"><div class="ovbox" id="ovbox"></div></div>
+<script>
+const BOOKS=[
+  {id:"kej",name:"Kejadian",en:"Genesis",zh:"创世记",t:"PL",ch:50,usfm:"GEN",src:"Gen"},
+  {id:"kel",name:"Keluaran",en:"Exodus",zh:"出埃及记",t:"PL",ch:40,usfm:"EXO",src:"Exod"},
+  {id:"ima",name:"Imamat",en:"Leviticus",zh:"利未记",t:"PL",ch:27,usfm:"LEV",src:"Lev"},
+  {id:"bil",name:"Bilangan",en:"Numbers",zh:"民数记",t:"PL",ch:36,usfm:"NUM",src:"Num"},
+  {id:"ula",name:"Ulangan",en:"Deuteronomy",zh:"申命记",t:"PL",ch:34,usfm:"DEU",src:"Deut"},
+  {id:"yos",name:"Yosua",en:"Joshua",zh:"约书亚记",t:"PL",ch:24,usfm:"JOS",src:"Josh"},
+  {id:"hak",name:"Hakim-hakim",en:"Judges",zh:"士师记",t:"PL",ch:21,usfm:"JDG",src:"Judg"},
+  {id:"rut",name:"Rut",en:"Ruth",zh:"路得记",t:"PL",ch:4,usfm:"RUT",src:"Ruth"},
+  {id:"1sa",name:"1 Samuel",en:"1 Samuel",zh:"撒母耳记上",t:"PL",ch:31,usfm:"1SA",src:"1Sam"},
+  {id:"2sa",name:"2 Samuel",en:"2 Samuel",zh:"撒母耳记下",t:"PL",ch:24,usfm:"2SA",src:"2Sam"},
+  {id:"1ra",name:"1 Raja-raja",en:"1 Kings",zh:"列王纪上",t:"PL",ch:22,usfm:"1KI",src:"1Kgs"},
+  {id:"2ra",name:"2 Raja-raja",en:"2 Kings",zh:"列王纪下",t:"PL",ch:25,usfm:"2KI",src:"2Kgs"},
+  {id:"1ta",name:"1 Tawarikh",en:"1 Chronicles",zh:"历代志上",t:"PL",ch:29,usfm:"1CH",src:"1Chr"},
+  {id:"2ta",name:"2 Tawarikh",en:"2 Chronicles",zh:"历代志下",t:"PL",ch:36,usfm:"2CH",src:"2Chr"},
+  {id:"ezr",name:"Ezra",en:"Ezra",zh:"以斯拉记",t:"PL",ch:10,usfm:"EZR",src:"Ezra"},
+  {id:"neh",name:"Nehemia",en:"Nehemiah",zh:"尼希米记",t:"PL",ch:13,usfm:"NEH",src:"Neh"},
+  {id:"est",name:"Ester",en:"Esther",zh:"以斯帖记",t:"PL",ch:10,usfm:"EST",src:"Esth"},
+  {id:"ayb",name:"Ayub",en:"Job",zh:"约伯记",t:"PL",ch:42,usfm:"JOB",src:"Job"},
+  {id:"mzm",name:"Mazmur",en:"Psalms",zh:"诗篇",t:"PL",ch:150,usfm:"PSA",src:"Ps"},
+  {id:"ams",name:"Amsal",en:"Proverbs",zh:"箴言",t:"PL",ch:31,usfm:"PRO",src:"Prov"},
+  {id:"pkh",name:"Pengkhotbah",en:"Ecclesiastes",zh:"传道书",t:"PL",ch:12,usfm:"ECC",src:"Eccl"},
+  {id:"kid",name:"Kidung Agung",en:"Song of Solomon",zh:"雅歌",t:"PL",ch:8,usfm:"SNG",src:"Song"},
+  {id:"yes",name:"Yesaya",en:"Isaiah",zh:"以赛亚书",t:"PL",ch:66,usfm:"ISA",src:"Isa"},
+  {id:"yer",name:"Yeremia",en:"Jeremiah",zh:"耶利米书",t:"PL",ch:52,usfm:"JER",src:"Jer"},
+  {id:"rat",name:"Ratapan",en:"Lamentations",zh:"耶利米哀歌",t:"PL",ch:5,usfm:"LAM",src:"Lam"},
+  {id:"yeh",name:"Yehezkiel",en:"Ezekiel",zh:"以西结书",t:"PL",ch:48,usfm:"EZK",src:"Ezek"},
+  {id:"dan",name:"Daniel",en:"Daniel",zh:"但以理书",t:"PL",ch:12,usfm:"DAN",src:"Dan"},
+  {id:"hos",name:"Hosea",en:"Hosea",zh:"何西阿书",t:"PL",ch:14,usfm:"HOS",src:"Hos"},
+  {id:"yoe",name:"Yoel",en:"Joel",zh:"约珥书",t:"PL",ch:3,usfm:"JOL",src:"Joel"},
+  {id:"amo",name:"Amos",en:"Amos",zh:"阿摩司书",t:"PL",ch:9,usfm:"AMO",src:"Amos"},
+  {id:"oba",name:"Obaja",en:"Obadiah",zh:"俄巴底亚书",t:"PL",ch:1,usfm:"OBA",src:"Obad"},
+  {id:"yun",name:"Yunus",en:"Jonah",zh:"约拿书",t:"PL",ch:4,usfm:"JON",src:"Jonah"},
+  {id:"mik",name:"Mikha",en:"Micah",zh:"弥迦书",t:"PL",ch:7,usfm:"MIC",src:"Mic"},
+  {id:"nah",name:"Nahum",en:"Nahum",zh:"那鸿书",t:"PL",ch:3,usfm:"NAM",src:"Nah"},
+  {id:"hab",name:"Habakuk",en:"Habakkuk",zh:"哈巴谷书",t:"PL",ch:3,usfm:"HAB",src:"Hab"},
+  {id:"zef",name:"Zefanya",en:"Zephaniah",zh:"西番雅书",t:"PL",ch:3,usfm:"ZEP",src:"Zeph"},
+  {id:"hag",name:"Hagai",en:"Haggai",zh:"哈该书",t:"PL",ch:2,usfm:"HAG",src:"Hag"},
+  {id:"zak",name:"Zakharia",en:"Zechariah",zh:"撒迦利亚书",t:"PL",ch:14,usfm:"ZEC",src:"Zech"},
+  {id:"mal",name:"Maleakhi",en:"Malachi",zh:"玛拉基书",t:"PL",ch:4,usfm:"MAL",src:"Mal"},
+  {id:"mat",name:"Matius",en:"Matthew",zh:"马太福音",t:"PB",ch:28,usfm:"MAT",src:"61-Mt"},
+  {id:"mrk",name:"Markus",en:"Mark",zh:"马可福音",t:"PB",ch:16,usfm:"MRK",src:"62-Mk"},
+  {id:"luk",name:"Lukas",en:"Luke",zh:"路加福音",t:"PB",ch:24,usfm:"LUK",src:"63-Lk"},
+  {id:"yoh",name:"Yohanes",en:"John",zh:"约翰福音",t:"PB",ch:21,usfm:"JHN",src:"64-Jn"},
+  {id:"kis",name:"Kisah Para Rasul",en:"Acts",zh:"使徒行传",t:"PB",ch:28,usfm:"ACT",src:"65-Ac"},
+  {id:"rom",name:"Roma",en:"Romans",zh:"罗马书",t:"PB",ch:16,usfm:"ROM",src:"66-Ro"},
+  {id:"1ko",name:"1 Korintus",en:"1 Corinthians",zh:"哥林多前书",t:"PB",ch:16,usfm:"1CO",src:"67-1Co"},
+  {id:"2ko",name:"2 Korintus",en:"2 Corinthians",zh:"哥林多后书",t:"PB",ch:13,usfm:"2CO",src:"68-2Co"},
+  {id:"gal",name:"Galatia",en:"Galatians",zh:"加拉太书",t:"PB",ch:6,usfm:"GAL",src:"69-Ga"},
+  {id:"efe",name:"Efesus",en:"Ephesians",zh:"以弗所书",t:"PB",ch:6,usfm:"EPH",src:"70-Eph"},
+  {id:"flp",name:"Filipi",en:"Philippians",zh:"腓立比书",t:"PB",ch:4,usfm:"PHP",src:"71-Php"},
+  {id:"kol",name:"Kolose",en:"Colossians",zh:"歌罗西书",t:"PB",ch:4,usfm:"COL",src:"72-Col"},
+  {id:"1te",name:"1 Tesalonika",en:"1 Thessalonians",zh:"帖撒罗尼迦前书",t:"PB",ch:5,usfm:"1TH",src:"73-1Th"},
+  {id:"2te",name:"2 Tesalonika",en:"2 Thessalonians",zh:"帖撒罗尼迦后书",t:"PB",ch:3,usfm:"2TH",src:"74-2Th"},
+  {id:"1ti",name:"1 Timotius",en:"1 Timothy",zh:"提摩太前书",t:"PB",ch:6,usfm:"1TI",src:"75-1Ti"},
+  {id:"2ti",name:"2 Timotius",en:"2 Timothy",zh:"提摩太后书",t:"PB",ch:4,usfm:"2TI",src:"76-2Ti"},
+  {id:"tit",name:"Titus",en:"Titus",zh:"提多书",t:"PB",ch:3,usfm:"TIT",src:"77-Tit"},
+  {id:"flm",name:"Filemon",en:"Philemon",zh:"腓利门书",t:"PB",ch:1,usfm:"PHM",src:"78-Phm"},
+  {id:"ibr",name:"Ibrani",en:"Hebrews",zh:"希伯来书",t:"PB",ch:13,usfm:"HEB",src:"79-Heb"},
+  {id:"yak",name:"Yakobus",en:"James",zh:"雅各书",t:"PB",ch:5,usfm:"JAS",src:"80-Jas"},
+  {id:"1pt",name:"1 Petrus",en:"1 Peter",zh:"彼得前书",t:"PB",ch:5,usfm:"1PE",src:"81-1Pe"},
+  {id:"2pt",name:"2 Petrus",en:"2 Peter",zh:"彼得后书",t:"PB",ch:3,usfm:"2PE",src:"82-2Pe"},
+  {id:"1yo",name:"1 Yohanes",en:"1 John",zh:"约翰一书",t:"PB",ch:5,usfm:"1JN",src:"83-1Jn"},
+  {id:"2yo",name:"2 Yohanes",en:"2 John",zh:"约翰二书",t:"PB",ch:1,usfm:"2JN",src:"84-2Jn"},
+  {id:"3yo",name:"3 Yohanes",en:"3 John",zh:"约翰三书",t:"PB",ch:1,usfm:"3JN",src:"85-3Jn"},
+  {id:"yud",name:"Yudas",en:"Jude",zh:"犹大书",t:"PB",ch:1,usfm:"JUD",src:"86-Jud"},
+  {id:"wah",name:"Wahyu",en:"Revelation",zh:"启示录",t:"PB",ch:22,usfm:"REV",src:"87-Re"},
+];
+
+/* =========================================================
+   ARTI KATA — Indonesia / 中文 / English / campuran
+   Definisi Strong's asli berbahasa Inggris abad ke-19 dan daftar
+   KJV-nya urut alfabetis, sehingga "kata pertama" sering bukan arti
+   utamanya (θεός -> "exceeding"). Menebak dari daftar itu menghasilkan
+   arti yang salah, jadi kata tersering dipetakan MANUAL per nomor
+   Strong's. Kata di luar daftar memakai transliterasi — netral dan
+   selalu benar — bukan terjemahan karangan.
+   Format: NOMOR: [Indonesia, 中文]
+   ========================================================= */
+const GLOSS_MAP = {
+  G2316:["Allah","神"],
+  G2962:["Tuhan","主"],
+  G2424:["Yesus","耶穌"],
+  G5547:["Kristus","基督"],
+  G4151:["Roh","靈"],
+  G40:["kudus","聖"],
+  G3962:["Bapa","父"],
+  G5207:["Anak","子"],
+  G3056:["Firman","道"],
+  G5457:["terang","光"],
+  G4653:["kegelapan","黑暗"],
+  G2222:["hidup","生命"],
+  G2288:["maut","死"],
+  G26:["kasih","愛"],
+  G25:["mengasihi","愛"],
+  G4102:["iman","信"],
+  G4100:["percaya","信"],
+  G1680:["pengharapan","盼望"],
+  G5485:["kasih karunia","恩典"],
+  G225:["kebenaran","真理"],
+  G1391:["kemuliaan","榮耀"],
+  G1515:["damai","平安"],
+  G5479:["sukacita","喜樂"],
+  G266:["dosa","罪"],
+  G264:["berbuat dosa","犯罪"],
+  G3772:["surga","天"],
+  G1093:["bumi","地"],
+  G5204:["air","水"],
+  G4442:["api","火"],
+  G444:["manusia","人"],
+  G1135:["perempuan","女人"],
+  G935:["raja","王"],
+  G2992:["umat","民"],
+  G1484:["bangsa","國"],
+  G3551:["hukum","律法"],
+  G1242:["perjanjian","約"],
+  G746:["permulaan","起初"],
+  G2936:["menciptakan","創造"],
+  G4160:["melakukan","行"],
+  G3004:["berkata","說"],
+  G2980:["berbicara","說"],
+  G2064:["datang","來"],
+  G4198:["pergi","去"],
+  G1325:["memberi","賜"],
+  G2983:["menerima","領受"],
+  G3708:["melihat","看"],
+  G991:["melihat","看"],
+  G191:["mendengar","聽"],
+  G1097:["mengetahui","知道"],
+  G1492:["mengetahui","知道"],
+  G649:["mengutus","差遣"],
+  G1096:["menjadi","成為"],
+  G1510:["ada","是"],
+  G2192:["memiliki","有"],
+  G5495:["tangan","手"],
+  G2588:["hati","心"],
+  G3686:["nama","名"],
+  G2250:["hari","日"],
+  G3571:["malam","夜"],
+  G2094:["tahun","年"],
+  G3624:["rumah","家"],
+  G4172:["kota","城"],
+  G3598:["jalan","道路"],
+  G18:["baik","好"],
+  G3173:["besar","大"],
+  G3956:["semua","都"],
+  G1520:["satu","一"],
+  G3756:["tidak","不"],
+  G3361:["jangan","不要"],
+  G2532:["dan","和"],
+  G3588:["itu","那"],
+  G1722:["di dalam","在"],
+  G4862:["dengan","與"],
+  G4314:["kepada","向"],
+  G1537:["dari","從"],
+  G575:["dari","從"],
+  G1223:["melalui","藉著"],
+  G1519:["ke dalam","進入"],
+  G1161:["tetapi","但"],
+  G3754:["bahwa","就是"],
+  G3778:["ini","這"],
+  G3739:["yang","的"],
+  G846:["dia","他"],
+  G1473:["aku","我"],
+  G4771:["engkau","你"],
+  G2249:["kami","我們"],
+  G5210:["kamu","你們"],
+  G5456:["suara","聲音"],
+  G32:["malaikat","天使"],
+  G4396:["nabi","先知"],
+  G2409:["imam","祭司"],
+  G2411:["bait","殿"],
+  G129:["darah","血"],
+  G4983:["tubuh","身體"],
+  G5590:["jiwa","魂"],
+  G4561:["daging","肉體"],
+  G740:["roti","餅"],
+  G3631:["anggur","酒"],
+  G2281:["laut","海"],
+  G3735:["gunung","山"],
+  G1186:["pohon","樹"],
+  G4690:["benih","種子"],
+  G2590:["buah","果子"],
+  G3037:["batu","石頭"],
+  G3788:["mata","眼"],
+  G4750:["mulut","口"],
+  G2776:["kepala","頭"],
+  G4228:["kaki","腳"],
+  G1411:["kuasa","權能"],
+  G2041:["pekerjaan","工作"],
+  G2919:["menghakimi","審判"],
+  G4982:["menyelamatkan","拯救"],
+  G863:["mengampuni","赦免"],
+  G2127:["memberkati","賜福"],
+  G4336:["berdoa","禱告"],
+  G4352:["menyembah","敬拜"],
+  G1247:["melayani","服事"],
+  G190:["mengikut","跟從"],
+  G5083:["memelihara","遵守"],
+  G1125:["menulis","寫"],
+  G2564:["memanggil","呼叫"],
+  G611:["menjawab","回答"],
+  G154:["meminta","求"],
+  G2147:["menemukan","尋見"],
+  G4043:["berjalan","行"],
+  G2476:["berdiri","站"],
+  G3306:["tinggal","住"],
+  G166:["kekal","永遠"],
+  G4413:["pertama","首先"],
+  G2078:["terakhir","末後"],
+  G2537:["baru","新"],
+  G3820:["lama","舊"],
+  G4190:["jahat","惡"],
+  G1342:["benar","義"],
+  G1656:["belas kasihan","憐憫"],
+  G2479:["kekuatan","力量"],
+  G5401:["takut","懼怕"],
+  G3709:["murka","忿怒"],
+  G1577:["jemaat","教會"],
+  G3101:["murid","門徒"],
+  G652:["rasul","使徒"],
+  G2098:["Injil","福音"],
+  G932:["kerajaan","國度"],
+  G1849:["wewenang","權柄"],
+  G4592:["tanda","神蹟"],
+  G1785:["perintah","誡命"],
+  G2889:["dunia","世界"],
+  G165:["zaman","世代"],
+  G5590:["jiwa","魂"],
+  H430:["Allah","神"],
+  H3068:["TUHAN","耶和華"],
+  H136:["Tuhan","主"],
+  H7307:["Roh","靈"],
+  H6944:["kudus","聖"],
+  H1:["bapa","父"],
+  H1121:["anak laki-laki","兒子"],
+  H1323:["anak perempuan","女兒"],
+  H1697:["firman","話"],
+  H216:["terang","光"],
+  H2822:["kegelapan","黑暗"],
+  H2416:["hidup","生命"],
+  H4194:["maut","死"],
+  H160:["kasih","愛"],
+  H157:["mengasihi","愛"],
+  H539:["percaya","信"],
+  H2617:["kasih setia","慈愛"],
+  H571:["kebenaran","真理"],
+  H3519:["kemuliaan","榮耀"],
+  H7965:["damai sejahtera","平安"],
+  H2403:["dosa","罪"],
+  H2398:["berbuat dosa","犯罪"],
+  H8064:["langit","天"],
+  H776:["bumi","地"],
+  H4325:["air","水"],
+  H784:["api","火"],
+  H120:["manusia","人"],
+  H376:["orang","人"],
+  H802:["perempuan","女人"],
+  H4428:["raja","王"],
+  H5971:["umat","民"],
+  H1471:["bangsa","國"],
+  H8451:["hukum Taurat","律法"],
+  H1285:["perjanjian","約"],
+  H7225:["permulaan","起初"],
+  H1254:["menciptakan","創造"],
+  H6213:["membuat","造"],
+  H559:["berkata","說"],
+  H1696:["berbicara","說"],
+  H935:["datang","來"],
+  H1980:["berjalan","行"],
+  H5414:["memberi","賜"],
+  H3947:["mengambil","取"],
+  H7200:["melihat","看"],
+  H8085:["mendengar","聽"],
+  H3045:["mengetahui","知道"],
+  H7971:["mengutus","差遣"],
+  H1961:["menjadi","成為"],
+  H3027:["tangan","手"],
+  H3820:["hati","心"],
+  H8034:["nama","名"],
+  H3117:["hari","日"],
+  H3915:["malam","夜"],
+  H8141:["tahun","年"],
+  H1004:["rumah","家"],
+  H5892:["kota","城"],
+  H776:["negeri","地"],
+  H1870:["jalan","道路"],
+  H2896:["baik","好"],
+  H1419:["besar","大"],
+  H3605:["seluruh","全"],
+  H259:["satu","一"],
+  H3808:["tidak","不"],
+  H853:["(penanda objek)","（賓語記號）"],
+  H6963:["suara","聲音"],
+  H4397:["malaikat","天使"],
+  H5030:["nabi","先知"],
+  H3548:["imam","祭司"],
+  H1818:["darah","血"],
+  H5315:["jiwa","魂"],
+  H1320:["daging","肉體"],
+  H3899:["roti","餅"],
+  H3196:["anggur","酒"],
+  H3220:["laut","海"],
+  H2022:["gunung","山"],
+  H6086:["pohon","樹"],
+  H2233:["benih","種子"],
+  H6529:["buah","果子"],
+  H68:["batu","石頭"],
+  H5869:["mata","眼"],
+  H6310:["mulut","口"],
+  H7218:["kepala","頭"],
+  H7272:["kaki","腳"],
+  H3581:["kekuatan","力量"],
+  H4399:["pekerjaan","工作"],
+  H8199:["menghakimi","審判"],
+  H3467:["menyelamatkan","拯救"],
+  H5545:["mengampuni","赦免"],
+  H1288:["memberkati","賜福"],
+  H6419:["berdoa","禱告"],
+  H7812:["sujud menyembah","敬拜"],
+  H8104:["memelihara","遵守"],
+  H3789:["menulis","寫"],
+  H7121:["memanggil","呼叫"],
+  H6030:["menjawab","回答"],
+  H4672:["menemukan","尋見"],
+  H5975:["berdiri","站"],
+  H3427:["duduk","坐"],
+  H5769:["kekal","永遠"],
+  H7223:["pertama","首先"],
+  H2319:["baru","新"],
+  H7451:["jahat","惡"],
+  H6662:["benar","義"],
+  H7355:["mengasihani","憐憫"],
+  H3372:["takut","懼怕"],
+  H639:["murka","忿怒"],
+  H4397:["utusan","使者"],
+  H4899:["yang diurapi","受膏者"],
+  H5650:["hamba","僕人"],
+  H3478:["Israel","以色列"],
+  H3389:["Yerusalem","耶路撒冷"],
+};
+
+function fullDef(e){
+  if(!e) return "";
+  return (e.strongs_def || e.kjv_def || "").replace(/\s+/g," ").trim();
+}
+function enGloss(e){
+  if(!e) return "";
+  let d = (e.strongs_def || "").replace(/\([^)]*\)/g," ").replace(/\s+/g," ").trim();
+  if(!d) d = (e.kjv_def || "").replace(/\s+/g," ").trim();
+  d = d.replace(/^[-\u2013\s"]+/,"");
+  const cut = d.split(/[;]/)[0].trim();
+  return cut.length > 30 ? cut.slice(0,28) + "\u2026" : cut;
+}
+function gloss(dict, sn){
+  if(!sn) return {en:"", id:"", zh:"", tr:""};
+  const e = dict ? dict[sn] : null;
+  const pair = GLOSS_MAP[sn] || ["",""];
+  return {
+    en: enGloss(e),
+    id: pair[0] || "",
+    zh: pair[1] || "",
+    tr: e ? (e.translit || e.xlit || "") : ""
+  };
+}
+/* Susun baris arti sesuai pilihan pengguna.
+   Mode "mix" menampilkan Indonesia + 中文 + Inggris bertumpuk. */
+function glossLines(g){
+  const out = [];
+  const push = (v,cls) => { if(v) out.push([v,cls]); };
+  switch(S.gloss){
+    case "id":  push(g.id || g.tr || g.en, "gl"); break;
+    case "zh":  push(g.zh || g.tr || g.en, "gl zh"); break;
+    case "en":  push(g.en || g.tr, "gl"); break;
+    case "mix":
+      push(g.id, "gl");
+      push(g.zh, "gl zh");
+      push(g.en || (!g.id && !g.zh ? g.tr : ""), "gl dim");
+      if(!out.length) push(g.tr, "gl dim");
+      break;
+    default:    push(g.id || g.tr || g.en, "gl");
+  }
+  return out;
+}
+
+/* =========================================================
+   SUMBER DATA (semua sudah diverifikasi 200 + CORS terbuka)
+   ========================================================= */
+const AO   = "https://bible.helloao.org/api";
+const GH   = "https://raw.githubusercontent.com";
+const HEB  = GH + "/openscriptures/morphhb/master/wlc";
+const GRK  = GH + "/morphgnt/sblgnt/master";
+const SGRK = GH + "/openscriptures/strongs/master/greek/strongs-greek-dictionary.js";
+const SHEB = GH + "/openscriptures/strongs/master/hebrew/strongs-hebrew-dictionary.js";
+
+/* Versi bawaan. ID Indonesia & Mandarin diverifikasi dari
+   available_translations.json. ID Inggris di bawah ini BELUM bisa saya
+   uji dari sini (host diblokir di lingkungan build), jadi aplikasi
+   memverifikasinya sendiri saat dijalankan — lihat verifySeeds(). */
+const SEED = [
+  {id:"ind_ayt", name:"Alkitab Yang Terbuka",           abbr:"AYT",  lang:"Indonesia", books:66},
+  {id:"ind_obo", name:"Terjemahan Sederhana Indonesia", abbr:"TSI",  lang:"Indonesia", books:48},
+  {id:"ind_ags", name:"Alkitab Gratis untuk Semua",     abbr:"AGS",  lang:"Indonesia", books:27},
+  {id:"BSB",     name:"Berean Standard Bible",          abbr:"BSB",  lang:"English",   books:66},
+  {id:"eng_kjv", name:"King James Version",             abbr:"KJV",  lang:"English",   books:66, probe:true},
+  {id:"eng_asv", name:"American Standard Version",      abbr:"ASV",  lang:"English",   books:66, probe:true},
+  {id:"eng_net", name:"New English Translation",        abbr:"NET",  lang:"English",   books:66, probe:true},
+  {id:"ENGWEBP", name:"World English Bible",            abbr:"WEB",  lang:"English",   books:66},
+  {id:"cmn_cu1", name:"新标点和合本 (简体)",             abbr:"CUV简", lang:"中文",     books:66, cjk:true},
+  {id:"cmn_cuv", name:"新標點和合本 (繁體)",             abbr:"CUV繁", lang:"中文",     books:66, cjk:true},
+  {id:"cmn_cbt", name:"當代譯本",                       abbr:"CCB",  lang:"中文",     books:66, cjk:true},
+];
+const VER = {};
+SEED.forEach(v => VER[v.id] = {...v});
+
+/* =========================================================
+   STATE
+   ========================================================= */
+const S = {
+  book:"kej", ch:1,
+  cols:["ind_ayt","BSB"],
+  il:false, gloss:"id", sel:null,
+  stab:{}, mark:{}, notes:{}, pin:{}, plan:{},
+  fs:18, lh:1.85, dark:true,
+  user:null, syncState:"idle",
+  catalog:null, catState:"idle",
+};
+const bk  = id => BOOKS.find(b => b.id === id);
+const cur = () => bk(S.book);
+const vkey = n => `${S.book}.${S.ch}.${n}`;
+
+/* =========================================================
+   PENYIMPANAN LOKAL
+   ========================================================= */
+const LS = {
+  get(k){ try{ return localStorage.getItem("wb2:"+k); }catch{ return null; } },
+  set(k,v){ try{ localStorage.setItem("wb2:"+k,v); }catch{} }
+};
+let saveT;
+function persist(){
+  clearTimeout(saveT);
+  saveT = setTimeout(() => {
+    LS.set("state", JSON.stringify({
+      book:S.book, ch:S.ch, cols:S.cols, il:S.il, gloss:S.gloss,
+      fs:S.fs, lh:S.lh, dark:S.dark,
+      stab:S.stab, mark:S.mark, notes:S.notes, pin:S.pin, plan:S.plan,
+      extra:Object.keys(VER).filter(k => !SEED.some(s => s.id === k)).map(k => VER[k])
+    }));
+    schedulePush();
+  }, 350);
+}
+function restore(){
+  const raw = LS.get("state"); if(!raw) return;
+  try{
+    const d = JSON.parse(raw);
+    (d.extra||[]).forEach(v => { if(v && v.id) VER[v.id] = v; });
+    Object.assign(S,{
+      book: d.book && bk(d.book) ? d.book : S.book,
+      ch: d.ch || 1,
+      cols: Array.isArray(d.cols) && d.cols.length ? d.cols.filter(c => VER[c]) : S.cols,
+      il: !!d.il, gloss: d.gloss || "id",
+      fs: d.fs || 18, lh: d.lh || 1.85,
+      dark: d.dark !== false,
+      stab: d.stab || {}, mark: d.mark || {}, notes: d.notes || {},
+      pin: d.pin || {}, plan: d.plan || {}
+    });
+    if(!S.cols.length) S.cols = ["ind_ayt"];
+  }catch{}
+}
+
+/* =========================================================
+   SUPABASE — opsional. Tanpa login semua tetap tersimpan lokal.
+   Tabel webbase_sync sudah dibuat & RLS sudah benar di proyek ini:
+     create table public.webbase_sync (
+       user_id uuid primary key references auth.users(id) on delete cascade,
+       data jsonb not null default '{}'::jsonb,
+       updated_at timestamptz not null default now());
+   ========================================================= */
+const SB_URL = "https://rrbijwquidfptuhibjxp.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyYmlqd3F1aWRmcHR1aGlianhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4MDIzODgsImV4cCI6MjEwMDM3ODM4OH0.3wAcD24zWyF-JPlJViyfJbzG3Brs1G3AUULx5eQkgIU";
+const sb = (typeof supabase !== "undefined") ? supabase.createClient(SB_URL, SB_KEY) : null;
+
+function syncLabel(){
+  const e = document.getElementById("sync");
+  if(!e) return;
+  e.className = "savestate" + (S.syncState === "error" ? " err" : "");
+  e.textContent = !S.user ? ""
+    : S.syncState === "syncing" ? "menyimpan…"
+    : S.syncState === "synced"  ? "tersimpan ☁"
+    : S.syncState === "error"   ? "sync gagal" : "";
+}
+async function initAuth(){
+  if(!sb) return;
+  try{
+    const {data:{session}} = await sb.auth.getSession();
+    if(session?.user) S.user = {id:session.user.id, email:session.user.email};
+  }catch{}
+  sb.auth.onAuthStateChange((ev, session) => {
+    if(ev === "SIGNED_IN" && session?.user){
+      S.user = {id:session.user.id, email:session.user.email};
+      pull();
+    }else if(ev === "SIGNED_OUT"){
+      S.user = null; S.syncState = "idle";
+    }
+    syncLabel();
+  });
+  if(S.user) pull();
+  syncLabel();
+}
+let pushT;
+function schedulePush(){
+  if(!S.user || !sb) return;
+  clearTimeout(pushT);
+  pushT = setTimeout(push, 1200);
+}
+async function push(){
+  if(!S.user || !sb) return;
+  S.syncState = "syncing"; syncLabel();
+  try{
+    const {error} = await sb.from("webbase_sync").upsert({
+      user_id:S.user.id,
+      data:{stab:S.stab, mark:S.mark, notes:S.notes, pin:S.pin, plan:S.plan},
+      updated_at:new Date().toISOString()
+    });
+    if(error) throw error;
+    S.syncState = "synced";
+  }catch(e){ S.syncState = "error"; console.error("push:", e.message); }
+  syncLabel();
+}
+async function pull(){
+  if(!S.user || !sb) return;
+  S.syncState = "syncing"; syncLabel();
+  try{
+    const {data,error} = await sb.from("webbase_sync")
+      .select("data").eq("user_id", S.user.id).maybeSingle();
+    if(error) throw error;
+    if(data?.data){
+      // gabung: server menang bila ada bentrok, lokal tetap dipertahankan
+      S.stab  = {...S.stab,  ...(data.data.stab  || {})};
+      S.mark  = {...S.mark,  ...(data.data.mark  || {})};
+      S.notes = {...S.notes, ...(data.data.notes || {})};
+      S.pin   = {...S.pin,   ...(data.data.pin   || {})};
+      S.plan  = {...S.plan,  ...(data.data.plan  || {})};
+      LS.set("state", LS.get("state") || "{}");
+      persist(); render();
+    }else await push();
+    S.syncState = "synced";
+  }catch(e){ S.syncState = "error"; console.error("pull:", e.message); }
+  syncLabel();
+}
+
+/* =========================================================
+   PASAL
+   ========================================================= */
+const chCache = new Map(), inflight = new Map();
+function flat(c){
+  let o = "";
+  for(const it of c||[]){
+    if(typeof it === "string") o += it;
+    else if(it && typeof it.text === "string") o += it.text;
+    else if(it && it.lineBreak) o += " ";
+  }
+  return o.replace(/\s+/g," ").trim();
+}
+async function getCh(vid, bookId, ch){
+  const k = `${vid}|${bookId}|${ch}`;
+  if(chCache.has(k)) return chCache.get(k);
+  if(inflight.has(k)) return inflight.get(k);
+  const b = bk(bookId);
+  const p = (async () => {
+    // 1) teks offline lebih dulu — supaya tetap terbaca tanpa jaringan
+    try{
+      const off = await offlineLoad(vid);
+      if(off){
+        const m = new Map();
+        for(let n=1;n<=200;n++){
+          const t = off.get(`${bookId}.${ch}.${n}`);
+          if(t) m.set(n, t);
+        }
+        if(m.size){ const res = {ok:true, m, offline:true}; chCache.set(k,res); return res; }
+      }
+    }catch{}
+    try{
+      const r = await fetch(`${AO}/${encodeURIComponent(vid)}/${b.usfm}/${ch}.json`);
+      if(r.status === 404) throw new Error("__404__");
+      if(!r.ok) throw new Error("HTTP " + r.status);
+      const j = await r.json();
+      const m = new Map();
+      for(const it of j?.chapter?.content || []){
+        if(it?.type === "verse" && it.number != null){
+          const t = flat(it.content);
+          if(t) m.set(Number(it.number), t);
+        }
+      }
+      if(!m.size) throw new Error("__404__");
+      const res = {ok:true, m};
+      chCache.set(k,res); return res;
+    }catch(e){
+      const res = {ok:false, missing:e.message === "__404__", msg:e.message};
+      if(res.missing) chCache.set(k,res);
+      return res;
+    }finally{ inflight.delete(k); }
+  })();
+  inflight.set(k,p); return p;
+}
+
+/* verifikasi ID versi bawaan yang belum sempat diuji saat build.
+   Hanya 404 yang dianggap "ID tidak ada" — kegagalan jaringan biasa
+   TIDAK menandai versi sebagai rusak, supaya versi sah tidak hilang
+   hanya karena koneksi sedang putus. */
+async function verifySeeds(){
+  const probes = SEED.filter(v => v.probe);
+  let changed = false;
+  for(const v of probes){
+    try{
+      const r = await fetch(`${AO}/${v.id}/GEN/1.json`);
+      if(r.status === 404){
+        VER[v.id].broken = true;
+        S.cols = S.cols.filter(c => c !== v.id);
+        changed = true;
+      }
+    }catch{ /* jaringan bermasalah — biarkan apa adanya */ }
+  }
+  if(changed){ if(!S.cols.length) S.cols = ["ind_ayt"]; persist(); chips(); render(); }
+}
+
+/* =========================================================
+   KAMUS STRONG'S
+   ========================================================= */
+let SG=null, SH=null, GLEM=null;
+const pd = t => JSON.parse(t.slice(t.indexOf("{"), t.lastIndexOf("}")+1));
+async function dict(w){
+  if(w === "G" && SG) return SG;
+  if(w === "H" && SH) return SH;
+  const r = await fetch(w === "G" ? SGRK : SHEB);
+  if(!r.ok) throw new Error("kamus HTTP " + r.status);
+  const d = pd(await r.text());
+  if(w === "G") SG = d; else SH = d;
+  return d;
+}
+function bare(t){
+  return t.normalize("NFD").replace(/[\u0300-\u036f\u0483-\u0489]/g,"")
+          .toLowerCase().replace(/ς/g,"σ").replace(/[^\p{L}]/gu,"");
+}
+function gidx(d){
+  if(GLEM) return GLEM;
+  GLEM = new Map();
+  for(const k in d){ const l = d[k].lemma; if(l){ const b = bare(l); if(!GLEM.has(b)) GLEM.set(b,k); } }
+  return GLEM;
+}
+
+/* =========================================================
+   BAHASA ASLI
+   ========================================================= */
+const ilCache = new Map(), hebF = new Map(), grkF = new Map();
+async function getIL(bookId, ch){
+  const k = bookId + "|" + ch;
+  if(ilCache.has(k)) return ilCache.get(k);
+  const b = bk(bookId);
+  const r = b.t === "PL" ? await heb(b,ch) : await grk(b,ch);
+  ilCache.set(k,r); return r;
+}
+async function heb(b, ch){
+  try{
+    const d = await dict("H");
+    if(!hebF.has(b.src)){
+      const r = await fetch(`${HEB}/${b.src}.xml`);
+      if(!r.ok) throw new Error("HTTP " + r.status);
+      hebF.set(b.src, await r.text());
+    }
+    const xml = hebF.get(b.src), m = new Map();
+    const re = new RegExp(`<verse osisID="${b.src}\\.${ch}\\.(\\d+)"([\\s\\S]*?)</verse>`,"g");
+    let v;
+    while((v = re.exec(xml))){
+      const ws = [], wre = /<w\b([^>]*)>([\s\S]*?)<\/w>/g;
+      let w;
+      while((w = wre.exec(v[2]))){
+        const lem = (w[1].match(/lemma="([^"]*)"/) || [,""])[1];
+        const nums = lem.match(/\d+/g);
+        const sn = nums ? "H" + nums[nums.length-1] : null;
+        ws.push({o:w[2].replace(/<[^>]*>/g,"").replace(/\//g,""), s:sn, g:gloss(d,sn)});
+      }
+      if(ws.length) m.set(+v[1], ws);
+    }
+    if(!m.size) return {ok:false, msg:"Pasal ini tidak ada dalam naskah Ibrani."};
+    return {ok:true, rtl:true, m};
+  }catch(e){ return {ok:false, msg:"Naskah Ibrani gagal dimuat (" + e.message + ")."}; }
+}
+async function grk(b, ch){
+  try{
+    const d = await dict("G"), idx = gidx(d);
+    if(!grkF.has(b.src)){
+      const r = await fetch(`${GRK}/${b.src}-morphgnt.txt`);
+      if(!r.ok) throw new Error("HTTP " + r.status);
+      grkF.set(b.src, await r.text());
+    }
+    const want = String(ch).padStart(2,"0"), m = new Map();
+    for(const line of grkF.get(b.src).split("\n")){
+      if(!line) continue;
+      const p = line.split(" ");
+      if(p.length < 7 || p[0].slice(2,4) !== want) continue;
+      const v = +p[0].slice(4,6);
+      const sn = idx.get(bare(p[6])) || null;
+      if(!m.has(v)) m.set(v,[]);
+      m.get(v).push({o:p[3], s:sn, g:gloss(d,sn)});
+    }
+    if(!m.size) return {ok:false, msg:"Pasal ini tidak ada dalam naskah Yunani."};
+    return {ok:true, rtl:false, m};
+  }catch(e){ return {ok:false, msg:"Naskah Yunani gagal dimuat (" + e.message + ")."}; }
+}
+
+/* =========================================================
+   UNDUHAN OFFLINE
+   Satu terjemahan penuh bisa 3–10 MB, jauh melewati batas
+   localStorage (~5 MB), jadi teks offline disimpan di IndexedDB.
+
+   Dua jalur pengambilan:
+   1. /api/{id}/complete.json — satu berkas untuk seluruh Alkitab.
+      Tercantum di available_translations.json sebagai
+      completeTranslationApiLink, tapi TIDAK ada di panduan resmi,
+      jadi tidak dijamin selalu tersedia.
+   2. Bila jalur 1 gagal, jatuh ke endpoint resmi
+      /api/{id}/{BOOK}/{ch}.json per pasal, dengan jeda kecil
+      supaya server tidak dibanjiri.
+   Jalur 2 lebih lambat tapi memakai endpoint terdokumentasi,
+   sehingga fitur ini tetap hidup walau jalur 1 dihapus.
+   ========================================================= */
+const DB_NAME = "webbase-offline", DB_VER = 1, STORE = "tr";
+let _db = null;
+function db(){
+  if(_db) return Promise.resolve(_db);
+  return new Promise((res,rej) => {
+    if(!("indexedDB" in window)) return rej(new Error("IndexedDB tidak tersedia di peramban ini"));
+    const r = indexedDB.open(DB_NAME, DB_VER);
+    r.onupgradeneeded = () => {
+      const d = r.result;
+      if(!d.objectStoreNames.contains(STORE)) d.createObjectStore(STORE, {keyPath:"id"});
+    };
+    r.onsuccess = () => { _db = r.result; res(_db); };
+    r.onerror = () => rej(r.error || new Error("IndexedDB gagal dibuka"));
+  });
+}
+function idb(mode, fn){
+  return db().then(d => new Promise((res,rej) => {
+    const tx = d.transaction(STORE, mode);
+    let req;
+    try{ req = fn(tx.objectStore(STORE)); }catch(e){ return rej(e); }
+    tx.oncomplete = () => res(req ? req.result : undefined);
+    tx.onerror = () => rej(tx.error);
+    tx.onabort = () => rej(tx.error || new Error("Transaksi dibatalkan"));
+  }));
+}
+
+const OFF = new Map();               // id -> Map("bookId.ch.n" -> teks)
+async function offlineList(){
+  try{ return (await idb("readonly", st => st.getAll())) || []; }catch{ return []; }
+}
+async function offlineLoad(id){
+  if(OFF.has(id)) return OFF.get(id);
+  try{
+    const rec = await idb("readonly", st => st.get(id));
+    if(!rec || !rec.data) return null;
+    const m = new Map(Object.entries(rec.data));
+    OFF.set(id, m);
+    return m;
+  }catch{ return null; }
+}
+
+const USFM2ID = {};
+BOOKS.forEach(b => USFM2ID[b.usfm] = b.id);
+
+function versesFromChapter(j, bid, ch, out){
+  let n = 0;
+  for(const it of j?.chapter?.content || []){
+    if(it?.type === "verse" && it.number != null){
+      const t = flat(it.content);
+      if(t){ out[`${bid}.${ch}.${Number(it.number)}`] = t; n++; }
+    }
+  }
+  return n;
+}
+
+async function tryComplete(id, out, onProgress){
+  const r = await fetch(`${AO}/${id}/complete.json`);
+  if(!r.ok) throw new Error("HTTP " + r.status);
+  const total = +(r.headers.get("content-length") || 0);
+  let text;
+  if(total && r.body && r.body.getReader){
+    const rd = r.body.getReader(); const parts = []; let got = 0;
+    for(;;){
+      const {done,value} = await rd.read();
+      if(done) break;
+      parts.push(value); got += value.length;
+      onProgress({pct:Math.round(got/total*90), msg:`Mengunduh ${(got/1048576).toFixed(1)} MB`});
+    }
+    text = new TextDecoder().decode(await new Blob(parts).arrayBuffer());
+  }else{
+    onProgress({msg:"Mengunduh…"});
+    text = await r.text();
+  }
+  onProgress({pct:92, msg:"Memproses…"});
+  const j = JSON.parse(text);
+  let n = 0;
+  for(const b of j?.books || []){
+    const bid = USFM2ID[b.id || b.book || b.bookId];
+    if(!bid) continue;
+    for(const c of b.chapters || []){
+      const num = c.number ?? c.chapter;
+      n += versesFromChapter(c.chapter ? c : {chapter:c}, bid, num, out);
+    }
+  }
+  if(!n) throw new Error("complete.json kosong / format berbeda");
+  return n;
+}
+
+async function perChapter(id, out, onProgress, ctl){
+  const totalCh = BOOKS.reduce((s,b) => s + b.ch, 0);
+  let done = 0, n = 0;
+  for(const b of BOOKS){
+    let bookMissing = false;
+    for(let c=1;c<=b.ch;c++){
+      if(ctl && ctl.stop) throw new Error("__ABORT__");
+      try{
+        const r = await fetch(`${AO}/${id}/${b.usfm}/${c}.json`);
+        if(r.ok) n += versesFromChapter(await r.json(), b.id, c, out);
+        else if(r.status === 404){ bookMissing = true; }
+      }catch{}
+      done++;
+      if(done % 5 === 0) onProgress({pct:Math.round(done/totalCh*100), msg:`${b.name} ${c} · ${n.toLocaleString("id-ID")} ayat`});
+      await new Promise(r => setTimeout(r, 12));
+      if(bookMissing) break;              // kitab tak ada di versi ini
+    }
+    if(bookMissing) done += 0;
+  }
+  if(!n) throw new Error("Tidak ada pasal yang berhasil diunduh");
+  return n;
+}
+
+async function downloadVersion(id, onProgress, ctl){
+  const v = VER[id] || {};
+  const out = {};
+  let n = 0, via = "berkas utuh";
+  onProgress({pct:0, msg:"Menyiapkan…"});
+  try{
+    n = await tryComplete(id, out, onProgress);
+  }catch(e){
+    if(e.message === "__ABORT__") throw e;
+    via = "per pasal";
+    onProgress({pct:0, msg:"Berkas utuh tidak tersedia — mengunduh per pasal…"});
+    n = await perChapter(id, out, onProgress, ctl);
+  }
+  onProgress({pct:98, msg:"Menyimpan…"});
+  const bytes = JSON.stringify(out).length;
+  await idb("readwrite", st => st.put({
+    id, data:out,
+    meta:{name:v.name || id, abbr:v.abbr || id, verses:n, bytes, at:Date.now(), via}
+  }));
+  OFF.delete(id);
+  onProgress({pct:100, msg:"Selesai"});
+  return {n, bytes, via};
+}
+async function deleteVersion(id){
+  await idb("readwrite", st => st.delete(id));
+  OFF.delete(id);
+}
+
+/* =========================================================
+   PANEL UNDUHAN
+   ========================================================= */
+function fmtMB(b){ return b >= 1048576 ? (b/1048576).toFixed(1)+" MB" : Math.max(1,Math.round(b/1024))+" KB"; }
+
+function offlinePicker(){
+  ov("Unduhan offline", box => {
+    const info = el("p","hint","Teks yang sudah diunduh dibaca langsung dari perangkat — tetap bisa dipakai tanpa internet. Bahasa asli juga bisa diunduh di bagian bawah.");
+    box.appendChild(info);
+
+    const quota = el("p","hint","");
+    box.appendChild(quota);
+    if(navigator.storage && navigator.storage.estimate){
+      navigator.storage.estimate().then(e => {
+        if(e.quota) quota.textContent = `Ruang terpakai ${fmtMB(e.usage||0)} dari kuota ${fmtMB(e.quota)} yang diizinkan peramban.`;
+      }).catch(() => {});
+    }
+
+    const list = el("div");
+    box.appendChild(list);
+
+    const draw = async () => {
+      list.innerHTML = "";
+      const saved = await offlineList();
+      const savedMap = new Map(saved.map(r => [r.id, r.meta || {}]));
+
+      list.appendChild(el("div","sechead","Versi terpasang"));
+      Object.keys(VER).forEach(id => {
+        const v = VER[id];
+        if(v.broken) return;
+        const meta = savedMap.get(id);
+        const row = el("div","res");
+        const t = el("div","t");
+        t.appendChild(el("b", null, v.name));
+        t.appendChild(el("i", null, meta
+          ? `Tersimpan · ${meta.verses?.toLocaleString("id-ID") || "?"} ayat · ${fmtMB(meta.bytes||0)}`
+          : `${v.lang} · belum diunduh`));
+        row.appendChild(t);
+
+        const btn = el("button","btn" + (meta ? " warn" : " ghost"), meta ? "Hapus" : "Unduh");
+        btn.style.flex = "none";
+        btn.onclick = async () => {
+          if(meta){
+            if(!confirm(`Hapus unduhan ${v.name}? Versi ini akan perlu internet lagi.`)) return;
+            await deleteVersion(id);
+            chCache.clear();
+            toast("Unduhan dihapus");
+            draw();
+            return;
+          }
+          // proses unduh
+          const ctl = {stop:false};
+          btn.disabled = true;
+          const bar = el("div");
+          bar.style.cssText = "height:4px;background:var(--panel2);border-radius:2px;overflow:hidden;margin-top:8px";
+          const fill = el("div");
+          fill.style.cssText = "height:100%;background:var(--accent);width:0%;transition:width 200ms";
+          bar.appendChild(fill);
+          const st = el("i"); st.style.cssText = "display:block;font-size:11px;color:var(--ink2);margin-top:4px";
+          t.appendChild(bar); t.appendChild(st);
+          const cancel = el("button","btn ghost","Batal");
+          cancel.style.flex = "none";
+          cancel.onclick = () => { ctl.stop = true; };
+          row.replaceChild(cancel, btn);
+          try{
+            const r = await downloadVersion(id, p => {
+              if(p.pct != null) fill.style.width = p.pct + "%";
+              if(p.msg) st.textContent = p.msg;
+            }, ctl);
+            chCache.clear();
+            toast(`${v.abbr} siap offline — ${r.n.toLocaleString("id-ID")} ayat`);
+            draw(); render();
+          }catch(e){
+            if(e.message === "__ABORT__"){ toast("Unduhan dibatalkan"); }
+            else{ st.textContent = "Gagal: " + e.message; toast("Unduhan gagal"); }
+            draw();
+          }
+        };
+        row.appendChild(btn);
+        list.appendChild(row);
+      });
+
+      // bahasa asli
+      list.appendChild(el("div","sechead","Bahasa asli"));
+      const om = savedMap.get(SRC_KEY);
+      const orow = el("div","res");
+      const ot = el("div","t");
+      ot.appendChild(el("b", null, "Ibrani + Yunani + kamus Strong's"));
+      ot.appendChild(el("i", null, om
+        ? `Tersimpan · ${om.books || "?"} berkas · ${fmtMB(om.bytes||0)}`
+        : "66 naskah asli + 2 kamus · perlu sekali unduh"));
+      orow.appendChild(ot);
+      const obtn = el("button","btn" + (om ? " warn" : " ghost"), om ? "Hapus" : "Unduh");
+      obtn.style.flex = "none";
+      obtn.onclick = async () => {
+        if(om){
+          if(!confirm("Hapus unduhan bahasa asli?")) return;
+          await deleteOriginals(); toast("Unduhan dihapus"); draw(); return;
+        }
+        const ctl = {stop:false};
+        const bar = el("div");
+        bar.style.cssText = "height:4px;background:var(--panel2);border-radius:2px;overflow:hidden;margin-top:8px";
+        const fill = el("div");
+        fill.style.cssText = "height:100%;background:var(--accent);width:0%;transition:width 200ms";
+        bar.appendChild(fill);
+        const stx = el("i"); stx.style.cssText = "display:block;font-size:11px;color:var(--ink2);margin-top:4px";
+        ot.appendChild(bar); ot.appendChild(stx);
+        const cancel = el("button","btn ghost","Batal"); cancel.style.flex = "none";
+        cancel.onclick = () => { ctl.stop = true; };
+        orow.replaceChild(cancel, obtn);
+        try{
+          const r = await downloadOriginals(p => {
+            if(p.pct != null) fill.style.width = p.pct + "%";
+            if(p.msg) stx.textContent = p.msg;
+          }, ctl);
+          origLoaded = false; await primeOriginals();
+          ilCache.clear();
+          toast("Bahasa asli siap offline — " + fmtMB(r.bytes));
+          draw(); render();
+        }catch(e){
+          if(e.message === "__ABORT__") toast("Unduhan dibatalkan");
+          else{ stx.textContent = "Gagal: " + e.message; toast("Unduhan gagal"); }
+          draw();
+        }
+      };
+      orow.appendChild(obtn);
+      list.appendChild(orow);
+
+      // unduhan versi yang sudah tidak terpasang lagi
+      const orphans = saved.filter(r => !VER[r.id] && r.id !== SRC_KEY);
+      if(orphans.length){
+        list.appendChild(el("div","sechead","Unduhan lain"));
+        orphans.forEach(r => {
+          const row = el("div","res");
+          const t = el("div","t");
+          t.appendChild(el("b", null, r.meta?.name || r.id));
+          t.appendChild(el("i", null, `${fmtMB(r.meta?.bytes||0)} · versi tidak lagi terpasang`));
+          row.appendChild(t);
+          const d = el("button","btn warn","Hapus"); d.style.flex = "none";
+          d.onclick = async () => { await deleteVersion(r.id); draw(); toast("Dihapus"); };
+          row.appendChild(d);
+          list.appendChild(row);
+        });
+      }
+    };
+    draw();
+  });
+}
+
+/* =========================================================
+   STATUS SUPABASE — satu baris, bukan langkah demi langkah.
+   Tabel sudah dibuat dan RLS sudah benar, jadi ini hanya
+   memastikan sinkronisasi benar-benar bisa menulis saat ini,
+   tanpa membuka log berlangkah-langkah yang tidak perlu lagi.
+   ========================================================= */
+async function runDiag(host){
+  host.innerHTML = "";
+  const line = (state, txt) => {
+    const d = el("div","diag " + state);
+    d.appendChild(el("b", null, state === "ok" ? "✓" : state === "bad" ? "✕" : "…"));
+    d.appendChild(el("div","d", txt));
+    host.appendChild(d);
+    return d;
+  };
+  if(!sb){ line("bad","Pustaka Supabase gagal dimuat. Muat ulang halaman."); return; }
+  if(!S.user){ line("wait","Belum masuk."); return; }
+
+  const l = line("wait","Menguji sinkronisasi…");
+  try{
+    const {error} = await sb.from("webbase_sync").upsert({
+      user_id:S.user.id,
+      data:{stab:S.stab, mark:S.mark, notes:S.notes, pin:S.pin, plan:S.plan},
+      updated_at:new Date().toISOString()
+    });
+    if(error) throw error;
+    l.className = "diag ok"; l.firstChild.textContent = "✓";
+    l.lastChild.textContent = "Sinkronisasi aktif — catatan tersimpan ke server.";
+    S.syncState = "synced"; syncLabel();
+  }catch(e){
+    l.className = "diag bad"; l.firstChild.textContent = "✕";
+    l.lastChild.textContent = "Gagal menyimpan: " + e.message;
+  }
+}
+
+/* =========================================================
+   UNDUHAN BAHASA ASLI
+   Ibrani (39 berkas XML) + Yunani (27 berkas teks) + 2 kamus Strong's.
+   Disimpan di IndexedDB dengan awalan "src:" supaya tidak bentrok
+   dengan unduhan terjemahan.
+   ========================================================= */
+const SRC_KEY = "src:orig";
+
+async function downloadOriginals(onProgress, ctl){
+  const ot = BOOKS.filter(b => b.t === "PL");
+  const nt = BOOKS.filter(b => b.t === "PB");
+  const total = ot.length + nt.length + 2;
+  let done = 0, bytes = 0;
+  const store = {heb:{}, grk:{}, dict:{}};
+  const tick = label => {
+    done++;
+    onProgress({pct:Math.round(done/total*100), msg:`${label} · ${(bytes/1048576).toFixed(1)} MB`});
+  };
+
+  for(const b of ot){
+    if(ctl && ctl.stop) throw new Error("__ABORT__");
+    const r = await fetch(`${HEB}/${b.src}.xml`);
+    if(r.ok){ const t = await r.text(); store.heb[b.src] = t; bytes += t.length; }
+    tick(b.name);
+  }
+  for(const b of nt){
+    if(ctl && ctl.stop) throw new Error("__ABORT__");
+    const r = await fetch(`${GRK}/${b.src}-morphgnt.txt`);
+    if(r.ok){ const t = await r.text(); store.grk[b.src] = t; bytes += t.length; }
+    tick(b.name);
+  }
+  for(const [k,url] of [["G",SGRK],["H",SHEB]]){
+    if(ctl && ctl.stop) throw new Error("__ABORT__");
+    const r = await fetch(url);
+    if(r.ok){ const t = await r.text(); store.dict[k] = t; bytes += t.length; }
+    tick("Kamus Strong's " + k);
+  }
+  if(!Object.keys(store.heb).length && !Object.keys(store.grk).length)
+    throw new Error("Tidak ada berkas yang berhasil diunduh");
+
+  onProgress({pct:99, msg:"Menyimpan…"});
+  await idb("readwrite", st => st.put({
+    id:SRC_KEY, data:store,
+    meta:{name:"Bahasa asli (Ibrani + Yunani + Strong's)", abbr:"ASLI",
+          bytes, at:Date.now(),
+          books:Object.keys(store.heb).length + Object.keys(store.grk).length}
+  }));
+  onProgress({pct:100, msg:"Selesai"});
+  return {bytes};
+}
+
+/* Muat berkas bahasa asli dari simpanan ke cache memori, supaya
+   heb()/grk()/dict() memakainya tanpa jaringan. */
+let origLoaded = false;
+async function primeOriginals(){
+  if(origLoaded) return false;
+  let rec = null;
+  try{ rec = await idb("readonly", st => st.get(SRC_KEY)); }catch{}
+  if(!rec || !rec.data) return false;
+  for(const [k,v] of Object.entries(rec.data.heb || {})) hebF.set(k,v);
+  for(const [k,v] of Object.entries(rec.data.grk || {})) grkF.set(k,v);
+  if(rec.data.dict?.G && !SG) SG = pd(rec.data.dict.G);
+  if(rec.data.dict?.H && !SH) SH = pd(rec.data.dict.H);
+  origLoaded = true;
+  return true;
+}
+async function deleteOriginals(){
+  await idb("readwrite", st => st.delete(SRC_KEY));
+  hebF.clear(); grkF.clear(); ilCache.clear();
+  origLoaded = false;
+}
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+const $ = s => document.querySelector(s);
+const el = (t,c,x) => { const n = document.createElement(t); if(c) n.className = c; if(x!=null) n.textContent = x; return n; };
+const STAB = [["kuning","var(--hl-kuning)"],["hijau","var(--hl-hijau)"],["biru","var(--hl-biru)"],["merah","var(--hl-merah)"],["ungu","var(--hl-ungu)"]];
+const MARK = [["kuning","#D9A521"],["hijau","#3E8E5A"],["biru","#3A7CA8"],["merah","#C0554A"],["ungu","#8A5FBF"]];
+
+function style(){
+  document.documentElement.style.setProperty("--font-size", S.fs + "px");
+  document.documentElement.style.setProperty("--line-height", S.lh);
+  document.documentElement.dataset.theme = S.dark ? "dark" : "light";
+}
+function head(){
+  const b = cur();
+  $("#refT").textContent = `${b.name} ${S.ch}`;
+  $("#eyeb").textContent = b.t === "PL" ? "Perjanjian Lama" : "Perjanjian Baru";
+  $("#title").innerHTML = "";
+  $("#title").appendChild(document.createTextNode(b.name + " "));
+  $("#title").appendChild(el("span", null, S.ch));
+  $("#intro").textContent = `${b.en} ${S.ch} · ${b.zh} ${S.ch}` + (S.il ? " · bahasa asli aktif" : "");
+  $("#prev").disabled = (S.book === BOOKS[0].id && S.ch === 1);
+  const L = BOOKS[BOOKS.length-1];
+  $("#next").disabled = (S.book === L.id && S.ch === L.ch);
+  $("#ilBtn").classList.toggle("on", S.il);
+}
+function chips(){
+  const r = $("#vrail"); r.innerHTML = "";
+  S.cols.forEach(id => {
+    const v = VER[id];
+    const c = el("button","pill on");
+    c.appendChild(el("span", null, v.abbr || id));
+    if(S.cols.length > 1){
+      const x = el("span","x","×");
+      x.onclick = ev => { ev.stopPropagation(); S.cols = S.cols.filter(k => k !== id); persist(); chips(); render(); };
+      c.appendChild(x);
+    }
+    c.onclick = () => versionPicker();
+    r.appendChild(c);
+  });
+  const a = el("button","pill","+ versi");
+  a.onclick = () => versionPicker();
+  r.appendChild(a);
+}
+function cols(){ return `grid-template-columns:repeat(${S.cols.length},minmax(0,1fr))`; }
+
+async function render(){
+  head(); style(); syncLabel();
+  const R = $("#reader"); R.innerHTML = "";
+
+  // judul kolom + tombol tukar versi
+  if(S.cols.length){
+    const h = el("div","vhead"); h.setAttribute("style", cols());
+    S.cols.forEach((id,i) => {
+      const v = VER[id];
+      const c = el("div","vhcell");
+      c.appendChild(el("span", null, v.abbr || id));
+      const sw = el("button","swapb","⇄");
+      sw.title = "Ganti versi kolom ini";
+      sw.onclick = () => swapCol(i);
+      c.appendChild(sw);
+      h.appendChild(c);
+    });
+    R.appendChild(h);
+  }
+
+  const load = el("div");
+  for(let i=0;i<6;i++) load.appendChild(el("div","skel"));
+  R.appendChild(load);
+
+  const data = await Promise.all(S.cols.map(id => getCh(id, S.book, S.ch)));
+  const ilr  = S.il ? await getIL(S.book, S.ch) : null;
+  load.remove();
+
+  // kumpulan nomor ayat gabungan -> baris sejajar antar versi
+  const nums = new Set();
+  data.forEach(d => { if(d.ok) for(const n of d.m.keys()) nums.add(n); });
+  if(ilr && ilr.ok) for(const n of ilr.m.keys()) nums.add(n);
+
+  if(!nums.size){
+    const first = data.find(d => !d.ok);
+    const box = el("div","card");
+    if(first && first.missing){
+      box.appendChild(el("div","sechead","Kitab tidak ada di versi ini"));
+      box.appendChild(el("p","hint", `${cur().name} tidak termasuk dalam versi yang dipilih. Ini batas terjemahannya, bukan gangguan jaringan.`));
+    }else{
+      box.appendChild(el("div","sechead","Gagal memuat"));
+      box.appendChild(el("p","hint", (first?.msg || "Tidak diketahui") + ". Periksa koneksi lalu coba lagi."));
+      const b = el("button","btn ghost","Coba lagi");
+      b.onclick = () => { S.cols.forEach(id => chCache.delete(`${id}|${S.book}|${S.ch}`)); render(); };
+      box.appendChild(b);
+    }
+    R.appendChild(box);
+    tools();
+    return;
+  }
+
+  [...nums].sort((a,b) => a-b).forEach(n => {
+    const k = vkey(n);
+    const row = el("div","vrow" + (S.sel === n ? " sel" : "") + (S.stab[k] ? " stab" : "") + (S.mark[k] ? " mark" : "") + (S.pin[k] ? " pinned" : ""));
+    row.setAttribute("style", cols() +
+      (S.stab[k] ? `;--stab:${S.stab[k]}` : "") +
+      (S.mark[k] ? `;--mark:${S.mark[k]}` : ""));
+    S.cols.forEach((id,i) => {
+      const v = VER[id], d = data[i];
+      const c = el("div","vcell" + (v.cjk ? " zh" : ""));
+      if(i === 0 && S.pin[k]){
+        const pin = el("span","pinbadge","📌");
+        pin.title = "Bookmark — ketuk lama untuk melepas";
+        c.appendChild(pin);
+      }
+      const p = el("p");
+      p.appendChild(el("span","vnum", n));
+      if(d.ok && d.m.has(n)){
+        p.appendChild(document.createTextNode(d.m.get(n)));
+        if(S.notes[k]) p.appendChild(el("span","vmark","✎"));
+      }else{
+        p.appendChild(el("span","miss","—"));
+      }
+      c.appendChild(p);
+      attachPress(c, n, k);
+      row.appendChild(c);
+    });
+    R.appendChild(row);
+
+    // bahasa asli DI BAWAH ayat terjemahannya
+    if(ilr){
+      if(ilr.ok && ilr.m.has(n)){
+        const line = el("div","inter" + (ilr.rtl ? " rtl" : ""));
+        for(const w of ilr.m.get(n)){
+          const b = el("div","iw");
+          b.appendChild(el("div","o", w.o));
+          const tr = w.g.tr; if(tr) b.appendChild(el("div","tr", tr));
+          for(const [txt,cls] of glossLines(w.g)) b.appendChild(el("div",cls, txt));
+          if(w.s) b.appendChild(el("div","st", w.s));
+          if(w.s) b.onclick = () => wordCard(w);
+          line.appendChild(b);
+        }
+        R.appendChild(line);
+      }else if(n === [...nums][0]){
+        R.appendChild(el("p","ilnote", ilr.msg || ""));
+      }
+    }
+  });
+
+  tools();
+}
+
+/* ---------- panel alat (stabilo / sorot / catatan) ---------- */
+function tools(){
+  const T = $("#tools");
+  if(S.sel == null){ T.style.display = "none"; T.innerHTML = ""; return; }
+  const k = vkey(S.sel);
+  T.style.display = "";
+  T.innerHTML = "";
+
+  const h = el("div","toolhead");
+  h.appendChild(el("div","toolref", `${cur().name} ${S.ch}:${S.sel}`));
+  const x = el("button","icobtn","✕");
+  x.onclick = () => { S.sel = null; render(); };
+  h.appendChild(x);
+  T.appendChild(h);
+
+  T.appendChild(el("div","tlabel","Stabilo — isi warna"));
+  const r1 = el("div","swrow");
+  STAB.forEach(([nm,c]) => {
+    const s = el("div","swatch" + (S.stab[k] === c ? " on" : ""));
+    s.style.background = c; s.title = nm;
+    s.onclick = () => { if(S.stab[k] === c) delete S.stab[k]; else S.stab[k] = c; persist(); render(); };
+    r1.appendChild(s);
+  });
+  const n1 = el("div","swatch none" + (!S.stab[k] ? " on" : ""), "✕");
+  n1.onclick = () => { delete S.stab[k]; persist(); render(); };
+  r1.appendChild(n1);
+  T.appendChild(r1);
+
+  T.appendChild(el("div","tlabel","Sorot — garis tepi"));
+  const r2 = el("div","swrow");
+  MARK.forEach(([nm,c]) => {
+    const s = el("div","swatch ring" + (S.mark[k] === c ? " on" : ""));
+    s.style.border = "3px solid " + c; s.title = nm;
+    s.onclick = () => { if(S.mark[k] === c) delete S.mark[k]; else S.mark[k] = c; persist(); render(); };
+    r2.appendChild(s);
+  });
+  const n2 = el("div","swatch none" + (!S.mark[k] ? " on" : ""), "✕");
+  n2.onclick = () => { delete S.mark[k]; persist(); render(); };
+  r2.appendChild(n2);
+  T.appendChild(r2);
+
+  T.appendChild(el("div","tlabel","Catatan"));
+  const ta = el("textarea","note");
+  ta.placeholder = "Tulis renungan atau pertanyaan…";
+  ta.value = S.notes[k] || "";
+  T.appendChild(ta);
+
+  const row = el("div","trow");
+  const sv = el("button","btn","Simpan catatan");
+  sv.onclick = () => {
+    const t = ta.value.trim();
+    if(t) S.notes[k] = t; else delete S.notes[k];
+    persist(); toast(t ? "Catatan disimpan" : "Catatan dihapus"); render();
+  };
+  row.appendChild(sv);
+  const cp = el("button","btn ghost","Salin ayat");
+  cp.onclick = async () => {
+    const d = await getCh(S.cols[0], S.book, S.ch);
+    if(d.ok && d.m.has(S.sel)){
+      const t = `"${d.m.get(S.sel)}" — ${cur().name} ${S.ch}:${S.sel} (${VER[S.cols[0]].abbr})`;
+      try{ await navigator.clipboard.writeText(t); toast("Ayat disalin"); }
+      catch{ toast("Peramban menolak akses papan klip"); }
+    }
+  };
+  row.appendChild(cp);
+  T.appendChild(row);
+}
+
+/* ---------- kartu kata bahasa asli ---------- */
+function wordCard(w){
+  const d = w.s && w.s[0] === "G" ? SG : SH;
+  const e = d ? d[w.s] : null;
+  const tr = e ? (e.translit || e.xlit || "") : "";
+  ov(w.o, box => {
+    box.appendChild(el("div","sechead","Nomor Strong's"));
+    box.appendChild(el("p","hint", w.s || "—"));
+    if(e){
+      if(e.lemma){ box.appendChild(el("div","sechead","Bentuk dasar")); box.appendChild(el("p","hint", e.lemma + (tr ? " · " + tr : ""))); }
+      if(e.strongs_def){ box.appendChild(el("div","sechead","Definisi Strong's")); box.appendChild(el("p","hint", e.strongs_def.replace(/\s+/g," ").trim())); }
+      if(e.kjv_def){ box.appendChild(el("div","sechead","Diterjemahkan sebagai (KJV)")); box.appendChild(el("p","hint", e.kjv_def.replace(/\s+/g," ").trim())); }
+      if(e.derivation){ box.appendChild(el("div","sechead","Asal kata")); box.appendChild(el("p","hint", e.derivation.replace(/\s+/g," ").trim())); }
+    }else{
+      box.appendChild(el("p","hint","Kata ini tidak terpetakan ke entri Strong's."));
+    }
+  });
+}
+
+/* ---------- ketuk lama = bookmark ----------
+   Ketuk biasa memilih ayat; tahan ~500 ms memasang/melepas pin.
+   Ditangani lewat pointer events supaya jalan di sentuh maupun tetikus,
+   dan gerakan jari > 10 px dianggap menggulir, bukan menekan. */
+function attachPress(node, n, k){
+  let timer = null, fired = false, sx = 0, sy = 0;
+  const clear = () => { clearTimeout(timer); timer = null; };
+  node.addEventListener("pointerdown", e => {
+    fired = false; sx = e.clientX; sy = e.clientY;
+    timer = setTimeout(() => {
+      fired = true;
+      if(S.pin[k]) delete S.pin[k]; else S.pin[k] = Date.now();
+      persist();
+      if(navigator.vibrate) try{ navigator.vibrate(18); }catch{}
+      toast(S.pin[k] ? "Bookmark dipasang" : "Bookmark dilepas");
+      render();
+    }, 500);
+  });
+  node.addEventListener("pointermove", e => {
+    if(timer && (Math.abs(e.clientX-sx) > 10 || Math.abs(e.clientY-sy) > 10)) clear();
+  });
+  node.addEventListener("pointerup", () => {
+    clear();
+    if(!fired){ S.sel = (S.sel === n ? null : n); render(); }
+  });
+  node.addEventListener("pointercancel", clear);
+  node.addEventListener("contextmenu", e => { if(fired) e.preventDefault(); });
+}
+
+/* =========================================================
+   OVERLAY
+   ========================================================= */
+function ov(title, build){
+  const box = $("#ovbox"); box.innerHTML = "";
+  const h = el("div","ovhead");
+  h.appendChild(el("h2","ovtitle", title));
+  const x = el("button","icobtn","✕"); x.onclick = closeOv;
+  h.appendChild(x); box.appendChild(h);
+  build(box);
+  $("#ov").classList.add("on");
+}
+function closeOv(){ $("#ov").classList.remove("on"); }
+$("#ov").onclick = e => { if(e.target.id === "ov") closeOv(); };
+document.addEventListener("keydown", e => { if(e.key === "Escape") closeOv(); });
+function toast(t){
+  const n = el("div","toast", t);
+  document.body.appendChild(n);
+  setTimeout(() => n.remove(), 2100);
+}
+
+/* ---------- pilih / cari versi ---------- */
+let swapTarget = null;
+function swapCol(i){ swapTarget = i; versionPicker(); }
+
+function versionPicker(){
+  ov(swapTarget != null ? "Ganti versi kolom " + (swapTarget+1) : "Versi terjemahan", box => {
+    const q = el("input","srch");
+    q.type = "search";
+    q.placeholder = "Ketik bahasa — mis. Indonesian, Chinese, French, Javanese";
+    box.appendChild(q);
+
+    const hint = el("p","hint","");
+    box.appendChild(hint);
+
+    const listed = el("div"); listed.style.marginTop = "10px";
+    box.appendChild(listed);
+
+    function pick(id, meta){
+      if(meta) VER[id] = meta;
+      if(swapTarget != null){ S.cols[swapTarget] = id; swapTarget = null; }
+      else if(!S.cols.includes(id)) S.cols.push(id);
+      persist(); chips(); render(); closeOv();
+      toast((VER[id].abbr || id) + " dipakai");
+    }
+
+    function drawInstalled(){
+      listed.innerHTML = "";
+      listed.appendChild(el("div","sechead","Terpasang"));
+      Object.keys(VER).forEach(id => {
+        const v = VER[id];
+        const b = el("button","res" + (S.cols.includes(id) ? " on" : ""));
+        const t = el("div","t");
+        t.appendChild(el("b", null, v.name + (v.broken ? " — ID tidak berlaku" : "")));
+        t.appendChild(el("i", null, `${v.lang} · ${id}`));
+        b.appendChild(t);
+        b.appendChild(el("span","tag" + (v.books === 66 ? " full" : ""), (v.books || "?") + " kitab"));
+        b.onclick = () => {
+          if(v.broken){ toast("ID ini tidak ada di server"); return; }
+          if(swapTarget == null && S.cols.includes(id)){
+            if(S.cols.length === 1){ toast("Sisakan minimal satu versi"); return; }
+            S.cols = S.cols.filter(c => c !== id);
+            persist(); chips(); render(); drawInstalled();
+            return;
+          }
+          pick(id);
+        };
+        listed.appendChild(b);
+      });
+      hint.textContent = S.catState === "ok"
+        ? `Katalog siap: ${S.catalog.length} versi. Ketik nama bahasa untuk menelusuri.`
+        : S.catState === "loading" ? "Memuat katalog…"
+        : S.catState === "err" ? "Katalog gagal dimuat — versi terpasang tetap bisa dipakai."
+        : "";
+    }
+
+    function drawSearch(){
+      const s = q.value.trim().toLowerCase();
+      if(!s){ drawInstalled(); return; }
+      if(!S.catalog){ hint.textContent = "Katalog belum siap."; return; }
+      listed.innerHTML = "";
+
+      // kelompokkan per bahasa supaya "isi nama bahasa -> muncul versinya"
+      const hits = S.catalog.filter(t =>
+        (t.lang||"").toLowerCase().includes(s) ||
+        (t.native||"").toLowerCase().includes(s) ||
+        (t.name||"").toLowerCase().includes(s) ||
+        (t.en||"").toLowerCase().includes(s) ||
+        (t.id||"").toLowerCase().includes(s));
+      if(!hits.length){ hint.textContent = "Tidak ada yang cocok."; return; }
+
+      const byLang = new Map();
+      hits.forEach(t => {
+        const L = t.lang || "—";
+        if(!byLang.has(L)) byLang.set(L,[]);
+        byLang.get(L).push(t);
+      });
+      hint.textContent = `${hits.length} versi dalam ${byLang.size} bahasa.`;
+
+      [...byLang.entries()].sort((a,b) => b[1].length - a[1].length).forEach(([L,arr]) => {
+        listed.appendChild(el("div","sechead", `${L} — ${arr.length} versi`));
+        arr.sort((a,b) => b.books - a.books).slice(0,40).forEach(t => {
+          const b = el("button","res" + (S.cols.includes(t.id) ? " on" : ""));
+          const d = el("div","t");
+          d.appendChild(el("b", null, t.name));
+          d.appendChild(el("i", null, `${t.en || t.lang} · ${t.id}`));
+          b.appendChild(d);
+          b.appendChild(el("span","tag" + (t.books === 66 ? " full" : ""), t.books + " kitab"));
+          b.onclick = () => pick(t.id, {
+            id:t.id, name:t.name, abbr:t.abbr, lang:t.lang,
+            books:t.books, cjk:t.cjk, rtl:t.rtl
+          });
+          listed.appendChild(b);
+        });
+      });
+    }
+
+    q.oninput = drawSearch;
+    drawInstalled();
+    loadCatalog().then(drawInstalled);
+    setTimeout(() => q.focus(), 120);
+  });
+}
+
+async function loadCatalog(){
+  if(S.catState === "ok" || S.catState === "loading") return;
+  S.catState = "loading";
+  try{
+    const r = await fetch(`${AO}/available_translations.json`);
+    if(!r.ok) throw new Error("HTTP " + r.status);
+    const j = await r.json();
+    S.catalog = (j.translations || []).map(t => ({
+      id:t.id, name:t.name, abbr:t.shortName || t.id,
+      lang:t.languageEnglishName || t.language, native:t.languageName,
+      en:t.englishName, books:t.numberOfBooks,
+      rtl:t.textDirection === "rtl",
+      cjk:/chinese|japanese|korean/i.test(t.languageEnglishName || "")
+    }));
+    S.catState = "ok";
+  }catch(e){ S.catState = "err"; console.error("katalog:", e.message); }
+}
+
+/* ---------- navigasi kitab ---------- */
+let navT = "PL";
+function navPicker(){
+  ov("Buka kitab", box => {
+    const modes = el("div","tabs");
+    const mp = el("button","pill","Papan angka");
+    mp.onclick = () => { closeOv(); numPicker(); };
+    const md = el("button","pill on","Daftar kitab");
+    modes.appendChild(mp); modes.appendChild(md);
+    box.appendChild(modes);
+
+    const tabs = el("div","tabs");
+    [["PL","Perjanjian Lama"],["PB","Perjanjian Baru"]].forEach(([t,lbl]) => {
+      const b = el("button","pill" + (navT === t ? " on" : ""), lbl);
+      b.onclick = () => { navT = t; closeOv(); navPicker(); };
+      tabs.appendChild(b);
+    });
+    box.appendChild(tabs);
+
+    const g = el("div","grid-b");
+    BOOKS.filter(b => b.t === navT).forEach(b => {
+      const x = el("button","chapbtn" + (b.id === S.book ? " on" : ""), b.name);
+      x.style.textAlign = "left";
+      x.onclick = () => { S.book = b.id; if(S.ch > b.ch) S.ch = 1; closeOv(); navPicker(); };
+      g.appendChild(x);
+    });
+    box.appendChild(g);
+
+    box.appendChild(el("div","sechead","Pasal — " + cur().name));
+    const c = el("div","grid-c");
+    for(let i=1;i<=cur().ch;i++){
+      const x = el("button","chapbtn" + (i === S.ch ? " on" : ""), i);
+      x.onclick = () => { S.ch = i; S.sel = null; persist(); closeOv(); render(); scrollTo(0,0); };
+      c.appendChild(x);
+    }
+    box.appendChild(c);
+  });
+}
+
+/* ---------- daftar catatan ---------- */
+function noteList(){
+  ov("Catatan & tanda", box => {
+    const keys = [...new Set([...Object.keys(S.notes), ...Object.keys(S.stab), ...Object.keys(S.mark)])];
+    if(!keys.length){
+      box.appendChild(el("p","hint","Belum ada tanda. Ketuk sebuah ayat, lalu pilih stabilo, sorot, atau tulis catatan."));
+      return;
+    }
+    keys.sort((a,b) => {
+      const A = a.split("."), B = b.split(".");
+      const ia = BOOKS.findIndex(x => x.id === A[0]), ib = BOOKS.findIndex(x => x.id === B[0]);
+      return ia - ib || +A[1] - +B[1] || +A[2] - +B[2];
+    });
+    keys.forEach(k => {
+      const [b,c,v] = k.split(".");
+      const bb = bk(b); if(!bb) return;
+      const r = el("button","res");
+      if(S.stab[k]){ const d = el("span"); d.style.cssText = `width:13px;height:13px;border-radius:50%;flex:none;background:${S.stab[k]}`; r.appendChild(d); }
+      if(S.mark[k]){ const d = el("span"); d.style.cssText = `width:13px;height:13px;border-radius:50%;flex:none;border:3px solid ${S.mark[k]}`; r.appendChild(d); }
+      const t = el("div","t");
+      t.appendChild(el("b", null, `${bb.name} ${c}:${v}`));
+      if(S.notes[k]) t.appendChild(el("i", null, S.notes[k].slice(0,80)));
+      r.appendChild(t);
+      r.onclick = () => { S.book = b; S.ch = +c; S.sel = +v; persist(); closeOv(); render(); scrollTo(0,0); };
+      box.appendChild(r);
+    });
+  });
+}
+
+/* ---------- akun & sinkronisasi ---------- */
+function accPicker(){
+  ov("Akun & sinkronisasi", box => {
+    box.appendChild(el("p","hint","Sepenuhnya opsional. Tanpa akun, semua catatan tetap tersimpan di perangkat ini. Buat akun hanya bila ingin memakai catatan yang sama di perangkat lain."));
+    if(!sb){
+      box.appendChild(el("p","hint","Pustaka Supabase gagal dimuat — periksa koneksi lalu muat ulang halaman."));
+      return;
+    }
+    if(S.user){
+      box.appendChild(el("div","sechead","Masuk sebagai"));
+      box.appendChild(el("p","hint", S.user.email));
+      const row = el("div","trow");
+      const up = el("button","btn","Unggah sekarang");
+      up.onclick = async () => { await push(); toast("Catatan diunggah"); };
+      row.appendChild(up);
+      const dn = el("button","btn ghost","Ambil dari server");
+      dn.onclick = async () => { await pull(); toast("Catatan diambil"); };
+      row.appendChild(dn);
+      const out = el("button","btn warn","Keluar");
+      out.onclick = async () => { await sb.auth.signOut(); closeOv(); toast("Keluar"); };
+      row.appendChild(out);
+      box.appendChild(row);
+    }else{
+      box.appendChild(el("label","fld","Email"));
+      const em = el("input","inp"); em.type = "email"; em.placeholder = "nama@email.com";
+      box.appendChild(em);
+      box.appendChild(el("label","fld","Kata sandi"));
+      const pw = el("input","inp"); pw.type = "password"; pw.placeholder = "minimal 6 karakter";
+      box.appendChild(pw);
+      const msg = el("p","hint","");
+      const row = el("div","trow");
+      const go = async (mode) => {
+        const e = em.value.trim(), p = pw.value;
+        if(!e || p.length < 6){ msg.textContent = "Isi email dan kata sandi (minimal 6 karakter)."; return; }
+        msg.textContent = "Menghubungi server…";
+        const local = location.protocol !== "http:" && location.protocol !== "https:";
+        const opts = local ? {} : {emailRedirectTo: location.href.split("#")[0]};
+        const fn = mode === "in"
+          ? sb.auth.signInWithPassword({email:e, password:p})
+          : sb.auth.signUp({email:e, password:p, options:opts});
+        const {data, error} = await fn;
+        if(error){
+          const m = (error.message||"").toLowerCase();
+          msg.textContent = m.includes("not confirmed")
+            ? "Email belum dikonfirmasi. Matikan 'Confirm email' di Supabase (Authentication → Providers → Email), lalu coba masuk lagi."
+            : "Gagal: " + error.message;
+          return;
+        }
+        if(mode === "up"){
+          msg.textContent = data && data.session
+            ? "Akun dibuat dan langsung masuk."
+            : "Akun dibuat, tapi Supabase masih meminta konfirmasi email. Matikan 'Confirm email' di Authentication → Providers → Email, lalu tekan Masuk.";
+          if(data && data.session){ closeOv(); toast("Akun dibuat"); }
+          return;
+        }
+        msg.textContent = "Berhasil masuk.";
+        closeOv(); toast("Berhasil masuk");
+      };
+      const b1 = el("button","btn","Masuk"); b1.onclick = () => go("in");
+      const b2 = el("button","btn ghost","Daftar akun baru"); b2.onclick = () => go("up");
+      row.appendChild(b1); row.appendChild(b2);
+      box.appendChild(row);
+      box.appendChild(msg);
+    }
+    box.appendChild(el("div","sechead","Status sinkronisasi"));
+    const dl = el("div");
+    box.appendChild(dl);
+    if(S.user) runDiag(dl);
+    else dl.appendChild(el("p","hint","Masuk untuk memeriksa status sinkronisasi."));
+  });
+}
+
+/* ---------- pengaturan ---------- */
+function setPicker(){
+  ov("Pengaturan", box => {
+    box.appendChild(el("div","sechead","Tampilan"));
+    const row = el("div","trow");
+    const th = el("button","btn ghost", S.dark ? "Mode terang" : "Mode gelap");
+    th.onclick = () => { S.dark = !S.dark; th.textContent = S.dark ? "Mode terang" : "Mode gelap"; style(); persist(); };
+    row.appendChild(th);
+    box.appendChild(row);
+
+    box.appendChild(el("label","fld","Ukuran huruf"));
+    const fs = el("input"); fs.type = "range"; fs.min = 15; fs.max = 30; fs.value = S.fs; fs.style.width = "100%";
+    fs.oninput = e => { S.fs = +e.target.value; style(); persist(); };
+    box.appendChild(fs);
+
+    box.appendChild(el("label","fld","Jarak baris"));
+    const lh = el("input"); lh.type = "range"; lh.min = 1.4; lh.max = 2.4; lh.step = .05; lh.value = S.lh; lh.style.width = "100%";
+    lh.oninput = e => { S.lh = +e.target.value; style(); persist(); };
+    box.appendChild(lh);
+
+    box.appendChild(el("div","sechead","Arti kata bahasa asli"));
+    const sel = el("select","inp");
+    [["id","Indonesia"],["zh","中文"],["en","English (Strong's asli)"],["mix","Campuran — Indo + 中文 + English"]].forEach(([v,t]) => {
+      const o = el("option", null, t); o.value = v; if(S.gloss === v) o.selected = true;
+      sel.appendChild(o);
+    });
+    sel.onchange = e => { S.gloss = e.target.value; persist(); render(); };
+    box.appendChild(sel);
+    box.appendChild(el("p","hint","257 kata tersering punya arti Indonesia dan 中文. Kata di luar daftar itu ditampilkan sebagai transliterasi — bukan terjemahan karangan. Ketuk kata untuk definisi Strong's lengkap."));
+
+    box.appendChild(el("div","sechead","Cadangan"));
+    const r2 = el("div","trow");
+    const ex = el("button","btn ghost","Ekspor .json");
+    ex.onclick = () => {
+      const blob = new Blob([JSON.stringify({stab:S.stab, mark:S.mark, notes:S.notes, saved:new Date().toISOString()},null,2)],{type:"application/json"});
+      const a = el("a"); a.href = URL.createObjectURL(blob); a.download = "webbase-catatan.json"; a.click();
+      URL.revokeObjectURL(a.href); toast("Berkas diunduh");
+    };
+    r2.appendChild(ex);
+    const im = el("button","btn ghost","Impor .json");
+    const f = el("input"); f.type = "file"; f.accept = "application/json"; f.style.display = "none";
+    f.onchange = e => {
+      const file = e.target.files[0]; if(!file) return;
+      const rd = new FileReader();
+      rd.onload = () => {
+        try{
+          const d = JSON.parse(rd.result);
+          Object.assign(S.stab, d.stab || d.highlights || {});
+          Object.assign(S.mark, d.mark || {});
+          Object.assign(S.notes, d.notes || {});
+          persist(); render(); toast("Catatan dipulihkan");
+        }catch{ toast("Berkas tidak terbaca"); }
+      };
+      rd.readAsText(file); e.target.value = "";
+    };
+    im.onclick = () => f.click();
+    r2.appendChild(im); r2.appendChild(f);
+    const cl = el("button","btn warn","Hapus semua");
+    cl.onclick = () => {
+      if(!confirm("Hapus semua stabilo, sorot, dan catatan? Tidak bisa dibatalkan.")) return;
+      S.stab = {}; S.mark = {}; S.notes = {};
+      persist(); render(); closeOv(); toast("Semua tanda dihapus");
+    };
+    r2.appendChild(cl);
+    box.appendChild(r2);
+
+    box.appendChild(el("div","sechead","Sumber"));
+    box.appendChild(el("p","hint",
+      "Teks: bible.helloao.org (Free Use Bible API). " +
+      "Ibrani: OpenScriptures morphhb (WLC, CC BY 4.0). " +
+      "Yunani: MorphGNT SBLGNT (teks tunduk SBLGNT EULA, anotasi CC BY-SA 3.0). " +
+      "Strong's: OpenScriptures. Alkitab TB/LAI tidak tersedia karena masih berhak cipta."));
+  });
+}
+
+/* =========================================================
+   EVENT & MULAI
+   ========================================================= */
+$("#refBtn").onclick  = numPicker;
+$("#findBtn").onclick = searchPicker;
+$("#listBtn").onclick = noteList;
+$("#planBtn").onclick = planPicker;
+$("#sylBtn").onclick  = sylPicker;
+$("#dlBtn").onclick   = offlinePicker;
+$("#accBtn").onclick  = accPicker;
+$("#setBtn").onclick  = setPicker;
+$("#ilBtn").onclick   = () => { S.il = !S.il; persist(); render(); };
+$("#prev").onclick    = () => step(-1);
+$("#next").onclick    = () => step(1);
+function step(d){
+  const b = cur(), i = BOOKS.indexOf(b);
+  let n = S.ch + d;
+  if(n < 1){ if(i > 0){ S.book = BOOKS[i-1].id; S.ch = bk(S.book).ch; } }
+  else if(n > b.ch){ if(i < BOOKS.length-1){ S.book = BOOKS[i+1].id; S.ch = 1; } }
+  else S.ch = n;
+  S.sel = null; persist(); render(); scrollTo(0,0);
+}
+
+restore();
+style(); chips();
+primeOriginals().finally(() => render());
+initAuth();
+verifySeeds();
+
+/* =========================================================
+   RENUNGAN HARIAN
+   Tiap hari: 1 pasal PL (urut), 1 pasal PB (urut), 1 pasal Amsal.
+   Amsal mengikuti tanggal (1–31) — kebiasaan baca Amsal yang umum.
+   PL & PB berjalan urut dari Kejadian / Matius dan berulang setelah
+   selesai. Titik awal siklus = 1 Januari 2026.
+   ========================================================= */
+const PLAN_EPOCH = Date.UTC(2026,0,1);
+function flatten(list){
+  const o = [];
+  for(const b of list) for(let c=1;c<=b.ch;c++) o.push([b.id,c]);
+  return o;
+}
+let OTF=null, NTF=null;
+function planLists(){
+  if(!OTF){
+    OTF = flatten(BOOKS.filter(b => b.t === "PL" && b.id !== "ams"));
+    NTF = flatten(BOOKS.filter(b => b.t === "PB"));
+  }
+  return [OTF,NTF];
+}
+function dayIndex(d){
+  return Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - PLAN_EPOCH) / 86400000);
+}
+function planFor(d){
+  const [ot,nt] = planLists();
+  const i = dayIndex(d);
+  const wrap = (arr,n) => arr[((n % arr.length) + arr.length) % arr.length];
+  return {
+    ot: wrap(ot,i),
+    nt: wrap(nt,i),
+    am: ["ams", Math.min(d.getDate(), 31)],
+    idx: i
+  };
+}
+function planKey(d){
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+function planPicker(){
+  const today = new Date();
+  let view = new Date(today);
+  ov("Renungan harian", box => {
+    const draw = () => {
+      box.querySelectorAll(".pbody").forEach(n => n.remove());
+      const body = el("div","pbody");
+      const p = planFor(view);
+      const key = planKey(view);
+      const done = S.plan[key] || {};
+
+      const nav = el("div","trow");
+      const back = el("button","btn ghost","‹ Kemarin");
+      back.onclick = () => { view.setDate(view.getDate()-1); draw(); };
+      const now = el("button","btn ghost","Hari ini");
+      now.onclick = () => { view = new Date(today); draw(); };
+      const fwd = el("button","btn ghost","Besok ›");
+      fwd.onclick = () => { view.setDate(view.getDate()+1); draw(); };
+      nav.appendChild(back); nav.appendChild(now); nav.appendChild(fwd);
+      body.appendChild(nav);
+
+      const dd = view.toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+      body.appendChild(el("p","hint", dd));
+
+      const items = [
+        ["Perjanjian Lama", p.ot, "ot"],
+        ["Perjanjian Baru", p.nt, "nt"],
+        ["Amsal", p.am, "am"],
+      ];
+      let allDone = true;
+      items.forEach(([label,[bid,ch],slot]) => {
+        const b = bk(bid);
+        const r = el("button","res" + (done[slot] ? " on" : ""));
+        const chk = el("span","chk" + (done[slot] ? " on" : ""), done[slot] ? "✓" : "");
+        chk.onclick = ev => {
+          ev.stopPropagation();
+          const cur = S.plan[key] || {};
+          if(cur[slot]) delete cur[slot]; else cur[slot] = true;
+          if(Object.keys(cur).length) S.plan[key] = cur; else delete S.plan[key];
+          persist(); draw();
+        };
+        r.appendChild(chk);
+        const t = el("div","t");
+        t.appendChild(el("b", null, `${b.name} ${ch}`));
+        t.appendChild(el("i", null, `${label} · ${b.en} ${ch}`));
+        r.appendChild(t);
+        r.onclick = () => {
+          S.book = bid; S.ch = ch; S.sel = null;
+          persist(); closeOv(); render(); scrollTo(0,0);
+        };
+        body.appendChild(r);
+        if(!done[slot]) allDone = false;
+      });
+
+      const streak = countStreak(today);
+      body.appendChild(el("p","hint",
+        (allDone ? "Selesai untuk hari ini. " : "") +
+        (streak > 0 ? `Rentetan hari selesai: ${streak}.` : "Tandai bacaan yang sudah selesai dengan kotak centang.")));
+      box.appendChild(body);
+    };
+    draw();
+  });
+}
+function countStreak(from){
+  let n = 0;
+  const d = new Date(from);
+  for(let i=0;i<400;i++){
+    const k = planKey(d);
+    const v = S.plan[k];
+    if(v && v.ot && v.nt && v.am) n++;
+    else if(i > 0) break;
+    else if(!v) break;
+    d.setDate(d.getDate()-1);
+  }
+  return n;
+}
+
+/* =========================================================
+   PEMILIH PASAL/AYAT BERGAYA PAPAN ANGKA
+   Kitab dari daftar, lalu ketik pasal & ayat dengan tombol angka.
+   ========================================================= */
+function numPicker(){
+  let bid = S.book, field = "ch", chS = String(S.ch), vsS = "";
+  ov("Buka kitab", box => {
+    // dua gaya: papan angka (cepat) atau daftar kitab (menjelajah)
+    const modes = el("div","tabs");
+    const mkMode = (label, fn, on) => {
+      const b = el("button","pill" + (on ? " on" : ""), label);
+      b.onclick = fn;
+      return b;
+    };
+    modes.appendChild(mkMode("Papan angka", () => {}, true));
+    modes.appendChild(mkMode("Daftar kitab", () => { closeOv(); navPicker(); }, false));
+    box.appendChild(modes);
+
+    const wrapEl = el("div");
+    box.appendChild(wrapEl);
+
+    const draw = () => {
+      wrapEl.innerHTML = "";
+      const b = bk(bid);
+
+      // pilih kitab
+      const sel = el("select","inp");
+      sel.style.cssText = "font-size:19px;font-weight:700;color:var(--accent);margin-bottom:14px";
+      [["PL","Perjanjian Lama"],["PB","Perjanjian Baru"]].forEach(([t,lbl]) => {
+        const g = el("optgroup"); g.label = lbl;
+        BOOKS.filter(x => x.t === t).forEach(x => {
+          const o = el("option", null, x.name); o.value = x.id;
+          if(x.id === bid) o.selected = true;
+          g.appendChild(o);
+        });
+        sel.appendChild(g);
+      });
+      sel.onchange = e => { bid = e.target.value; chS = ""; vsS = ""; field = "ch"; draw(); };
+      wrapEl.appendChild(sel);
+
+      // tampilan pasal / ayat
+      const disp = el("div");
+      disp.style.cssText = "display:flex;align-items:center;justify-content:center;gap:14px;margin:6px 0 14px";
+      const mkField = (label, val, which) => {
+        const w = el("div");
+        w.style.cssText = "display:flex;align-items:center;gap:8px;cursor:pointer";
+        w.appendChild(el("span", null, label)).style.cssText = "font-size:13px;color:var(--ink2)";
+        const n = el("span", null, val || "—");
+        n.style.cssText = "font-size:30px;font-weight:600;min-width:56px;text-align:center;padding:5px 8px;border-radius:50%;" +
+          (field === which ? "border:2px solid var(--accent);color:var(--accent)" : "border:2px solid transparent;color:var(--ink)");
+        w.appendChild(n);
+        w.onclick = () => { field = which; draw(); };
+        return w;
+      };
+      disp.appendChild(mkField("Pasal", chS, "ch"));
+      disp.appendChild(mkField("Ayat", vsS, "vs"));
+      wrapEl.appendChild(disp);
+
+      const info = el("p","hint");
+      info.style.textAlign = "center";
+      info.textContent = `${b.name} — ${b.ch} pasal. Ayat boleh dikosongkan.`;
+      wrapEl.appendChild(info);
+
+      // papan angka
+      const pad = el("div");
+      pad.style.cssText = "display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px";
+      const put = d => {
+        if(field === "ch"){
+          const nx = (chS + d).replace(/^0+/,"");
+          if(nx === "" || +nx <= b.ch) chS = nx;
+        }else{
+          const nx = (vsS + d).replace(/^0+/,"");
+          if(nx === "" || +nx <= 200) vsS = nx;
+        }
+        draw();
+      };
+      for(let i=1;i<=9;i++){
+        const k = el("button","chapbtn", i);
+        k.style.cssText = "padding:16px 0;font-size:20px";
+        k.onclick = () => put(String(i));
+        pad.appendChild(k);
+      }
+      const del = el("button","chapbtn","⌫");
+      del.style.cssText = "padding:16px 0;font-size:17px";
+      del.onclick = () => { if(field === "ch") chS = chS.slice(0,-1); else vsS = vsS.slice(0,-1); draw(); };
+      pad.appendChild(del);
+      const z = el("button","chapbtn","0");
+      z.style.cssText = "padding:16px 0;font-size:20px";
+      z.onclick = () => put("0");
+      pad.appendChild(z);
+      const ok = el("button","chapbtn","OK");
+      ok.style.cssText = "padding:16px 0;font-size:16px;background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700";
+      ok.onclick = () => {
+        const c = Math.min(Math.max(+(chS || 1),1), b.ch);
+        S.book = bid; S.ch = c;
+        S.sel = vsS ? +vsS : null;
+        persist(); closeOv(); render(); scrollTo(0,0);
+      };
+      pad.appendChild(ok);
+      wrapEl.appendChild(pad);
+    };
+    draw();
+  });
+}
+
+/* =========================================================
+   CARI AYAT — pencarian teks
+   Mencari di versi kolom pertama. Sumber pencarian:
+   - bila versi sudah diunduh: seluruh Alkitab, langsung dari perangkat
+   - bila belum: hanya pasal/kitab yang dipilih, diambil lewat jaringan
+   Ini dibuat jujur di UI supaya tidak terkesan mencari seluruh Alkitab
+   padahal cuma satu pasal.
+   ========================================================= */
+function norm(s){
+  return s.toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^\p{L}\p{N}\s]/gu," ")
+    .replace(/\s+/g," ").trim();
+}
+/* Semua kata pencarian harus cocok (AND), bukan salah satu saja.
+   Tanpa ini, kueri seperti "xyz tidak ada" akan mengembalikan tiap ayat
+   yang memuat kata umum "ada" — hasil yang menyesatkan. */
+function scoreLine(hay, terms){
+  let sc = 0;
+  for(const t of terms){
+    if(!t) continue;
+    if(hay.includes(t)){
+      sc += t.length * 3;
+      if(new RegExp("\\b" + t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&") + "\\b").test(hay)) sc += 6;
+    }else if(t.length >= 5){
+      // kata panjang boleh cocok sebagian (imbuhan), kata pendek tidak
+      const stem = t.slice(0, t.length - 2).replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+      if(new RegExp("\\b" + stem).test(hay)) sc += t.length;
+      else return 0;
+    }else return 0;
+  }
+  return sc;
+}
+
+function searchPicker(){
+  const scope = {ot:true, nt:true, book:false, chapter:false};
+  ov("Cari ayat", box => {
+    const vid = S.cols[0];
+    const v = VER[vid] || {};
+
+    const q = el("input","srch");
+    q.type = "search";
+    q.placeholder = "Ketik kata atau potongan ayat…";
+    box.appendChild(q);
+
+    const scopeBox = el("div");
+    scopeBox.style.cssText = "display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px";
+    box.appendChild(scopeBox);
+
+    const status = el("p","hint","");
+    box.appendChild(status);
+    const out = el("div");
+    box.appendChild(out);
+
+    let downloaded = false;
+    offlineLoad(vid).then(m => { downloaded = !!m; drawScope(); });
+
+    function drawScope(){
+      scopeBox.innerHTML = "";
+      const opts = [
+        ["ot","Perjanjian Lama"],
+        ["nt","Perjanjian Baru"],
+        ["book","Kitab ini (" + cur().name + ")"],
+        ["chapter","Pasal ini"],
+      ];
+      opts.forEach(([k,label]) => {
+        const b = el("button","pill" + (scope[k] ? " on" : ""));
+        b.appendChild(el("span", null, (scope[k] ? "✓ " : "") + label));
+        b.onclick = () => {
+          scope[k] = !scope[k];
+          // "pasal ini" dan "kitab ini" mempersempit; PL/PB jadi tak relevan
+          if(k === "chapter" && scope.chapter){ scope.book = false; }
+          if(k === "book" && scope.book){ scope.chapter = false; }
+          drawScope(); run();
+        };
+        scopeBox.appendChild(b);
+      });
+      status.textContent = downloaded
+        ? `Mencari di ${v.abbr || vid} — sudah diunduh, seluruh Alkitab bisa dicari.`
+        : `Mencari di ${v.abbr || vid} — belum diunduh, jadi hanya cakupan sempit (pasal/kitab ini) yang dicari lewat jaringan. Unduh versi ini lewat ⬇ untuk mencari seluruh Alkitab.`;
+    }
+
+    let timer = null;
+    q.oninput = () => { clearTimeout(timer); timer = setTimeout(run, 260); };
+
+    async function run(){
+      const raw = q.value.trim();
+      out.innerHTML = "";
+      if(raw.length < 2) return;
+      const terms = norm(raw).split(" ").filter(t => t.length > 1);
+      if(!terms.length) return;
+
+      out.appendChild(el("p","hint","Mencari…"));
+      const hits = [];
+
+      const off = await offlineLoad(vid);
+      if(off){
+        for(const [key,text] of off){
+          const [bid,ch,vn] = key.split(".");
+          const b = bk(bid); if(!b) continue;
+          if(scope.chapter && !(bid === S.book && +ch === S.ch)) continue;
+          if(!scope.chapter && scope.book && bid !== S.book) continue;
+          if(!scope.chapter && !scope.book){
+            if(b.t === "PL" && !scope.ot) continue;
+            if(b.t === "PB" && !scope.nt) continue;
+          }
+          const sc = scoreLine(norm(text), terms);
+          if(sc > 0) hits.push({b, ch:+ch, v:+vn, text, sc});
+        }
+      }else{
+        // tanpa unduhan: batasi ke pasal ini atau kitab ini saja
+        const targets = [];
+        if(scope.chapter || (!scope.book)) targets.push([S.book, S.ch]);
+        if(scope.book && !scope.chapter){
+          const b = cur();
+          for(let c=1;c<=b.ch;c++) targets.push([b.id,c]);
+        }
+        const capped = targets.slice(0,60);
+        for(const [bid,ch] of capped){
+          const d = await getCh(vid, bid, ch);
+          if(!d.ok) continue;
+          for(const [n,text] of d.m){
+            const sc = scoreLine(norm(text), terms);
+            if(sc > 0) hits.push({b:bk(bid), ch, v:n, text, sc});
+          }
+        }
+      }
+
+      out.innerHTML = "";
+      if(!hits.length){
+        out.appendChild(el("p","hint","Tidak ditemukan. Coba kata lain, atau perluas cakupan."));
+        return;
+      }
+      hits.sort((a,b) => b.sc - a.sc);
+      out.appendChild(el("div","sechead", `${hits.length} hasil — 40 teratas`));
+      hits.slice(0,40).forEach(h => {
+        const r = el("button","res");
+        const t = el("div","t");
+        t.appendChild(el("b", null, `${h.b.name} ${h.ch}:${h.v}`));
+        const snippet = h.text.length > 120 ? h.text.slice(0,118) + "…" : h.text;
+        t.appendChild(el("i", null, snippet));
+        r.appendChild(t);
+        r.onclick = () => {
+          S.book = h.b.id; S.ch = h.ch; S.sel = h.v;
+          persist(); closeOv(); render(); scrollTo(0,0);
+        };
+        out.appendChild(r);
+      });
+    }
+
+    drawScope();
+    setTimeout(() => q.focus(), 120);
+  });
+}
+
+/* =========================================================
+   SILABUS ALKITAB
+   Ringkasan tiap kitab: penulis, waktu, tema, dan bacaan kunci.
+   Dibuat sebagai peta ringkas — bukan tafsir panjang, melainkan
+   orientasi supaya tahu sedang membaca apa.
+   ========================================================= */
+const SYL = {
+  kej:["Musa (tradisional)","Permulaan","Penciptaan, kejatuhan, dan janji kepada Abraham.","1; 3; 12; 22"],
+  kel:["Musa","Pembebasan","Keluar dari Mesir dan pemberian hukum di Sinai.","3; 12; 20"],
+  ima:["Musa","Kekudusan","Aturan korban dan hidup kudus di hadapan Allah.","16; 19"],
+  bil:["Musa","Pengembaraan","Empat puluh tahun di padang gurun.","13-14"],
+  ula:["Musa","Perjanjian diperbarui","Khotbah terakhir Musa sebelum masuk Kanaan.","6; 30"],
+  yos:["Yosua","Penaklukan","Masuk dan membagi tanah perjanjian.","1; 24"],
+  hak:["Tidak diketahui","Siklus dosa","Israel jatuh-bangun tanpa raja.","2"],
+  rut:["Tidak diketahui","Penebusan","Kesetiaan di masa kelam; leluhur Daud.","1"],
+  "1sa":["Samuel dkk","Dari hakim ke raja","Samuel, Saul, dan bangkitnya Daud.","16; 17"],
+  "2sa":["Tidak diketahui","Kerajaan Daud","Kejayaan dan kejatuhan Daud.","7"],
+  "1ra":["Tidak diketahui","Perpecahan","Salomo lalu kerajaan terbelah.","3; 8; 18"],
+  "2ra":["Tidak diketahui","Pembuangan","Kejatuhan Israel dan Yehuda.","17; 25"],
+  "1ta":["Ezra (tradisional)","Silsilah & ibadah","Sejarah dari sudut pandang bait.","17"],
+  "2ta":["Ezra (tradisional)","Raja-raja Yehuda","Pembaruan dan kemerosotan.","7"],
+  ezr:["Ezra","Pemulangan","Kembali dari Babel, bait dibangun.","1"],
+  neh:["Nehemia","Pembangunan kembali","Tembok Yerusalem dan pembaruan umat.","1; 8"],
+  est:["Tidak diketahui","Pemeliharaan tersembunyi","Allah tak disebut, tapi jelas bekerja.","4"],
+  ayb:["Tidak diketahui","Penderitaan","Mengapa orang benar menderita.","1; 38; 42"],
+  mzm:["Daud dkk","Doa & pujian","Seluruh rentang emosi manusia di hadapan Allah.","1; 23; 51; 119"],
+  ams:["Salomo dkk","Hikmat praktis","Cara hidup bijak sehari-hari.","1; 3; 31"],
+  pkh:["Pengkhotbah","Kesia-siaan","Mencari makna di bawah matahari.","1; 12"],
+  kid:["Salomo","Kasih","Puisi cinta antara mempelai.","2"],
+  yes:["Yesaya","Penghakiman & keselamatan","Nubuat Mesias yang menderita.","6; 40; 53"],
+  yer:["Yeremia","Peringatan","Nabi yang menangis menjelang pembuangan.","1; 31"],
+  rat:["Yeremia (tradisional)","Ratapan","Duka atas Yerusalem yang runtuh.","3"],
+  yeh:["Yehezkiel","Kemuliaan & pemulihan","Penglihatan di pembuangan.","37"],
+  dan:["Daniel","Kedaulatan Allah","Setia di negeri asing; nubuat akhir zaman.","1; 3; 6"],
+  hos:["Hosea","Kasih yang setia","Pernikahan sebagai gambaran perjanjian.","1; 11"],
+  yoe:["Yoel","Hari TUHAN","Belalang, pertobatan, dan pencurahan Roh.","2"],
+  amo:["Amos","Keadilan","Ibadah tanpa keadilan ditolak.","5"],
+  oba:["Obaja","Penghakiman Edom","Kitab terpendek di PL.","1"],
+  yun:["Yunus","Belas kasihan","Nabi yang lari; Allah mengasihi Niniwe.","1; 4"],
+  mik:["Mikha","Keadilan & kerendahan hati","Apa yang TUHAN tuntut.","6"],
+  nah:["Nahum","Kejatuhan Niniwe","Keadilan atas penindas.","1"],
+  hab:["Habakuk","Iman di tengah tanya","Orang benar hidup oleh iman.","2; 3"],
+  zef:["Zefanya","Hari TUHAN","Penghakiman lalu pemulihan.","3"],
+  hag:["Hagai","Prioritas","Bangun rumah TUHAN lebih dulu.","1"],
+  zak:["Zakharia","Mesias yang datang","Penglihatan dan nubuat.","9"],
+  mal:["Maleakhi","Ibadah yang tulus","Teguran terakhir sebelum 400 tahun sunyi.","3"],
+  mat:["Matius","Yesus Raja","Injil bagi pembaca Yahudi; Mesias yang dijanjikan.","5-7; 28"],
+  mrk:["Markus","Yesus Hamba","Injil paling ringkas dan cepat.","8; 15"],
+  luk:["Lukas","Yesus Manusia","Injil bagi semua bangsa; perhatian pada yang lemah.","2; 15; 24"],
+  yoh:["Yohanes","Yesus Anak Allah","Tujuh tanda dan tujuh pernyataan 'Akulah'.","1; 3; 14; 20"],
+  kis:["Lukas","Gereja mula-mula","Roh Kudus dan penyebaran Injil.","2; 9"],
+  rom:["Paulus","Injil dijelaskan","Pembenaran oleh iman, dari dosa ke pengudusan.","3; 5; 8; 12"],
+  "1ko":["Paulus","Jemaat bermasalah","Perpecahan, karunia, dan kasih.","13; 15"],
+  "2ko":["Paulus","Pelayanan & kelemahan","Kuasa disempurnakan dalam kelemahan.","5; 12"],
+  gal:["Paulus","Kemerdekaan","Bukan hukum Taurat, melainkan iman.","2; 5"],
+  efe:["Paulus","Jemaat sebagai tubuh","Kesatuan dan perlengkapan rohani.","2; 6"],
+  flp:["Paulus","Sukacita","Ditulis dari penjara, penuh sukacita.","2; 4"],
+  kol:["Paulus","Keutamaan Kristus","Kristus di atas segalanya.","1; 3"],
+  "1te":["Paulus","Pengharapan","Kedatangan Tuhan kembali.","4"],
+  "2te":["Paulus","Ketekunan","Bertahan sambil bekerja.","2"],
+  "1ti":["Paulus","Kepemimpinan","Petunjuk bagi gembala muda.","3"],
+  "2ti":["Paulus","Surat terakhir","Pesan penutup Paulus.","2; 4"],
+  tit:["Paulus","Hidup yang tertib","Ajaran sehat menghasilkan perbuatan baik.","2"],
+  flm:["Paulus","Pengampunan","Surat pribadi tentang budak yang kembali.","1"],
+  ibr:["Tidak diketahui","Kristus lebih baik","Melampaui perjanjian lama.","1; 11"],
+  yak:["Yakobus","Iman yang bekerja","Iman tanpa perbuatan itu mati.","1; 2"],
+  "1pt":["Petrus","Menderita dengan harap","Bagi jemaat yang dianiaya.","1; 5"],
+  "2pt":["Petrus","Waspada","Guru palsu dan hari Tuhan.","1; 3"],
+  "1yo":["Yohanes","Kepastian","Bagaimana tahu kita mengenal Allah.","1; 4"],
+  "2yo":["Yohanes","Kebenaran & kasih","Surat singkat kepada 'Ibu yang terpilih'.","1"],
+  "3yo":["Yohanes","Keramahan","Surat kepada Gayus.","1"],
+  yud:["Yudas","Berjuang bagi iman","Peringatan atas penyesat.","1"],
+  wah:["Yohanes","Kemenangan akhir","Penglihatan tentang akhir dan langit baru.","1; 21-22"],
+};
+function sylPicker(){
+  let tab = cur().t;
+  ov("Silabus Alkitab", box => {
+    const wrapEl = el("div");
+    box.appendChild(wrapEl);
+    const draw = () => {
+      wrapEl.innerHTML = "";
+      const tabs = el("div","tabs");
+      [["PL","Perjanjian Lama"],["PB","Perjanjian Baru"]].forEach(([t,l]) => {
+        const b = el("button","pill" + (tab === t ? " on" : ""), l);
+        b.onclick = () => { tab = t; draw(); };
+        tabs.appendChild(b);
+      });
+      wrapEl.appendChild(tabs);
+      wrapEl.appendChild(el("p","hint","Ringkasan singkat tiap kitab: penulis menurut pandangan umum, tema utama, dan pasal kunci untuk memulai. Ketuk untuk membuka."));
+
+      BOOKS.filter(b => b.t === tab).forEach(b => {
+        const s = SYL[b.id];
+        if(!s) return;
+        const r = el("button","res" + (b.id === S.book ? " on" : ""));
+        const t = el("div","t");
+        t.appendChild(el("b", null, `${b.name} — ${s[1]}`));
+        t.appendChild(el("i", null, `${s[2]}`));
+        const meta = el("i");
+        meta.style.marginTop = "3px";
+        meta.textContent = `Penulis: ${s[0]} · Pasal kunci: ${s[3]} · ${b.ch} pasal`;
+        t.appendChild(meta);
+        r.appendChild(t);
+        r.onclick = () => {
+          const first = parseInt(String(s[3]).match(/\d+/)?.[0] || "1", 10);
+          S.book = b.id; S.ch = Math.min(Math.max(first,1), b.ch); S.sel = null;
+          persist(); closeOv(); render(); scrollTo(0,0);
+        };
+        wrapEl.appendChild(r);
+      });
+    };
+    draw();
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1675 @@
+{
+  "translation": {
+    "id": "cmn_cu1",
+    "name": "??????????????????",
+    "website": "https://ebible.org/Scriptures/details.php?id=cmn-cu89s",
+    "licenseUrl": "https://ebible.org/Scriptures/details.php?id=cmn-cu89s",
+    "shortName": "CU1",
+    "englishName": "Chinese Union Version (simplified)",
+    "language": "cmn",
+    "textDirection": "ltr",
+    "sha256": "695cd78273e0ae8b7d4d8652df136647b8176716ed7279584f6bd047574676ff",
+    "availableFormats": [
+      "json"
+    ],
+    "listOfBooksApiLink": "/api/cmn_cu1/books.json",
+    "completeTranslationApiLink": "/api/cmn_cu1/complete.json",
+    "numberOfBooks": 66,
+    "totalNumberOfChapters": 1189,
+    "totalNumberOfVerses": 31021,
+    "languageName": "??????",
+    "languageEnglishName": "Chinese"
+  },
+  "books": [
+    {
+      "id": "GEN",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 1,
+      "numberOfChapters": 50,
+      "sha256": "db365ac0b3046285840223bbcf50010359b491876ea2f520111a34627c1ab4b2",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/GEN/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "GEN",
+        "chapter": 1
+      },
+      "lastChapterNumber": 50,
+      "lastChapterApiLink": "/api/cmn_cu1/GEN/50.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "GEN",
+        "chapter": 50
+      },
+      "totalNumberOfVerses": 1532
+    },
+    {
+      "id": "EXO",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 2,
+      "numberOfChapters": 40,
+      "sha256": "45800b6dc3fba46ae119a450015e9d1c0bd6d3e0309f37131161ddf7ed1114b8",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/EXO/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "EXO",
+        "chapter": 1
+      },
+      "lastChapterNumber": 40,
+      "lastChapterApiLink": "/api/cmn_cu1/EXO/40.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "EXO",
+        "chapter": 40
+      },
+      "totalNumberOfVerses": 1212
+    },
+    {
+      "id": "LEV",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 3,
+      "numberOfChapters": 27,
+      "sha256": "99d9beb158820300746e3672c3d2089e04f5e3bf87009a6b1798d024d009597c",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/LEV/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "LEV",
+        "chapter": 1
+      },
+      "lastChapterNumber": 27,
+      "lastChapterApiLink": "/api/cmn_cu1/LEV/27.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "LEV",
+        "chapter": 27
+      },
+      "totalNumberOfVerses": 858
+    },
+    {
+      "id": "NUM",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 4,
+      "numberOfChapters": 36,
+      "sha256": "e77e431d7502f03333dfb9c53bf919a4e34116ceb741662a3afe2874ba241fa9",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/NUM/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "NUM",
+        "chapter": 1
+      },
+      "lastChapterNumber": 36,
+      "lastChapterApiLink": "/api/cmn_cu1/NUM/36.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "NUM",
+        "chapter": 36
+      },
+      "totalNumberOfVerses": 1272
+    },
+    {
+      "id": "DEU",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 5,
+      "numberOfChapters": 34,
+      "sha256": "4d56dd4d63724545eea67e2d1152aa62a87b5dfd259727650eb526c4bd60c287",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/DEU/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "DEU",
+        "chapter": 1
+      },
+      "lastChapterNumber": 34,
+      "lastChapterApiLink": "/api/cmn_cu1/DEU/34.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "DEU",
+        "chapter": 34
+      },
+      "totalNumberOfVerses": 951
+    },
+    {
+      "id": "JOS",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 6,
+      "numberOfChapters": 24,
+      "sha256": "6ff57f8f5a07bd91215a91a56ef3b9fdf9ff33fbcfb9dc42e214891bfb882d83",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/JOS/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JOS",
+        "chapter": 1
+      },
+      "lastChapterNumber": 24,
+      "lastChapterApiLink": "/api/cmn_cu1/JOS/24.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JOS",
+        "chapter": 24
+      },
+      "totalNumberOfVerses": 656
+    },
+    {
+      "id": "JDG",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 7,
+      "numberOfChapters": 21,
+      "sha256": "148717555d2e301b557cfa6e86a646b06f71a69cd70e4f155f495f4d868791fb",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/JDG/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JDG",
+        "chapter": 1
+      },
+      "lastChapterNumber": 21,
+      "lastChapterApiLink": "/api/cmn_cu1/JDG/21.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JDG",
+        "chapter": 21
+      },
+      "totalNumberOfVerses": 617
+    },
+    {
+      "id": "RUT",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 8,
+      "numberOfChapters": 4,
+      "sha256": "05afd29db818dbc98a178cad2b2a66481ac6d7e61e5eb609b4dd5dee09ef3961",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/RUT/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "RUT",
+        "chapter": 1
+      },
+      "lastChapterNumber": 4,
+      "lastChapterApiLink": "/api/cmn_cu1/RUT/4.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "RUT",
+        "chapter": 4
+      },
+      "totalNumberOfVerses": 85
+    },
+    {
+      "id": "1SA",
+      "translationId": "cmn_cu1",
+      "name": "???????????????",
+      "commonName": "???????????????",
+      "title": "???????????????",
+      "order": 9,
+      "numberOfChapters": 31,
+      "sha256": "4ab1493b6136513257cfd4ca7826405565a81fcd82ff737cd69565c595e2645c",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/1SA/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1SA",
+        "chapter": 1
+      },
+      "lastChapterNumber": 31,
+      "lastChapterApiLink": "/api/cmn_cu1/1SA/31.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1SA",
+        "chapter": 31
+      },
+      "totalNumberOfVerses": 809
+    },
+    {
+      "id": "2SA",
+      "translationId": "cmn_cu1",
+      "name": "???????????????",
+      "commonName": "???????????????",
+      "title": "???????????????",
+      "order": 10,
+      "numberOfChapters": 24,
+      "sha256": "08e8c53e4a15c786d31d279324965ec3ba7c20377aea5db3ede384b61bf3484d",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/2SA/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2SA",
+        "chapter": 1
+      },
+      "lastChapterNumber": 24,
+      "lastChapterApiLink": "/api/cmn_cu1/2SA/24.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2SA",
+        "chapter": 24
+      },
+      "totalNumberOfVerses": 694
+    },
+    {
+      "id": "1KI",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 11,
+      "numberOfChapters": 22,
+      "sha256": "ffe974a95106f23b8b66b3b476ef38942bd3c960da5cf654bb224a52f0d3c733",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/1KI/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1KI",
+        "chapter": 1
+      },
+      "lastChapterNumber": 22,
+      "lastChapterApiLink": "/api/cmn_cu1/1KI/22.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1KI",
+        "chapter": 22
+      },
+      "totalNumberOfVerses": 816
+    },
+    {
+      "id": "2KI",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 12,
+      "numberOfChapters": 25,
+      "sha256": "2920d073bac494476ef08357d1768c45b9af98c2f14e10abf42fded84614b266",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/2KI/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2KI",
+        "chapter": 1
+      },
+      "lastChapterNumber": 25,
+      "lastChapterApiLink": "/api/cmn_cu1/2KI/25.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2KI",
+        "chapter": 25
+      },
+      "totalNumberOfVerses": 719
+    },
+    {
+      "id": "1CH",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 13,
+      "numberOfChapters": 29,
+      "sha256": "f5a527f58935035286d79ffebcaaf2193739be5253575d73fdff1449ebf26900",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/1CH/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1CH",
+        "chapter": 1
+      },
+      "lastChapterNumber": 29,
+      "lastChapterApiLink": "/api/cmn_cu1/1CH/29.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1CH",
+        "chapter": 29
+      },
+      "totalNumberOfVerses": 939
+    },
+    {
+      "id": "2CH",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 14,
+      "numberOfChapters": 36,
+      "sha256": "8f2bc75e49125239d0b9f3b8003d43810ae6669dda3379b7aee8668b9dae7e8e",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/2CH/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2CH",
+        "chapter": 1
+      },
+      "lastChapterNumber": 36,
+      "lastChapterApiLink": "/api/cmn_cu1/2CH/36.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2CH",
+        "chapter": 36
+      },
+      "totalNumberOfVerses": 821
+    },
+    {
+      "id": "EZR",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 15,
+      "numberOfChapters": 10,
+      "sha256": "5944c35be07b21a6f86820d4c43926912625d824c4e6f05efc3577c9edfb73df",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/EZR/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "EZR",
+        "chapter": 1
+      },
+      "lastChapterNumber": 10,
+      "lastChapterApiLink": "/api/cmn_cu1/EZR/10.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "EZR",
+        "chapter": 10
+      },
+      "totalNumberOfVerses": 280
+    },
+    {
+      "id": "NEH",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 16,
+      "numberOfChapters": 13,
+      "sha256": "df2302cd95811b185c2d5ceed29a0e326db0fe88bea139e34d3089f62ac641f2",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/NEH/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "NEH",
+        "chapter": 1
+      },
+      "lastChapterNumber": 13,
+      "lastChapterApiLink": "/api/cmn_cu1/NEH/13.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "NEH",
+        "chapter": 13
+      },
+      "totalNumberOfVerses": 405
+    },
+    {
+      "id": "EST",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 17,
+      "numberOfChapters": 10,
+      "sha256": "e3224a0415c8a14cc019c1016693c7a4c7be84e41b0007ea86e9d9e1011311da",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/EST/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "EST",
+        "chapter": 1
+      },
+      "lastChapterNumber": 10,
+      "lastChapterApiLink": "/api/cmn_cu1/EST/10.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "EST",
+        "chapter": 10
+      },
+      "totalNumberOfVerses": 165
+    },
+    {
+      "id": "JOB",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 18,
+      "numberOfChapters": 42,
+      "sha256": "169cf3a803922642333ec3c760841b20928353bbc280135e84cc280494396253",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/JOB/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JOB",
+        "chapter": 1
+      },
+      "lastChapterNumber": 42,
+      "lastChapterApiLink": "/api/cmn_cu1/JOB/42.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JOB",
+        "chapter": 42
+      },
+      "totalNumberOfVerses": 1067
+    },
+    {
+      "id": "PSA",
+      "translationId": "cmn_cu1",
+      "name": "??????",
+      "commonName": "??????",
+      "title": "??????",
+      "order": 19,
+      "numberOfChapters": 150,
+      "sha256": "5b0940ed754218d066d154fc363276ff3bd7cbcc75f1f003dd9ec97171117347",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/PSA/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "PSA",
+        "chapter": 1
+      },
+      "lastChapterNumber": 150,
+      "lastChapterApiLink": "/api/cmn_cu1/PSA/150.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "PSA",
+        "chapter": 150
+      },
+      "totalNumberOfVerses": 2452
+    },
+    {
+      "id": "PRO",
+      "translationId": "cmn_cu1",
+      "name": "??????",
+      "commonName": "??????",
+      "title": "??????",
+      "order": 20,
+      "numberOfChapters": 31,
+      "sha256": "fd4f109a69690fcde33534f67c1ab5379eb89374d415cf12eb62b669043bc665",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/PRO/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "PRO",
+        "chapter": 1
+      },
+      "lastChapterNumber": 31,
+      "lastChapterApiLink": "/api/cmn_cu1/PRO/31.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "PRO",
+        "chapter": 31
+      },
+      "totalNumberOfVerses": 913
+    },
+    {
+      "id": "ECC",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 21,
+      "numberOfChapters": 12,
+      "sha256": "cb4b5dc2f5f576bc24ed28d4f0a277eabb9b89066dd45dcb45de40feeef4a7b3",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/ECC/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "ECC",
+        "chapter": 1
+      },
+      "lastChapterNumber": 12,
+      "lastChapterApiLink": "/api/cmn_cu1/ECC/12.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "ECC",
+        "chapter": 12
+      },
+      "totalNumberOfVerses": 221
+    },
+    {
+      "id": "SNG",
+      "translationId": "cmn_cu1",
+      "name": "??????",
+      "commonName": "??????",
+      "title": "??????",
+      "order": 22,
+      "numberOfChapters": 8,
+      "sha256": "bbfe8b2c03787aad1e111d0026d94828cfe2cc07a28452da37fbe3a3300d0c7c",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/SNG/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "SNG",
+        "chapter": 1
+      },
+      "lastChapterNumber": 8,
+      "lastChapterApiLink": "/api/cmn_cu1/SNG/8.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "SNG",
+        "chapter": 8
+      },
+      "totalNumberOfVerses": 117
+    },
+    {
+      "id": "ISA",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 23,
+      "numberOfChapters": 66,
+      "sha256": "9c5b8b370183ac8490a11ebd367d260ac6d840e6ed1179d08c8d6ede3af3431b",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/ISA/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "ISA",
+        "chapter": 1
+      },
+      "lastChapterNumber": 66,
+      "lastChapterApiLink": "/api/cmn_cu1/ISA/66.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "ISA",
+        "chapter": 66
+      },
+      "totalNumberOfVerses": 1290
+    },
+    {
+      "id": "JER",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 24,
+      "numberOfChapters": 52,
+      "sha256": "0304e6a8c60a0184ce5d7f1b45c5709027f3b54ba9e841fcaaf82ab73d002092",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/JER/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JER",
+        "chapter": 1
+      },
+      "lastChapterNumber": 52,
+      "lastChapterApiLink": "/api/cmn_cu1/JER/52.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JER",
+        "chapter": 52
+      },
+      "totalNumberOfVerses": 1361
+    },
+    {
+      "id": "LAM",
+      "translationId": "cmn_cu1",
+      "name": "???????????????",
+      "commonName": "???????????????",
+      "title": "???????????????",
+      "order": 25,
+      "numberOfChapters": 5,
+      "sha256": "ce05f7c5632ceb8c0c67129d538d62ea16905b3f3f863d4c35195b2007bbe880",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/LAM/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "LAM",
+        "chapter": 1
+      },
+      "lastChapterNumber": 5,
+      "lastChapterApiLink": "/api/cmn_cu1/LAM/5.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "LAM",
+        "chapter": 5
+      },
+      "totalNumberOfVerses": 154
+    },
+    {
+      "id": "EZK",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 26,
+      "numberOfChapters": 48,
+      "sha256": "c467f7aa65d10f38faba1e9fee207b20de5126b4afa349e0727d6e4f2831d4b8",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/EZK/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "EZK",
+        "chapter": 1
+      },
+      "lastChapterNumber": 48,
+      "lastChapterApiLink": "/api/cmn_cu1/EZK/48.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "EZK",
+        "chapter": 48
+      },
+      "totalNumberOfVerses": 1270
+    },
+    {
+      "id": "DAN",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 27,
+      "numberOfChapters": 12,
+      "sha256": "98f00ed0c8f127bd10a47c35557ec80c81f6312745a86ab6d837d86cbeecb9d9",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/DAN/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "DAN",
+        "chapter": 1
+      },
+      "lastChapterNumber": 12,
+      "lastChapterApiLink": "/api/cmn_cu1/DAN/12.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "DAN",
+        "chapter": 12
+      },
+      "totalNumberOfVerses": 357
+    },
+    {
+      "id": "HOS",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 28,
+      "numberOfChapters": 14,
+      "sha256": "d58c53248881097c0d03e57b14675c5d6b85c63437923603809a92aa3e7ae480",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/HOS/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "HOS",
+        "chapter": 1
+      },
+      "lastChapterNumber": 14,
+      "lastChapterApiLink": "/api/cmn_cu1/HOS/14.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "HOS",
+        "chapter": 14
+      },
+      "totalNumberOfVerses": 196
+    },
+    {
+      "id": "JOL",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 29,
+      "numberOfChapters": 3,
+      "sha256": "6ddb47fae9951fb21f420c7f176814ec4a4af38b73f17599b430225e80e7330e",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/JOL/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JOL",
+        "chapter": 1
+      },
+      "lastChapterNumber": 3,
+      "lastChapterApiLink": "/api/cmn_cu1/JOL/3.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JOL",
+        "chapter": 3
+      },
+      "totalNumberOfVerses": 73
+    },
+    {
+      "id": "AMO",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 30,
+      "numberOfChapters": 9,
+      "sha256": "f210339cfaea938665223228202bf30563bb6d84077aa63960dc2a0854e4da7c",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/AMO/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "AMO",
+        "chapter": 1
+      },
+      "lastChapterNumber": 9,
+      "lastChapterApiLink": "/api/cmn_cu1/AMO/9.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "AMO",
+        "chapter": 9
+      },
+      "totalNumberOfVerses": 146
+    },
+    {
+      "id": "OBA",
+      "translationId": "cmn_cu1",
+      "name": "???????????????",
+      "commonName": "???????????????",
+      "title": "???????????????",
+      "order": 31,
+      "numberOfChapters": 1,
+      "sha256": "d10bf55488be08d7d94707974791e63b73a565c7c43002338a90d347868ba47b",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/OBA/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "OBA",
+        "chapter": 1
+      },
+      "lastChapterNumber": 1,
+      "lastChapterApiLink": "/api/cmn_cu1/OBA/1.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "OBA",
+        "chapter": 1
+      },
+      "totalNumberOfVerses": 21
+    },
+    {
+      "id": "JON",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 32,
+      "numberOfChapters": 4,
+      "sha256": "95f28f8a714040108306a7bcd4abf2c3bb3339e5d28d22c44582127c7313e458",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/JON/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JON",
+        "chapter": 1
+      },
+      "lastChapterNumber": 4,
+      "lastChapterApiLink": "/api/cmn_cu1/JON/4.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JON",
+        "chapter": 4
+      },
+      "totalNumberOfVerses": 48
+    },
+    {
+      "id": "MIC",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 33,
+      "numberOfChapters": 7,
+      "sha256": "26ac439b63e8c2423624ccb44de3910545feb4ec31acfafe128a4a60b1447962",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/MIC/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "MIC",
+        "chapter": 1
+      },
+      "lastChapterNumber": 7,
+      "lastChapterApiLink": "/api/cmn_cu1/MIC/7.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "MIC",
+        "chapter": 7
+      },
+      "totalNumberOfVerses": 105
+    },
+    {
+      "id": "NAM",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 34,
+      "numberOfChapters": 3,
+      "sha256": "fa1e8d5a6854079f2921dadc76fd89d028c00a5efc3e8811d7fe1779c144719f",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/NAM/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "NAM",
+        "chapter": 1
+      },
+      "lastChapterNumber": 3,
+      "lastChapterApiLink": "/api/cmn_cu1/NAM/3.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "NAM",
+        "chapter": 3
+      },
+      "totalNumberOfVerses": 47
+    },
+    {
+      "id": "HAB",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 35,
+      "numberOfChapters": 3,
+      "sha256": "9726f93ea9e6419c08084918c4088b52c1fdf3e4a5d84fcb6f6c9630c8dd5cf5",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/HAB/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "HAB",
+        "chapter": 1
+      },
+      "lastChapterNumber": 3,
+      "lastChapterApiLink": "/api/cmn_cu1/HAB/3.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "HAB",
+        "chapter": 3
+      },
+      "totalNumberOfVerses": 56
+    },
+    {
+      "id": "ZEP",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 36,
+      "numberOfChapters": 3,
+      "sha256": "14c70a221ce2c1f859278c9a0352431b69b1855555bbf92c6235f142b86bcb7d",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/ZEP/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "ZEP",
+        "chapter": 1
+      },
+      "lastChapterNumber": 3,
+      "lastChapterApiLink": "/api/cmn_cu1/ZEP/3.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "ZEP",
+        "chapter": 3
+      },
+      "totalNumberOfVerses": 52
+    },
+    {
+      "id": "HAG",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 37,
+      "numberOfChapters": 2,
+      "sha256": "836b4bd2290b879c13d540d867e39d03c2e8c907122334ffe4effba7545994a3",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/HAG/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "HAG",
+        "chapter": 1
+      },
+      "lastChapterNumber": 2,
+      "lastChapterApiLink": "/api/cmn_cu1/HAG/2.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "HAG",
+        "chapter": 2
+      },
+      "totalNumberOfVerses": 38
+    },
+    {
+      "id": "ZEC",
+      "translationId": "cmn_cu1",
+      "name": "???????????????",
+      "commonName": "???????????????",
+      "title": "???????????????",
+      "order": 38,
+      "numberOfChapters": 14,
+      "sha256": "cbd9db3c9ec1bcec7c3b6390bdae59336d7b29020aa06050e44b92da35e8bd3c",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/ZEC/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "ZEC",
+        "chapter": 1
+      },
+      "lastChapterNumber": 14,
+      "lastChapterApiLink": "/api/cmn_cu1/ZEC/14.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "ZEC",
+        "chapter": 14
+      },
+      "totalNumberOfVerses": 211
+    },
+    {
+      "id": "MAL",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 39,
+      "numberOfChapters": 4,
+      "sha256": "034f7db7633ba8cb19239af3670a6054263c9d15a5531619c7a2e8c7c5e97794",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/MAL/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "MAL",
+        "chapter": 1
+      },
+      "lastChapterNumber": 4,
+      "lastChapterApiLink": "/api/cmn_cu1/MAL/4.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "MAL",
+        "chapter": 4
+      },
+      "totalNumberOfVerses": 55
+    },
+    {
+      "id": "MAT",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 40,
+      "numberOfChapters": 28,
+      "sha256": "08dea09c7e18cc4e75164677f6072b95a54103efab39c8af4cd706e1140abd50",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/MAT/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "MAT",
+        "chapter": 1
+      },
+      "lastChapterNumber": 28,
+      "lastChapterApiLink": "/api/cmn_cu1/MAT/28.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "MAT",
+        "chapter": 28
+      },
+      "totalNumberOfVerses": 1069
+    },
+    {
+      "id": "MRK",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 41,
+      "numberOfChapters": 16,
+      "sha256": "2bc007273b40f534e67701b1bb43f303ecc219fd06d5ff943ef785c78f1182ba",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/MRK/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "MRK",
+        "chapter": 1
+      },
+      "lastChapterNumber": 16,
+      "lastChapterApiLink": "/api/cmn_cu1/MRK/16.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "MRK",
+        "chapter": 16
+      },
+      "totalNumberOfVerses": 676
+    },
+    {
+      "id": "LUK",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 42,
+      "numberOfChapters": 24,
+      "sha256": "0a827a685bb6afb2422df0a328dd3bad4e8c7aa4bfa722db3c44dad59aeb5baa",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/LUK/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "LUK",
+        "chapter": 1
+      },
+      "lastChapterNumber": 24,
+      "lastChapterApiLink": "/api/cmn_cu1/LUK/24.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "LUK",
+        "chapter": 24
+      },
+      "totalNumberOfVerses": 1146
+    },
+    {
+      "id": "JHN",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 43,
+      "numberOfChapters": 21,
+      "sha256": "1c0fda9e426af0bb6b3d88da868060c39b0d4609798f287c93bf8fe5ac2fa80f",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/JHN/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JHN",
+        "chapter": 1
+      },
+      "lastChapterNumber": 21,
+      "lastChapterApiLink": "/api/cmn_cu1/JHN/21.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JHN",
+        "chapter": 21
+      },
+      "totalNumberOfVerses": 877
+    },
+    {
+      "id": "ACT",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 44,
+      "numberOfChapters": 28,
+      "sha256": "1189d00ecbb832ae6be304533a4c10ae587684339261498ce4771d85f44c12e5",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/ACT/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "ACT",
+        "chapter": 1
+      },
+      "lastChapterNumber": 28,
+      "lastChapterApiLink": "/api/cmn_cu1/ACT/28.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "ACT",
+        "chapter": 28
+      },
+      "totalNumberOfVerses": 1001
+    },
+    {
+      "id": "ROM",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 45,
+      "numberOfChapters": 16,
+      "sha256": "b9be5d35bd92cb6d348ea481a6fb73bef74a5861e18a9ef00c9b19772b6e8129",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/ROM/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "ROM",
+        "chapter": 1
+      },
+      "lastChapterNumber": 16,
+      "lastChapterApiLink": "/api/cmn_cu1/ROM/16.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "ROM",
+        "chapter": 16
+      },
+      "totalNumberOfVerses": 433
+    },
+    {
+      "id": "1CO",
+      "translationId": "cmn_cu1",
+      "name": "???????????????",
+      "commonName": "???????????????",
+      "title": "???????????????",
+      "order": 46,
+      "numberOfChapters": 16,
+      "sha256": "58721c4c81e84430fff62a1b233e41a608284b0b851fb9a8d469702bd1c5623e",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/1CO/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1CO",
+        "chapter": 1
+      },
+      "lastChapterNumber": 16,
+      "lastChapterApiLink": "/api/cmn_cu1/1CO/16.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1CO",
+        "chapter": 16
+      },
+      "totalNumberOfVerses": 437
+    },
+    {
+      "id": "2CO",
+      "translationId": "cmn_cu1",
+      "name": "???????????????",
+      "commonName": "???????????????",
+      "title": "???????????????",
+      "order": 47,
+      "numberOfChapters": 13,
+      "sha256": "24b57577771eef1c70ba2c73f7f87980a5337fdd2f81848b1f957e9a018be95e",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/2CO/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2CO",
+        "chapter": 1
+      },
+      "lastChapterNumber": 13,
+      "lastChapterApiLink": "/api/cmn_cu1/2CO/13.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2CO",
+        "chapter": 13
+      },
+      "totalNumberOfVerses": 257
+    },
+    {
+      "id": "GAL",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 48,
+      "numberOfChapters": 6,
+      "sha256": "562313e310c6f1d94ed5129ace17d69a34c96343930aaf2d9c844748b71d8bf4",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/GAL/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "GAL",
+        "chapter": 1
+      },
+      "lastChapterNumber": 6,
+      "lastChapterApiLink": "/api/cmn_cu1/GAL/6.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "GAL",
+        "chapter": 6
+      },
+      "totalNumberOfVerses": 149
+    },
+    {
+      "id": "EPH",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 49,
+      "numberOfChapters": 6,
+      "sha256": "2ac18dbf4261729a6066f17020268ade9794f1e51a047d656eaddb61447bb9b3",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/EPH/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "EPH",
+        "chapter": 1
+      },
+      "lastChapterNumber": 6,
+      "lastChapterApiLink": "/api/cmn_cu1/EPH/6.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "EPH",
+        "chapter": 6
+      },
+      "totalNumberOfVerses": 154
+    },
+    {
+      "id": "PHP",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 50,
+      "numberOfChapters": 4,
+      "sha256": "0b67e21bea49ecdcf83e746634fdf9aff173b3d803838c9d68267d3cd9fceabf",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/PHP/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "PHP",
+        "chapter": 1
+      },
+      "lastChapterNumber": 4,
+      "lastChapterApiLink": "/api/cmn_cu1/PHP/4.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "PHP",
+        "chapter": 4
+      },
+      "totalNumberOfVerses": 104
+    },
+    {
+      "id": "COL",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 51,
+      "numberOfChapters": 4,
+      "sha256": "e7835277935d3f0b0ccafb103d7ddce3e4f9445b7d2d27a2c4f91d5d7c775acc",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/COL/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "COL",
+        "chapter": 1
+      },
+      "lastChapterNumber": 4,
+      "lastChapterApiLink": "/api/cmn_cu1/COL/4.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "COL",
+        "chapter": 4
+      },
+      "totalNumberOfVerses": 94
+    },
+    {
+      "id": "1TH",
+      "translationId": "cmn_cu1",
+      "name": "?????????????????????",
+      "commonName": "?????????????????????",
+      "title": "?????????????????????",
+      "order": 52,
+      "numberOfChapters": 5,
+      "sha256": "7b779bb57cdb15502b32872ce7115f34d550b7e02fcb8944aaa603955206b944",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/1TH/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1TH",
+        "chapter": 1
+      },
+      "lastChapterNumber": 5,
+      "lastChapterApiLink": "/api/cmn_cu1/1TH/5.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1TH",
+        "chapter": 5
+      },
+      "totalNumberOfVerses": 89
+    },
+    {
+      "id": "2TH",
+      "translationId": "cmn_cu1",
+      "name": "?????????????????????",
+      "commonName": "?????????????????????",
+      "title": "?????????????????????",
+      "order": 53,
+      "numberOfChapters": 3,
+      "sha256": "d06899dc062ef78a40595ed97061020d0ece28da87d42eda6b730ed5aaa56052",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/2TH/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2TH",
+        "chapter": 1
+      },
+      "lastChapterNumber": 3,
+      "lastChapterApiLink": "/api/cmn_cu1/2TH/3.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2TH",
+        "chapter": 3
+      },
+      "totalNumberOfVerses": 47
+    },
+    {
+      "id": "1TI",
+      "translationId": "cmn_cu1",
+      "name": "???????????????",
+      "commonName": "???????????????",
+      "title": "???????????????",
+      "order": 54,
+      "numberOfChapters": 6,
+      "sha256": "7a71c1757ffd1afec829c2e11c9e9b9c42d2262a479a215701e5cb67a85f1043",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/1TI/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1TI",
+        "chapter": 1
+      },
+      "lastChapterNumber": 6,
+      "lastChapterApiLink": "/api/cmn_cu1/1TI/6.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1TI",
+        "chapter": 6
+      },
+      "totalNumberOfVerses": 113
+    },
+    {
+      "id": "2TI",
+      "translationId": "cmn_cu1",
+      "name": "???????????????",
+      "commonName": "???????????????",
+      "title": "???????????????",
+      "order": 55,
+      "numberOfChapters": 4,
+      "sha256": "f8ff7ac988b9389fdd3904c7a67a2f226a2ec6074b90a16b7ae6ccb9d1d10e20",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/2TI/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2TI",
+        "chapter": 1
+      },
+      "lastChapterNumber": 4,
+      "lastChapterApiLink": "/api/cmn_cu1/2TI/4.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2TI",
+        "chapter": 4
+      },
+      "totalNumberOfVerses": 83
+    },
+    {
+      "id": "TIT",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 56,
+      "numberOfChapters": 3,
+      "sha256": "df519a01846b1c55f438a1b8917fff8825afa6339ebe49bdba4ca0ed1d15b991",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/TIT/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "TIT",
+        "chapter": 1
+      },
+      "lastChapterNumber": 3,
+      "lastChapterApiLink": "/api/cmn_cu1/TIT/3.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "TIT",
+        "chapter": 3
+      },
+      "totalNumberOfVerses": 46
+    },
+    {
+      "id": "PHM",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 57,
+      "numberOfChapters": 1,
+      "sha256": "08eda5c92c35af6006f0419b43b8d1792918d5e74e91a5328572a6f711d5ba68",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/PHM/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "PHM",
+        "chapter": 1
+      },
+      "lastChapterNumber": 1,
+      "lastChapterApiLink": "/api/cmn_cu1/PHM/1.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "PHM",
+        "chapter": 1
+      },
+      "totalNumberOfVerses": 25
+    },
+    {
+      "id": "HEB",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 58,
+      "numberOfChapters": 13,
+      "sha256": "c9357b1abea7f0009d4240b5227cc4f95c04e36ce81e550723fc238f7bfdeca6",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/HEB/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "HEB",
+        "chapter": 1
+      },
+      "lastChapterNumber": 13,
+      "lastChapterApiLink": "/api/cmn_cu1/HEB/13.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "HEB",
+        "chapter": 13
+      },
+      "totalNumberOfVerses": 303
+    },
+    {
+      "id": "JAS",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 59,
+      "numberOfChapters": 5,
+      "sha256": "790febd3f3cb0cfd86782e1d3631252e3ac92a0d653f4aa63703c9de003176b1",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/JAS/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JAS",
+        "chapter": 1
+      },
+      "lastChapterNumber": 5,
+      "lastChapterApiLink": "/api/cmn_cu1/JAS/5.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JAS",
+        "chapter": 5
+      },
+      "totalNumberOfVerses": 108
+    },
+    {
+      "id": "1PE",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 60,
+      "numberOfChapters": 5,
+      "sha256": "0a45679d5ffd00e06bf3d99830b254dec657486607cd34ace1df853867a14519",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/1PE/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1PE",
+        "chapter": 1
+      },
+      "lastChapterNumber": 5,
+      "lastChapterApiLink": "/api/cmn_cu1/1PE/5.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1PE",
+        "chapter": 5
+      },
+      "totalNumberOfVerses": 105
+    },
+    {
+      "id": "2PE",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 61,
+      "numberOfChapters": 3,
+      "sha256": "aef72a68eb35849807f56f88a5dc4ba92d7d22f1f63d60e75d0c3e2c5a04b8b8",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/2PE/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2PE",
+        "chapter": 1
+      },
+      "lastChapterNumber": 3,
+      "lastChapterApiLink": "/api/cmn_cu1/2PE/3.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2PE",
+        "chapter": 3
+      },
+      "totalNumberOfVerses": 61
+    },
+    {
+      "id": "1JN",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 62,
+      "numberOfChapters": 5,
+      "sha256": "788ae62b4117ae3d44a2e6806f277a35a13a76e2eff9eca237a83d04a1065d1c",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/1JN/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1JN",
+        "chapter": 1
+      },
+      "lastChapterNumber": 5,
+      "lastChapterApiLink": "/api/cmn_cu1/1JN/5.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "1JN",
+        "chapter": 5
+      },
+      "totalNumberOfVerses": 105
+    },
+    {
+      "id": "2JN",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 63,
+      "numberOfChapters": 1,
+      "sha256": "5d73beadcc6a3a41099a5e8c4ac806c964ab6a8fef828e2f7223125417f9690f",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/2JN/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2JN",
+        "chapter": 1
+      },
+      "lastChapterNumber": 1,
+      "lastChapterApiLink": "/api/cmn_cu1/2JN/1.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "2JN",
+        "chapter": 1
+      },
+      "totalNumberOfVerses": 13
+    },
+    {
+      "id": "3JN",
+      "translationId": "cmn_cu1",
+      "name": "????????????",
+      "commonName": "????????????",
+      "title": "????????????",
+      "order": 64,
+      "numberOfChapters": 1,
+      "sha256": "9073915f2c8ded0e194e3a1e60b1ad98804c75b951666506bc59b78800df3b90",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/3JN/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "3JN",
+        "chapter": 1
+      },
+      "lastChapterNumber": 1,
+      "lastChapterApiLink": "/api/cmn_cu1/3JN/1.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "3JN",
+        "chapter": 1
+      },
+      "totalNumberOfVerses": 15
+    },
+    {
+      "id": "JUD",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 65,
+      "numberOfChapters": 1,
+      "sha256": "66acd9004c8fcfa89a2ba584ffeb77bc30d7f43dc899e25cdf3dfe556e6587a4",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/JUD/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JUD",
+        "chapter": 1
+      },
+      "lastChapterNumber": 1,
+      "lastChapterApiLink": "/api/cmn_cu1/JUD/1.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "JUD",
+        "chapter": 1
+      },
+      "totalNumberOfVerses": 25
+    },
+    {
+      "id": "REV",
+      "translationId": "cmn_cu1",
+      "name": "?????????",
+      "commonName": "?????????",
+      "title": "?????????",
+      "order": 66,
+      "numberOfChapters": 22,
+      "sha256": "26cce546d563605c22744916e478958c1f2dda4da6f51e28c9fc617468770b79",
+      "firstChapterNumber": 1,
+      "firstChapterApiLink": "/api/cmn_cu1/REV/1.json",
+      "firstChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "REV",
+        "chapter": 1
+      },
+      "lastChapterNumber": 22,
+      "lastChapterApiLink": "/api/cmn_cu1/REV/22.json",
+      "lastChapterReference": {
+        "translationId": "cmn_cu1",
+        "book": "REV",
+        "chapter": 22
+      },
+      "totalNumberOfVerses": 405
+    }
+  ]
+}
