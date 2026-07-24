@@ -1,0 +1,9 @@
+[submodule "data/morphhb"]
+	path = data/morphhb
+	url = https://github.com/openscriptures/morphhb.git
+[submodule "data/sblgnt"]
+	path = data/sblgnt
+	url = https://github.com/morphgnt/sblgnt.git
+[submodule "data/strongs"]
+	path = data/strongs
+	url = https://github.com/openscriptures/strongs.git
