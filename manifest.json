@@ -1,0 +1,95 @@
+{
+  "id": "intermediate-bible",
+  "name": "Intermediate Bible",
+  "short_name": "Bible",
+  "description": "Pembaca Alkitab banding-terjemahan dengan teks asli Ibrani dan Yunani, kamus Strong's, stabilo, catatan beserta foto dan rekaman suara, renungan harian, serta mode offline.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "any",
+  "background_color": "#FBF9F4",
+  "theme_color": "#8A6D1F",
+  "categories": ["books", "education", "lifestyle"],
+  "prefer_related_applications": false,
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "icons": [
+    { "src": "icon-48.png",  "sizes": "48x48",   "type": "image/png", "purpose": "any" },
+    { "src": "icon-72.png",  "sizes": "72x72",   "type": "image/png", "purpose": "any" },
+    { "src": "icon-96.png",  "sizes": "96x96",   "type": "image/png", "purpose": "any" },
+    { "src": "icon-128.png", "sizes": "128x128", "type": "image/png", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-256.png", "sizes": "256x256", "type": "image/png", "purpose": "any" },
+    { "src": "icon-384.png", "sizes": "384x384", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-192-maskable.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-baca.png",
+      "sizes": "412x915",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Membaca dengan dua terjemahan berdampingan"
+    },
+    {
+      "src": "screenshot-tutorial.png",
+      "sizes": "412x915",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Panduan cara pakai di dalam aplikasi"
+    },
+    {
+      "src": "screenshot-pasal.png",
+      "sizes": "412x915",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Papan angka untuk membuka kitab dan pasal"
+    },
+    {
+      "src": "screenshot-lebar.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Tampilan layar lebar"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Cari ayat",
+      "short_name": "Cari",
+      "description": "Cari kata atau langsung buka referensi seperti Kejadian 10:10",
+      "url": "./#cari",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Catatan",
+      "short_name": "Catatan",
+      "description": "Buka daftar catatan tersimpan",
+      "url": "./#catatan",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Renungan harian",
+      "short_name": "Renungan",
+      "description": "Bacaan Perjanjian Lama, Perjanjian Baru, dan Amsal hari ini",
+      "url": "./#renungan",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Tulis catatan baru",
+      "short_name": "Catatan baru",
+      "description": "Langsung tulis catatan untuk pasal yang sedang dibuka",
+      "url": "./#catatan-baru",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ],
+  "note_taking": {
+    "new_note_url": "./#catatan-baru"
+  }
+}
