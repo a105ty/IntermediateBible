@@ -122,6 +122,8 @@ h1.title span{color:var(--ink2)}
 .iw .gl.dim{color:var(--ink2);font-size:9.5px}
 .iw .st{font-size:8.5px;color:var(--accent);font-weight:700}
 .ilnote{font-size:11px;color:var(--ink2);margin:0 9px 14px;line-height:1.5}
+.bigword{font-size:24px;color:var(--ink);line-height:1.6;margin:2px 0 2px;
+  font-family:"Times New Roman","SBL Hebrew","SBL Greek",serif}
 
 /* ---------- tools ---------- */
 .tools{position:sticky;bottom:60px;margin-top:20px;background:var(--panel);border:1px solid var(--line);
@@ -724,20 +726,26 @@ function gloss(dict, sn){
 }
 /* Susun baris arti sesuai pilihan pengguna.
    Mode "mix" menampilkan Indonesia + 中文 + Inggris bertumpuk. */
-function glossLines(g){
+const trKey = s => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+                     .toLowerCase().replace(/[^a-z]/g,"");
+/* surfTr = transliterasi kata sebenarnya yang SUDAH tampil di atas baris ini.
+   Kalau transliterasi kata dasar dari kamus ternyata sama persis, jangan
+   ditampilkan dua kali. */
+function glossLines(g, surfTr){
   const out = [];
   const push = (v,cls) => { if(v) out.push([v,cls]); };
+  const lt = (surfTr && g.tr && trKey(g.tr) === trKey(surfTr)) ? "" : g.tr;
   switch(S.gloss){
-    case "id":  push(g.id || g.tr || g.en, "gl"); break;
-    case "zh":  push(g.zh || g.tr || g.en, "gl zh"); break;
-    case "en":  push(g.en || g.tr, "gl"); break;
+    case "id":  push(g.id || g.en || lt, "gl"); break;
+    case "zh":  push(g.zh || g.en || lt, "gl zh"); break;
+    case "en":  push(g.en || lt, "gl"); break;
     case "mix":
       push(g.id, "gl");
       push(g.zh, "gl zh");
-      push(g.en || (!g.id && !g.zh ? g.tr : ""), "gl dim");
-      if(!out.length) push(g.tr, "gl dim");
+      push(g.en, "gl dim");
+      if(!out.length) push(lt, "gl dim");
       break;
-    default:    push(g.id || g.tr || g.en, "gl");
+    default:    push(g.id || g.en || lt, "gl");
   }
   return out;
 }
@@ -765,6 +773,10 @@ const SEED = [
   {id:"eng_asv", name:"American Standard Version",      abbr:"ASV",  lang:"English",   books:66, probe:true},
   {id:"eng_net", name:"New English Translation",        abbr:"NET",  lang:"English",   books:66, probe:true},
   {id:"ENGWEBP", name:"World English Bible",            abbr:"WEB",  lang:"English",   books:66},
+  // Berhak cipta -> tidak ada di helloao. Diambil langsung dari API penerbit
+  // dan hanya jalan kalau pengguna mengisi kunci API-nya sendiri di ⚙.
+  {id:"ESV",     name:"English Standard Version",      abbr:"ESV",  lang:"English",   books:66, api:"esv"},
+  {id:"NLT",     name:"New Living Translation",        abbr:"NLT",  lang:"English",   books:66, api:"nlt"},
   {id:"cmn_cu1", name:"新标点和合本 (简体)",             abbr:"CUV简", lang:"中文",     books:66, cjk:true},
   {id:"cmn_cuv", name:"新標點和合本 (繁體)",             abbr:"CUV繁", lang:"中文",     books:66, cjk:true},
   {id:"cmn_cbt", name:"當代譯本",                       abbr:"CCB",  lang:"中文",     books:66, cjk:true},
@@ -942,26 +954,196 @@ async function pull(){
    PASAL
    ========================================================= */
 const chCache = new Map(), inflight = new Map();
+
+/* Versi mesin teks. Dinaikkan setiap kali aturan spasi/penggabungan berubah,
+   supaya unduhan offline lama — yang teksnya dirakit dengan aturan lama —
+   bisa dikenali dan dirapikan ulang saat dimuat (lihat offlineLoad). */
+const TEXT_ENGINE = 3;
+
+const RX_CJK   = /[\u2E80-\u9FFF\uF900-\uFAFF\uFF00-\uFFEF]/;
+const RX_CLOSE = /^[,.;:!?%\u2019\u201D\u00BB)\]}\u2026]/;   // menempel ke kata sebelumnya
+const RX_OPEN  = /[(\[{\u2018\u201C\u00AB\u2014-]$/;          // menempel ke kata sesudahnya
+
+/* Rapikan spasi satu potong teks ayat.
+   Dua arah perbaikan:
+   1. spasi yang HILANG sesudah tanda baca — "keadilan,tetapi" -> "keadilan, tetapi";
+   2. spasi yang BERLEBIH sebelum tanda baca — "keadilan ," -> "keadilan,".
+   Syaratnya sempit supaya tidak merusak yang benar: sesudah tanda baca harus
+   ada HURUF, jadi "3:16", "1.5", dan kutip penutup (,") tidak ikut disisipi.
+   Teks CJK dilewati — bahasa itu memang tidak memakai spasi antar kata. */
+function normTxt(s){
+  s = (s || "").replace(/\u00a0/g," ").replace(/\s+/g," ").trim();
+  if(!s || RX_CJK.test(s)) return s;
+  return s
+    .replace(/([,;:])(?=\p{L})/gu, "$1 ")
+    .replace(/([.!?])(?=\p{L})/gu, "$1 ")
+    .replace(/([\u201D\u00BB])(?=\p{L})/gu, "$1 ")
+    .replace(/(\p{L})(?=[\u201C\u00AB])/gu, "$1 ")
+    .replace(/\s+([,.;:!?\u2019\u201D\u00BB)\]}])/g, "$1")
+    .replace(/([(\[{\u2018\u201C\u00AB])\s+/g, "$1")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+/* Gabungkan potongan-potongan satu ayat.
+   Dulu semuanya disambung dengan join(" ") — itu memperbaiki kata yang
+   menempel, tapi malah menyisipkan spasi di depan koma dan di antara aksara
+   Tionghoa. Sekarang spasi hanya ditambahkan bila kedua sisi memang butuh. */
+function joinPieces(parts){
+  let out = "";
+  for(const raw of parts){
+    const p = (raw || "").replace(/\u00a0/g," ");
+    if(!p) continue;
+    if(!out){ out = p; continue; }
+    const a = out[out.length-1], b = p[0];
+    const glue = /\s/.test(a) || /\s/.test(b) ||
+                 RX_CJK.test(a) || RX_CJK.test(b) ||
+                 RX_CLOSE.test(p) || RX_OPEN.test(out);
+    out += (glue ? "" : " ") + p;
+  }
+  return out;
+}
+
 function flat(c){
   // Setiap potongan (string / FormattedText) di array `content` adalah unit
-  // terpisah (baris puisi, sebelum/sesudah catatan kaki, dst.) dan harus
-  // digabung dengan SPASI — persis seperti dianjurkan dokumentasi API untuk
-  // "heading". Menyambungnya langsung (tanpa spasi) yang dulu menyebabkan
-  // "keadilan,tetapi" atau "kejujurandaripada" pada teks puitis (mis. Amsal).
+  // terpisah: baris puisi, penggal sebelum/sesudah catatan kaki, dan
+  // seterusnya. Potongan yang bukan teks ({noteId}, {lineBreak}, {heading})
+  // tidak menyumbang isi ayat.
   const parts = [];
-  for(const it of c||[]){
-    if(typeof it === "string") parts.push(it);
-    else if(it && typeof it.text === "string") parts.push(it.text);
-    // item lain (referensi catatan kaki, judul sisipan, dst.) tidak menyumbang teks
-  }
-  return parts.join(" ").replace(/\s+/g," ").trim();
+  const walk = list => {
+    for(const it of list || []){
+      if(it == null) continue;
+      if(typeof it === "string"){ parts.push(it); continue; }
+      if(Array.isArray(it)){ walk(it); continue; }
+      if(typeof it.text === "string") parts.push(it.text);
+    }
+  };
+  walk(c);
+  return normTxt(joinPieces(parts));
 }
+/* =========================================================
+   VERSI BERLISENSI (ESV & NLT)
+   Keduanya masih berhak cipta, jadi tidak ada di bible.helloao.org dan
+   tidak boleh disimpan offline. Teksnya diambil langsung dari API resmi
+   penerbit, dan itu butuh kunci API gratis atas nama pengguna sendiri:
+     ESV  -> https://api.esv.org/v3/   (akun esv.org)
+     NLT  -> https://api.nlt.to/       (akun api.nlt.to)
+   Kunci disimpan di perangkat ini saja (localStorage), TIDAK ikut
+   tersinkron ke Supabase — kunci orang lain bukan milik akun ini.
+   ========================================================= */
+const apiKey    = k => (LS.get("key:" + k) || "").trim();
+const setApiKey = (k,v) => LS.set("key:" + k, (v || "").trim());
+const apiProxy  = () => (LS.get("key:proxy") || "").trim();
+
+/* Singkatan kitab yang dipakai API Tyndale (NLT). ESV memakai nama Inggris
+   penuh, jadi cukup pakai b.en. */
+const NLT_ABBR = {
+  kej:"Gen", kel:"Exod", ima:"Lev", bil:"Num", ula:"Deut", yos:"Josh", hak:"Judg",
+  rut:"Ruth", "1sa":"1Sam", "2sa":"2Sam", "1ra":"1Kgs", "2ra":"2Kgs", "1ta":"1Chr",
+  "2ta":"2Chr", ezr:"Ezra", neh:"Neh", est:"Esth", ayb:"Job", mzm:"Ps", ams:"Prov",
+  pkh:"Eccl", kid:"Song", yes:"Isa", yer:"Jer", rat:"Lam", yeh:"Ezek", dan:"Dan",
+  hos:"Hos", yoe:"Joel", amo:"Amos", oba:"Obad", yun:"Jonah", mik:"Mic", nah:"Nah",
+  hab:"Hab", zef:"Zeph", hag:"Hag", zak:"Zech", mal:"Mal",
+  mat:"Matt", mrk:"Mark", luk:"Luke", yoh:"John", kis:"Acts", rom:"Rom",
+  "1ko":"1Cor", "2ko":"2Cor", gal:"Gal", efe:"Eph", flp:"Phil", kol:"Col",
+  "1te":"1Thes", "2te":"2Thes", "1ti":"1Tim", "2ti":"2Tim", tit:"Titus", flm:"Phlm",
+  ibr:"Heb", yak:"Jas", "1pt":"1Pet", "2pt":"2Pet", "1yo":"1Jn", "2yo":"2Jn",
+  "3yo":"3Jn", yud:"Jude", wah:"Rev"
+};
+
+/* Kalau peramban menolak permintaan lintas-domain, pengguna bisa mengisi
+   alamat proksi di ⚙; alamat API ditempel di belakangnya ter-encode. */
+function apiFetch(url, opt){
+  const px = apiProxy();
+  return fetch(px ? px + encodeURIComponent(url) : url, opt);
+}
+function apiErr(e, label){
+  const m = (e && e.message) ? e.message : String(e);
+  if(/failed to fetch|networkerror|load failed|cors/i.test(m))
+    return `${label} tidak bisa dihubungi dari peramban — biasanya karena CORS. Isi "Proksi" di ⚙, atau periksa koneksi.`;
+  return `${label}: ${m}`;
+}
+
+/* Keluaran teks ESV menomori ayat dengan kurung siku: "[1] In the ... [2] ..." */
+function parseBracketVerses(txt){
+  const m = new Map();
+  const re = /\[(\d+)\]/g;
+  let mt, cur = null, from = 0;
+  while((mt = re.exec(txt))){
+    if(cur != null){ const t = normTxt(txt.slice(from, mt.index)); if(t) m.set(cur, t); }
+    cur = +mt[1]; from = re.lastIndex;
+  }
+  if(cur != null){ const t = normTxt(txt.slice(from)); if(t) m.set(cur, t); }
+  return m;
+}
+
+async function fetchESV(b, ch){
+  const key = apiKey("esv");
+  if(!key) return {ok:false, needKey:"esv", msg:"Kunci API ESV belum diisi. Buka ⚙ → “Versi berlisensi (ESV & NLT)”."};
+  const url = "https://api.esv.org/v3/passage/text/?q=" + encodeURIComponent(`${b.en} ${ch}`)
+    + "&include-passage-references=false&include-verse-numbers=true&include-first-verse-numbers=true"
+    + "&include-footnotes=false&include-footnote-body=false&include-headings=false"
+    + "&include-short-copyright=false&include-copyright=false"
+    + "&include-passage-horizontal-lines=false&include-heading-horizontal-lines=false"
+    + "&indent-poetry=false&indent-paragraphs=0&indent-declares=0&indent-psalm-doxology=0";
+  const r = await apiFetch(url, {headers:{Authorization:"Token " + key}});
+  if(r.status === 401 || r.status === 403)
+    return {ok:false, needKey:"esv", msg:"Kunci API ESV ditolak server (" + r.status + "). Periksa kuncinya di ⚙."};
+  if(r.status === 429) return {ok:false, msg:"Kuota harian API ESV habis. Coba lagi besok."};
+  if(!r.ok) return {ok:false, msg:"ESV HTTP " + r.status};
+  const j = await r.json();
+  const txt = (j.passages || []).join("\n").trim();
+  if(!txt) return {ok:false, missing:true, msg:"Bagian ini tidak ada dalam ESV."};
+  const m = parseBracketVerses(txt);
+  if(!m.size) return {ok:false, msg:"Balasan ESV tidak bisa dibaca."};
+  return {ok:true, m};
+}
+
+async function fetchNLT(b, ch){
+  const key = apiKey("nlt");
+  if(!key) return {ok:false, needKey:"nlt", msg:"Kunci API NLT belum diisi. Buka ⚙ → “Versi berlisensi (ESV & NLT)”."};
+  const ref = `${NLT_ABBR[b.id] || b.en}.${ch}`;
+  const url = "https://api.nlt.to/api/passages?ref=" + encodeURIComponent(ref)
+            + "&version=NLT&key=" + encodeURIComponent(key);
+  const r = await apiFetch(url);
+  if(r.status === 401 || r.status === 403)
+    return {ok:false, needKey:"nlt", msg:"Kunci API NLT ditolak server (" + r.status + "). Periksa kuncinya di ⚙."};
+  if(!r.ok) return {ok:false, msg:"NLT HTTP " + r.status};
+  const html = await r.text();
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const m = new Map();
+  doc.querySelectorAll("verse_export").forEach(node => {
+    const vn = Number(node.getAttribute("vn"));
+    if(!Number.isFinite(vn) || vn <= 0) return;
+    const c = node.cloneNode(true);
+    // buang nomor ayat, judul perikop, dan catatan kaki supaya tersisa teksnya
+    c.querySelectorAll("h1,h2,h3,sup,.vn,.tn,.a-tn,.tn-ref,.subhead,.subhead-mid,.chapter-number,.bk_ch_vs_header")
+     .forEach(x => x.remove());
+    const t = normTxt(c.textContent || "");
+    if(t) m.set(vn, t);
+  });
+  if(!m.size) return {ok:false, missing:true, msg:"Bagian ini tidak ada dalam NLT, atau balasannya tidak dikenali."};
+  return {ok:true, m};
+}
+
 async function getCh(vid, bookId, ch){
   const k = `${vid}|${bookId}|${ch}`;
   if(chCache.has(k)) return chCache.get(k);
   if(inflight.has(k)) return inflight.get(k);
   const b = bk(bookId);
+  const ver = VER[vid] || {};
   const p = (async () => {
+    // 0) versi berlisensi: langsung ke API penerbit, tidak lewat helloao
+    //    dan tidak pernah disimpan offline
+    if(ver.api){
+      try{
+        const res = ver.api === "esv" ? await fetchESV(b, ch) : await fetchNLT(b, ch);
+        if(res.ok) chCache.set(k, res);
+        return res;
+      }catch(e){
+        return {ok:false, msg:apiErr(e, ver.abbr || vid)};
+      }finally{ inflight.delete(k); }
+    }
     // 1) teks offline lebih dulu — supaya tetap terbaca tanpa jaringan
     try{
       const off = await offlineLoad(vid);
@@ -1046,7 +1228,98 @@ function gidx(d){
 
 /* =========================================================
    BAHASA ASLI
+   Yang ditampilkan di baris interlinear adalah KATA SEBENARNYA seperti
+   tertulis di naskah (sudah berimbuhan/berinfleksi), bukan kata dasarnya.
+   Transliterasi di bawahnya pun dihitung dari kata itu, bukan diambil dari
+   kamus — kamus Strong's hanya punya transliterasi bentuk dasar, dan itulah
+   yang dulu membuat ἐποίησεν tertulis "poieō". Kata dasarnya tetap
+   ada, tapi tempatnya di kartu penjelasan (wordCard) bersama kata aslinya.
    ========================================================= */
+const GRK_TR = {"α":"a","β":"b","γ":"g","δ":"d","ε":"e","ζ":"z","η":"ē","θ":"th","ι":"i","κ":"k",
+  "λ":"l","μ":"m","ν":"n","ξ":"x","ο":"o","π":"p","ρ":"r","σ":"s","ς":"s","τ":"t",
+  "υ":"y","φ":"ph","χ":"ch","ψ":"ps","ω":"ō"};
+function trGrk(w){
+  const d = (w || "").normalize("NFD");
+  let rough = false, base = "";
+  for(const ch of d){
+    const c = ch.codePointAt(0);
+    if(c === 0x0314){ rough = true; continue; }        // spiritus asper -> h
+    if(c >= 0x0300 && c <= 0x036f) continue;           // aksen, iota subscript, dll.
+    if(/\p{L}/u.test(ch)) base += ch.toLowerCase();
+  }
+  if(!base) return "";
+  const s2 = base
+    .replace(/γ(?=[γκξχ])/g,"n")
+    .replace(/ου/g,"ou").replace(/αυ/g,"au").replace(/ευ/g,"eu")
+    .replace(/ηυ/g,"ēu").replace(/υι/g,"ui");
+  let out = "";
+  for(const ch of s2) out += (GRK_TR[ch] != null ? GRK_TR[ch] : ch);
+  if(rough) out = (out[0] === "r") ? "rh" + out.slice(1) : "h" + out;
+  return out;
+}
+
+const HEB_C = {"א":"ʾ","ב":"b","ג":"g","ד":"d","ה":"h","ו":"w","ז":"z","ח":"kh","ט":"ṭ","י":"y",
+  "כ":"k","ך":"k","ל":"l","מ":"m","ם":"m","נ":"n","ן":"n","ס":"s","ע":"ʿ","פ":"p","ף":"p",
+  "צ":"ts","ץ":"ts","ק":"q","ר":"r","ש":"sh","ת":"t"};
+const HEB_V = {0x05B0:"ə",0x05B1:"e",0x05B2:"a",0x05B3:"o",0x05B4:"i",0x05B5:"e",0x05B6:"e",
+  0x05B7:"a",0x05B8:"a",0x05B9:"o",0x05BA:"o",0x05BB:"u",0x05C7:"o"};
+function trHeb(w){
+  const s2 = (w || "").normalize("NFC");
+  let out = "";
+  for(let i=0;i<s2.length;i++){
+    const ch = s2[i];
+    if(ch === "־" || ch === "-"){ out += "-"; continue; }
+    if(!HEB_C[ch]) continue;                       // tanda yang berdiri sendiri: lewati
+    const marks = [];
+    let j = i + 1;
+    while(j < s2.length){
+      const cc = s2.charCodeAt(j);
+      if(cc === 0x05BE) break;                     // maqaf = pemisah kata
+      if(cc >= 0x0591 && cc <= 0x05C7){ marks.push(cc); j++; }
+      else break;
+    }
+    i = j - 1;
+    if(ch === "ו"){                                // waw: shuruq/holam jadi vokal
+      if(marks.includes(0x05BC)){ out += "u"; continue; }
+      if(marks.includes(0x05B9)){ out += "o"; continue; }
+    }
+    out += (ch === "ש") ? (marks.includes(0x05C2) ? "s" : "sh") : HEB_C[ch];
+    for(const mk of marks){ const v = HEB_V[mk]; if(v) out += v; }
+  }
+  return out.replace(/ə$/,"");
+}
+
+/* Morfologi. Yunani memakai kode MorphGNT (POS + 8 huruf parsing);
+   Ibrani memakai kode OSHM yang bersegmen ("HR/Ncfsa"), dan di sini
+   hanya jenis kata tiap segmennya yang diterjemahkan. */
+const G_POS = {"N-":"kata benda","A-":"kata sifat","RA":"kata sandang","RD":"kata tunjuk",
+  "RI":"kata tanya / tak tentu","RP":"kata ganti orang","RR":"kata ganti penghubung",
+  "C-":"kata sambung","D-":"kata keterangan","I-":"seruan","P-":"kata depan",
+  "V-":"kata kerja","X-":"partikel"};
+const G_TENSE = {P:"kini",I:"imperfek",F:"futur",A:"aoris",X:"perfek",Y:"pluperfek"};
+const G_VOICE = {A:"aktif",M:"medial",P:"pasif"};
+const G_MOOD  = {I:"indikatif",D:"imperatif",S:"subjungtif",O:"optatif",N:"infinitif",P:"partisip"};
+const G_CASE  = {N:"nominatif",G:"genitif",D:"datif",A:"akusatif",V:"vokatif"};
+const G_NUM   = {S:"tunggal",P:"jamak"};
+const G_GEN   = {M:"maskulin",F:"feminin",N:"netral"};
+const G_DEG   = {C:"komparatif",S:"superlatif"};
+function morfGrk(pos, parse){
+  const out = [];
+  if(G_POS[pos]) out.push(G_POS[pos]);
+  const c = (parse || "").padEnd(8,"-");
+  if(/[123]/.test(c[0])) out.push("orang ke-" + c[0]);
+  [[G_TENSE,1],[G_VOICE,2],[G_MOOD,3],[G_CASE,4],[G_NUM,5],[G_GEN,6],[G_DEG,7]]
+    .forEach(([map,i]) => { const v = map[c[i]]; if(v) out.push(v); });
+  return out.join(" · ");
+}
+const H_POS = {A:"kata sifat",C:"kata sambung",D:"kata keterangan",N:"kata benda",
+  P:"kata ganti",R:"kata depan",S:"akhiran pronominal",T:"partikel",V:"kata kerja"};
+function morfHeb(code){
+  if(!code) return "";
+  return code.replace(/^[HA]/,"").split("/").filter(Boolean)
+    .map(seg => H_POS[seg[0]] || seg).join(" + ");
+}
+
 const ilCache = new Map(), hebF = new Map(), grkF = new Map();
 async function getIL(bookId, ch){
   const k = bookId + "|" + ch;
@@ -1071,9 +1344,12 @@ async function heb(b, ch){
       let w;
       while((w = wre.exec(v[2]))){
         const lem = (w[1].match(/lemma="([^"]*)"/) || [,""])[1];
+        const mor = (w[1].match(/morph="([^"]*)"/) || [,""])[1];
         const nums = lem.match(/\d+/g);
         const sn = nums ? "H" + nums[nums.length-1] : null;
-        ws.push({o:w[2].replace(/<[^>]*>/g,"").replace(/\//g,""), s:sn, g:gloss(d,sn)});
+        // isi <w> = kata sebagaimana tertulis di naskah (sudah berimbuhan)
+        const surf = w[2].replace(/<[^>]*>/g,"").replace(/\//g,"");
+        ws.push({o:surf, s:sn, mp:mor, tr:trHeb(surf), g:gloss(d,sn)});
       }
       if(ws.length) m.set(+v[1], ws);
     }
@@ -1097,7 +1373,9 @@ async function grk(b, ch){
       const v = +p[0].slice(4,6);
       const sn = idx.get(bare(p[6])) || null;
       if(!m.has(v)) m.set(v,[]);
-      m.get(v).push({o:p[3], s:sn, g:gloss(d,sn)});
+      // kolom MorphGNT: 0 BCV · 1 jenis kata · 2 parsing · 3 teks apa adanya
+      // · 4 kata tanpa tanda baca · 5 bentuk baku · 6 kata dasar (lemma)
+      m.get(v).push({o:p[3], s:sn, l:p[6], pos:p[1], ps:p[2], tr:trGrk(p[4] || p[3]), g:gloss(d,sn)});
     }
     if(!m.size) return {ok:false, msg:"Pasal ini tidak ada dalam naskah Yunani."};
     return {ok:true, rtl:false, m};
@@ -1246,7 +1524,14 @@ async function offlineLoad(id){
   try{
     const rec = await idb("readonly", st => st.get(id));
     if(!rec || !rec.data) return null;
-    const m = new Map(Object.entries(rec.data));
+    let entries = Object.entries(rec.data);
+    // Unduhan lama dirakit dengan aturan spasi versi sebelumnya, jadi masih
+    // ada kata yang menempel. Karena teks offline dipakai LEBIH DULU daripada
+    // jaringan, perbaikan di flat() saja tidak terasa — jadi teks lama
+    // dirapikan di sini saat dimuat, tanpa harus unduh ulang.
+    const tv = (rec.meta && rec.meta.tv) || 0;
+    if(tv < TEXT_ENGINE) entries = entries.map(([k,v]) => [k, normTxt(v)]);
+    const m = new Map(entries);
     OFF.set(id, m);
     return m;
   }catch{ return null; }
@@ -1338,6 +1623,7 @@ async function perChapter(id, out, onProgress, ctl){
 
 async function downloadVersion(id, onProgress, ctl){
   const v = VER[id] || {};
+  if(v.api) throw new Error("Versi berlisensi tidak boleh disimpan offline");
   const out = {};
   let n = 0, via = "berkas utuh";
   onProgress({pct:0, msg:"Menyiapkan…"});
@@ -1365,7 +1651,7 @@ async function downloadVersion(id, onProgress, ctl){
   const bytes = JSON.stringify(out).length;
   await idb("readwrite", st => st.put({
     id, data:out,
-    meta:{name:v.name || id, abbr:v.abbr || id, verses:n, bytes, at:Date.now(), via}
+    meta:{name:v.name || id, abbr:v.abbr || id, verses:n, bytes, at:Date.now(), via, tv:TEXT_ENGINE}
   }));
   OFF.delete(id);
   NORM_IDX.delete(id);
@@ -1408,12 +1694,15 @@ function offlinePicker(){
       Object.keys(VER).forEach(id => {
         const v = VER[id];
         if(v.broken) return;
+        if(v.api) return;              // ESV/NLT: lisensinya tidak mengizinkan salinan offline
         const meta = savedMap.get(id);
         const row = el("div","res");
         const t = el("div","t");
         t.appendChild(el("b", null, v.name));
+        const stale = meta && ((meta.tv || 0) < TEXT_ENGINE);
         t.appendChild(el("i", null, meta
           ? `Tersimpan · ${meta.verses?.toLocaleString("id-ID") || "?"} ayat · ${fmtMB(meta.bytes||0)}`
+            + (stale ? " · dirakit dengan aturan spasi lama, sudah dirapikan otomatis — unduh ulang untuk hasil terbaik" : "")
           : `${v.lang} · belum diunduh`));
         row.appendChild(t);
 
@@ -1459,6 +1748,9 @@ function offlinePicker(){
         row.appendChild(btn);
         list.appendChild(row);
       });
+
+      if(Object.values(VER).some(v => v.api))
+        list.appendChild(el("p","hint","ESV dan NLT tidak bisa diunduh \u2014 lisensinya tidak mengizinkan penyimpanan teks penuh di perangkat, jadi keduanya selalu perlu jaringan."));
 
       // bahasa asli
       list.appendChild(el("div","sechead","Bahasa asli"));
@@ -1724,7 +2016,13 @@ async function render(){
   if(!nums.size){
     const first = data.find(d => !d.ok);
     const box = el("div","card");
-    if(first && first.missing){
+    if(first && first.needKey){
+      box.appendChild(el("div","sechead","Kunci API belum diisi"));
+      box.appendChild(el("p","hint", first.msg));
+      const b2 = el("button","btn ghost","Buka pengaturan");
+      b2.onclick = () => setPicker();
+      box.appendChild(b2);
+    }else if(first && first.missing){
       box.appendChild(el("div","sechead","Kitab tidak ada di versi ini"));
       box.appendChild(el("p","hint", `${cur().name} tidak termasuk dalam versi yang dipilih. Ini batas terjemahannya, bukan gangguan jaringan.`));
     }else{
@@ -1815,10 +2113,11 @@ async function render(){
         for(const w of ilr.m.get(n)){
           const b = el("div","iw");
           b.appendChild(el("div","o", w.o));
-          const tr = w.g.tr; if(tr) b.appendChild(el("div","tr", tr));
-          for(const [txt,cls] of glossLines(w.g)) b.appendChild(el("div",cls, txt));
+          // transliterasi kata SEBENARNYA, bukan kata dasar dari kamus
+          if(w.tr) b.appendChild(el("div","tr", w.tr));
+          for(const [txt,cls] of glossLines(w.g, w.tr)) b.appendChild(el("div",cls, txt));
           if(w.s) b.appendChild(el("div","st", w.s));
-          if(w.s) b.onclick = () => wordCard(w);
+          b.onclick = () => wordCard(w);
           line.appendChild(b);
         }
         R.appendChild(line);
@@ -1839,20 +2138,39 @@ function tools(){
 
 /* ---------- kartu kata bahasa asli ---------- */
 function wordCard(w){
-  const d = w.s && w.s[0] === "G" ? SG : SH;
-  const e = d ? d[w.s] : null;
-  const tr = e ? (e.translit || e.xlit || "") : "";
+  const grk    = !!(w.s && w.s[0] === "G") || !!w.pos;
+  const d      = grk ? SG : SH;
+  const e      = (d && w.s) ? d[w.s] : null;
+  const lemTr  = e ? (e.translit || e.xlit || "") : "";
+  const lemma  = w.l || (e && e.lemma) || "";
+  const surfTr = w.tr || "";
+  const morf   = grk ? morfGrk(w.pos, w.ps) : morfHeb(w.mp);
+  const rawMor = grk ? [w.pos, w.ps].filter(Boolean).join(" ") : (w.mp || "");
   ov(w.o, box => {
+    // 1) yang benar-benar tertulis di ayat
+    box.appendChild(el("div","sechead","Kata dalam ayat"));
+    box.appendChild(el("div","bigword", w.o));
+    if(surfTr) box.appendChild(el("p","hint", surfTr));
+    if(morf)   box.appendChild(el("p","hint", morf));
+    if(rawMor) box.appendChild(el("p","hint","Kode morfologi: " + rawMor));
+
+    // 2) bentuk kamusnya — arti di bawah selalu arti bentuk ini
+    box.appendChild(el("div","sechead","Bentuk dasar (kamus)"));
+    box.appendChild(el("div","bigword", lemma || "—"));
+    if(lemTr) box.appendChild(el("p","hint", lemTr));
+    if(lemma && lemma !== w.o)
+      box.appendChild(el("p","hint","Kata di ayat adalah bentuk turunan dari kata dasar ini, jadi arti di bawah adalah arti kata dasarnya."));
+
     box.appendChild(el("div","sechead","Nomor Strong's"));
     box.appendChild(el("p","hint", w.s || "—"));
     if(e){
-      if(e.lemma){ box.appendChild(el("div","sechead","Bentuk dasar")); box.appendChild(el("p","hint", e.lemma + (tr ? " · " + tr : ""))); }
       if(e.strongs_def){ box.appendChild(el("div","sechead","Definisi Strong's")); box.appendChild(el("p","hint", e.strongs_def.replace(/\s+/g," ").trim())); }
       if(e.kjv_def){ box.appendChild(el("div","sechead","Diterjemahkan sebagai (KJV)")); box.appendChild(el("p","hint", e.kjv_def.replace(/\s+/g," ").trim())); }
       if(e.derivation){ box.appendChild(el("div","sechead","Asal kata")); box.appendChild(el("p","hint", e.derivation.replace(/\s+/g," ").trim())); }
     }else{
-      box.appendChild(el("p","hint","Kata ini tidak terpetakan ke entri Strong's."));
+      box.appendChild(el("p","hint","Kata ini tidak terpetakan ke entri Strong's, jadi hanya bentuk dan morfologinya yang tersedia."));
     }
+    box.appendChild(el("p","hint","Transliterasi kata dalam ayat dihitung sendiri oleh aplikasi (perkiraan, mengikuti tanda baca naskah). Transliterasi bentuk dasar berasal dari kamus Strong's."));
   });
 }
 
@@ -2288,8 +2606,10 @@ function versionPicker(){
         const v = VER[id];
         const b = el("button","res" + (S.cols.includes(id) ? " on" : ""));
         const t = el("div","t");
+        const noKey = v.api && !apiKey(v.api);
         t.appendChild(el("b", null, v.name + (v.broken ? " — ID tidak berlaku" : "")));
-        t.appendChild(el("i", null, `${v.lang} · ${id}`));
+        t.appendChild(el("i", null, `${v.lang} · ${id}`
+          + (v.api ? (noKey ? " · perlu kunci API (⚙)" : " · lewat API penerbit") : "")));
         b.appendChild(t);
         b.appendChild(el("span","tag" + (v.books === 66 ? " full" : ""), (v.books || "?") + " kitab"));
         b.onclick = () => {
@@ -2620,6 +2940,34 @@ function setPicker(){
     box.appendChild(sel);
     box.appendChild(el("p","hint","346 kata tersering punya arti Indonesia dan 中文. Kata di luar daftar itu ditampilkan sebagai transliterasi — bukan terjemahan karangan. Ketuk kata untuk definisi Strong's lengkap."));
 
+    box.appendChild(el("div","sechead","Versi berlisensi (ESV & NLT)"));
+    box.appendChild(el("p","hint",
+      "ESV dan NLT masih berhak cipta, jadi tidak ada di bible.helloao.org. " +
+      "Aplikasi mengambilnya langsung dari API penerbit, dan itu perlu kunci gratis atas namamu sendiri: " +
+      "ESV lewat api.esv.org/v3/ (akun esv.org), NLT lewat api.nlt.to. " +
+      "Kunci disimpan di perangkat ini saja \u2014 tidak ikut tersinkron ke akun."));
+    [["esv","Kunci API ESV"],["nlt","Kunci API NLT"]].forEach(([k,lbl]) => {
+      box.appendChild(el("label","fld", lbl));
+      const i = el("input","inp");
+      i.type = "text"; i.value = apiKey(k); i.placeholder = "tempel kunci di sini";
+      i.autocapitalize = "off"; i.autocorrect = "off"; i.spellcheck = false;
+      i.onchange = () => {
+        setApiKey(k, i.value);
+        chCache.clear();
+        toast(i.value.trim() ? lbl + " disimpan" : lbl + " dikosongkan");
+        render();
+      };
+      box.appendChild(i);
+    });
+    box.appendChild(el("label","fld","Proksi (opsional)"));
+    const pxi = el("input","inp");
+    pxi.type = "text"; pxi.value = apiProxy(); pxi.placeholder = "https://proksi-kamu/?url=";
+    pxi.autocapitalize = "off"; pxi.spellcheck = false;
+    pxi.onchange = () => { LS.set("key:proxy", pxi.value.trim()); chCache.clear(); toast("Proksi disimpan"); render(); };
+    box.appendChild(pxi);
+    box.appendChild(el("p","hint",
+      "Isi proksi hanya kalau peramban menolak permintaan karena CORS. Alamat API ditempel di belakang teks ini dalam bentuk ter-encode."));
+
     box.appendChild(el("div","sechead","Cadangan"));
     const r2 = el("div","trow");
     const ex = el("button","btn ghost","Ekspor .json");
@@ -2666,7 +3014,9 @@ function setPicker(){
       "Teks: bible.helloao.org (Free Use Bible API). " +
       "Ibrani: OpenScriptures morphhb (WLC, CC BY 4.0). " +
       "Yunani: MorphGNT SBLGNT (teks tunduk SBLGNT EULA, anotasi CC BY-SA 3.0). " +
-      "Strong's: OpenScriptures. Alkitab TB/LAI tidak tersedia karena masih berhak cipta."));
+      "Strong's: OpenScriptures. Alkitab TB/LAI tidak tersedia karena masih berhak cipta. " +
+      "ESV\u00ae: The Holy Bible, English Standard Version\u00ae, \u00a9 Crossway \u2014 diambil lewat API resmi ESV. " +
+      "NLT: Holy Bible, New Living Translation, \u00a9 Tyndale House Foundation \u2014 diambil lewat API resmi NLT."));
   });
 }
 
@@ -2701,7 +3051,8 @@ function tutPicker(){
     sec("Membaca & membandingkan",
       "📖 di kiri atas: pilih kitab dan pasal lewat papan angka. Bisa langsung tekan nomor ayat juga.",
       "Baris pil di bawah topbar: tambah/kurangi kolom terjemahan. Ikon ⇄ di kepala kolom untuk menukar versi kolom itu.",
-      "א menampilkan bahasa asli (Ibrani/Yunani) di bawah tiap ayat. Ketuk sebuah kata untuk melihat entri Strong's.");
+      "א menampilkan bahasa asli (Ibrani/Yunani) di bawah tiap ayat. Yang tampil adalah kata sebagaimana tertulis di naskah, lengkap dengan transliterasinya. Ketuk sebuah kata untuk melihat kata dasarnya, morfologinya, dan entri Strong's.",
+      "ESV dan NLT bisa dipakai sebagai kolom pembanding, tapi keduanya berhak cipta: isi dulu kunci API gratis atas namamu di ⚙ (esv.org untuk ESV, api.nlt.to untuk NLT). Keduanya selalu perlu jaringan dan tidak bisa diunduh offline.");
 
     sec("Mencari (🔍)",
       "Kotak yang sama menerima dua hal: kata biasa, atau referensi ayat seperti “kejadian 10:10”, “kej 10 10”, atau “genesis 10 10”. Untuk referensi, tekan Enter untuk langsung ke ayat itu — ayatnya distabilo dan halaman menggulir ke sana.",
@@ -3288,6 +3639,10 @@ function searchPicker(){
         scopeBox.appendChild(b);
       });
       const abbr = (VER[vid] && VER[vid].abbr) || vid;
+      if(VER[vid] && VER[vid].api){
+        status.textContent = `Mencari di ${abbr} lewat API penerbit — satu pasal = satu permintaan, jadi pilih "Pasal ini" saja supaya kuota API tidak cepat habis.`;
+        return;
+      }
       status.textContent = downloaded
         ? `Mencari di ${abbr} — sudah diunduh, seluruh Alkitab bisa dicari.`
         : `Mencari di ${abbr} — belum diunduh, jadi hanya pasal/kitab yang dipilih yang dicari lewat jaringan. Unduh versi ini lewat ⬇ untuk mencari seluruh Alkitab.`;
