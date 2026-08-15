@@ -1,0 +1,15 @@
+# Konfigurasi deploy proksi ESV/NLT ke Cloudflare Workers.
+# Hanya dipakai kalau kamu memang memasang esv-nlt-proxy.js.
+#
+#   npm i -g wrangler && wrangler login
+#   wrangler secret put ESV_KEY
+#   wrangler secret put NLT_KEY
+#   wrangler secret put ALLOW_ORIGIN     # mis. https://a105ty.github.io
+#   wrangler deploy
+#
+# Kunci TIDAK boleh ditulis di berkas ini — pakai `wrangler secret put`
+# supaya tidak ikut masuk ke riwayat git.
+
+name = "esv-nlt-proxy"
+main = "esv-nlt-proxy.js"
+compatibility_date = "2024-11-01"

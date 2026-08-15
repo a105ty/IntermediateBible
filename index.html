@@ -1857,8 +1857,17 @@ function flat(c){
 const DEFAULT_KEYS = { esv:"ac2341e7a5aa4c6957d0b1dc1ac484f892e0d869", nlt:"" };
 const ownKey    = k => (LS.get("key:" + k) || "").trim();        // punya pengguna
 const apiKey    = k => ownKey(k) || DEFAULT_KEYS[k] || "";       // yang dipakai
+
+/* Proksi bawaan aplikasi. api.esv.org tidak mengirim izin CORS, jadi TANPA
+   proksi, ESV tidak akan pernah tampil di peramban mana pun — proksi ini
+   bukan cadangan, tapi jalur satu-satunya. Kunci ESV/NLT yang sebenarnya
+   disimpan di dalam worker itu sendiri, bukan di sini. Pengguna yang mau
+   memakai proksi lain tinggal isi kolomnya sendiri di ⚙ — punya sendiri
+   selalu menang atas yang bawaan. */
+const DEFAULT_PROXY = "https://sweet-mode-3679.tanokominecraft.workers.dev/?url=";
 const setApiKey = (k,v) => LS.set("key:" + k, (v || "").trim());
-const apiProxy  = () => (LS.get("key:proxy") || "").trim();
+const ownProxy  = () => (LS.get("key:proxy") || "").trim();      // punya pengguna
+const apiProxy  = () => ownProxy() || DEFAULT_PROXY;              // yang dipakai
 
 /* Batas ayat yang boleh disimpan di perangkat menurut ketentuan penerbit.
    Crossway mengizinkan penyimpanan/pengutipan sampai 500 ayat, dan tidak
@@ -1890,9 +1899,27 @@ function apiFetch(url, opt){
 }
 function apiErr(e, label){
   const m = (e && e.message) ? e.message : String(e);
-  if(/failed to fetch|networkerror|load failed|cors/i.test(m))
-    return `${label} tidak bisa dihubungi dari peramban — biasanya karena CORS. Isi "Proksi" di ⚙, atau periksa koneksi.`;
+  if(/failed to fetch|networkerror|load failed|cors/i.test(m)){
+    // api.esv.org tidak mengirim izin CORS, jadi peramban SELALU menolak
+    // panggilan langsung ke sana — sebagus apa pun koneksinya. Ini bukan
+    // gangguan jaringan, melainkan syarat pasang yang belum dipenuhi.
+    if(!apiProxy())
+      return `${label} tidak bisa dipanggil langsung dari peramban: servernya tidak mengizinkan (CORS). `
+           + `Ini bukan soal koneksi — ${label} memang wajib lewat proksi. `
+           + `Buka ⚙ → "Versi berlisensi (ESV & NLT)" → isi kolom Proksi.`;
+    return "Proksi tidak bisa dihubungi. Periksa alamatnya di ⚙ (harus diakhiri \"?url=\"), atau periksa koneksi.";
+  }
   return `${label}: ${m}`;
+}
+
+/* Menempelkan isi balasan galat (kalau ada dan berupa teks pendek) ke pesan
+   status HTTP, supaya galat dari WORKER PROKSI — mis. "Kunci ESV belum
+   diisi di worker" — ikut terlihat, bukan cuma "ESV HTTP 500". */
+async function bodyHint(r){
+  try{
+    const t = (await r.text() || "").trim();
+    return t && t.length < 200 ? ": " + t : "";
+  }catch{ return ""; }
 }
 
 /* Keluaran teks ESV menomori ayat dengan kurung siku: "[1] In the ... [2] ..." */
@@ -1909,11 +1936,10 @@ function parseBracketVerses(txt){
 }
 
 async function fetchESV(b, ch){
-  // Kunci boleh ada di sini ATAU dipegang proksi. Kalau proksi diisi,
-  // aplikasi tidak mengirim kunci apa pun dan proksi yang menambahkannya.
+  // Kunci bawaan aplikasi + proksi bawaan berarti ESV selalu punya sesuatu
+  // untuk dicoba. Kalau pengguna sudah pernah mengosongkan kunci ATAU
+  // proksinya sendiri secara eksplisit, ya dihormati juga.
   const key = apiKey("esv");
-  if(!key && !apiProxy())
-    return {ok:false, needKey:"esv", msg:"Kunci API ESV belum diisi. Buka ⚙ → “Versi berlisensi (ESV & NLT)” — isi kunci sendiri, atau alamat proksi yang menyimpan kuncinya."};
   const url = "https://api.esv.org/v3/passage/text/?q=" + encodeURIComponent(`${b.en} ${ch}`)
     + "&include-passage-references=false&include-verse-numbers=true&include-first-verse-numbers=true"
     + "&include-footnotes=false&include-footnote-body=false&include-headings=false"
@@ -1925,7 +1951,7 @@ async function fetchESV(b, ch){
     return {ok:false, needKey:"esv", msg:"Kunci API ESV ditolak server (" + r.status + "). Periksa kuncinya di ⚙."};
   if(r.status === 429) return {ok:false, needKey:"esv",
     msg:"Jatah harian API ESV habis \u2014 kunci bawaan dipakai bersama semua pengguna. Tempel kunci ESV-mu sendiri di ⚙ (gratis di api.esv.org) untuk jatah terpisah."};
-  if(!r.ok) return {ok:false, msg:"ESV HTTP " + r.status};
+  if(!r.ok) return {ok:false, msg:"ESV HTTP " + r.status + await bodyHint(r)};
   const j = await r.json();
   const txt = (j.passages || []).join("\n").trim();
   if(!txt) return {ok:false, missing:true, msg:"Bagian ini tidak ada dalam ESV."};
@@ -1935,16 +1961,19 @@ async function fetchESV(b, ch){
 }
 
 async function fetchNLT(b, ch){
+  // NLT tidak punya kunci bawaan. Proksi bawaan tetap dipakai (satu proksi
+  // melayani ESV & NLT), tapi kalau worker-nya juga belum diisi kunci NLT,
+  // itu akan kelihatan dari isi balasan galat (lihat bodyHint di bawah).
   const key = apiKey("nlt");
-  if(!key && !apiProxy())
-    return {ok:false, needKey:"nlt", msg:"Kunci API NLT belum diisi. Buka ⚙ → “Versi berlisensi (ESV & NLT)” — isi kunci sendiri, atau alamat proksi yang menyimpan kuncinya."};
+  if(!key)
+    return {ok:false, needKey:"nlt", msg:"Kunci API NLT belum diisi. Buka ⚙ → “Versi berlisensi (ESV & NLT)” — isi kunci sendiri, atau isi NLT_KEY di worker proksi."};
   const ref = `${NLT_ABBR[b.id] || b.en}.${ch}`;
   const url = "https://api.nlt.to/api/passages?ref=" + encodeURIComponent(ref)
             + "&version=NLT" + (key ? "&key=" + encodeURIComponent(key) : "");
   const r = await apiFetch(url);
   if(r.status === 401 || r.status === 403)
     return {ok:false, needKey:"nlt", msg:"Kunci API NLT ditolak server (" + r.status + "). Periksa kuncinya di ⚙."};
-  if(!r.ok) return {ok:false, msg:"NLT HTTP " + r.status};
+  if(!r.ok) return {ok:false, msg:"NLT HTTP " + r.status + await bodyHint(r)};
   const html = await r.text();
   const doc = new DOMParser().parseFromString(html, "text/html");
   const m = new Map();
@@ -1988,7 +2017,7 @@ async function getCh(vid, bookId, ch){
         if(res.ok) chCache.set(k, res);
         return res;
       }catch(e){
-        return {ok:false, msg:apiErr(e, ver.abbr || vid)};
+        return {ok:false, needKey:ver.api, msg:apiErr(e, ver.abbr || vid)};
       }finally{ inflight.delete(k); }
     }
     // 1) teks offline lebih dulu — supaya tetap terbaca tanpa jaringan
@@ -3092,7 +3121,7 @@ async function render(){
     const first = data.find(d => !d.ok);
     const box = el("div","card");
     if(first && first.needKey){
-      box.appendChild(el("div","sechead","Kunci API belum diisi"));
+      box.appendChild(el("div","sechead","Versi berlisensi belum siap dipakai"));
       box.appendChild(el("p","hint", first.msg));
       const b2 = el("button","btn ghost","Buka pengaturan");
       b2.onclick = () => setPicker();
@@ -3681,7 +3710,9 @@ function versionPicker(){
         const v = VER[id];
         const b = el("button","res" + (S.cols.includes(id) ? " on" : ""));
         const t = el("div","t");
-        const noKey = v.api && !apiKey(v.api) && !apiProxy();   // ESV punya kunci bawaan
+        // Proksi kini selalu ada (bawaan), jadi yang membedakan ESV dari NLT
+        // hanyalah apakah versi itu punya kunci — bawaan atau punya sendiri.
+        const noKey = v.api && !apiKey(v.api);
         t.appendChild(el("b", null, v.name + (v.broken ? " — ID tidak berlaku" : "")));
         t.appendChild(el("i", null, `${v.lang} · ${id}`
           + (v.api ? (noKey ? " · perlu kunci API (⚙)" : " · lewat API penerbit") : "")));
@@ -4018,7 +4049,7 @@ function setPicker(){
     box.appendChild(el("div","sechead","Versi berlisensi (ESV & NLT)"));
     box.appendChild(el("p","hint",
       "ESV dan NLT masih berhak cipta, jadi tidak ada di bible.helloao.org dan diambil langsung dari API penerbit. " +
-      "ESV sudah memakai kunci bawaan aplikasi, jadi bisa langsung dipakai \u2014 tapi jatah 5.000 permintaan/hari itu " +
+      "ESV sudah memakai kunci dan proksi bawaan aplikasi, jadi bisa langsung dipakai. Jatah 5.000 permintaan/hari itu " +
       "dibagi bersama semua pengguna. Kalau sering kehabisan, daftar kunci gratismu sendiri di api.esv.org " +
       "(NLT di api.nlt.to) lalu tempel di bawah; kunci pribadi selalu dipakai lebih dulu dan disimpan di perangkat ini saja."));
     [["esv","Kunci API ESV"],["nlt","Kunci API NLT"]].forEach(([k,lbl]) => {
@@ -4036,16 +4067,23 @@ function setPicker(){
       };
       box.appendChild(i);
     });
-    box.appendChild(el("label","fld","Proksi (opsional)"));
+    box.appendChild(el("label","fld","Proksi"));
     const pxi = el("input","inp");
-    pxi.type = "text"; pxi.value = apiProxy(); pxi.placeholder = "https://proksi-kamu/?url=";
+    pxi.type = "text"; pxi.value = ownProxy();
+    pxi.placeholder = "kosong = pakai proksi bawaan aplikasi";
     pxi.autocapitalize = "off"; pxi.spellcheck = false;
-    pxi.onchange = () => { LS.set("key:proxy", pxi.value.trim()); chCache.clear(); toast("Proksi disimpan"); render(); };
+    pxi.onchange = () => {
+      LS.set("key:proxy", pxi.value.trim());
+      chCache.clear();
+      toast(pxi.value.trim() ? "Proksi disimpan" : "Kembali memakai proksi bawaan");
+      render();
+    };
     box.appendChild(pxi);
     box.appendChild(el("p","hint",
-      "Proksi berguna untuk dua hal: menembus penolakan CORS, dan menyimpan kunci API di server sehingga tidak perlu ditaruh di perangkat sama sekali. " +
-      "Kalau proksi diisi, dua kolom kunci di atas boleh dibiarkan kosong — proksi yang akan menambahkan kuncinya. " +
-      "Berkas contoh worker-nya ada di esv-nlt-proxy.js. Alamat API ditempel di belakang teks ini dalam bentuk ter-encode."));
+      "Proksi bawaan sudah aktif (api.esv.org tidak mengirim izin CORS, jadi ESV memang wajib lewat proksi \u2014 kunci saja tidak cukup). " +
+      "Isi kolom ini hanya kalau mau memakai proksi milikmu sendiri; kosongkan lagi untuk kembali ke bawaan. " +
+      "Proksi juga bisa menyimpan kunci NLT di sisi server. Berkas contoh worker-nya ada di esv-nlt-proxy.js. " +
+      "Alamatnya harus diakhiri \u201c?url=\u201d, misalnya https://proksi-kamu.workers.dev/?url="));
 
     box.appendChild(el("div","sechead","Cadangan"));
     const r2 = el("div","trow");

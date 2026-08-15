@@ -1,27 +1,46 @@
 /* Proksi ESV & NLT — Cloudflare Worker.
 
-   Gunanya: kunci API tidak perlu ada di perangkat sama sekali. Aplikasi
-   memanggil  https://proksi-kamu/?url=<alamat API ter-encode>  dan worker
-   ini yang menempelkan kuncinya. Sekalian menyelesaikan masalah CORS.
+   STATUS DI PROYEK INI: sudah dideploy di
+   https://sweet-mode-3679.tanokominecraft.workers.dev/?url= dan alamat itu
+   sudah menjadi DEFAULT_PROXY bawaan di index.html — pengguna aplikasi
+   tidak perlu mengatur apa pun. Berkas INI (yang ikut ke git) tetap versi
+   TANPA kunci — yang berisi kunci sungguhan hanya salinan di dalam
+   dashboard Cloudflare. Kalau perlu mengubah worker itu, edit langsung di
+   dashboard, atau tempel ulang berkas ini ke sana setelah diubah.
+   JANGAN tempel kunci sungguhan ke berkas ini lalu di-commit ke git.
 
-   ── Cara pasang ────────────────────────────────────────────────────────
-   1. npm i -g wrangler   lalu   wrangler login
-   2. Buat wrangler.toml:
-        name = "esv-nlt-proxy"
-        main = "esv-nlt-proxy.js"
-        compatibility_date = "2024-11-01"
-   3. Simpan kunci sebagai secret (tidak ikut masuk kode):
-        wrangler secret put ESV_KEY
-        wrangler secret put NLT_KEY
-   4. Batasi siapa yang boleh memakai — isi alamat aplikasimu:
-        wrangler secret put ALLOW_ORIGIN     -> mis. https://a105ty.github.io
-   5. wrangler deploy
-   6. Di aplikasi: ⚙ → Proksi → https://esv-nlt-proxy.<akun>.workers.dev/?url=
-      Dua kolom kunci di atasnya boleh dikosongkan.
+   KENAPA PROKSI INI WAJIB (bukan opsional):
+   api.esv.org tidak mengirim header CORS, jadi peramban SELALU menolak
+   panggilan langsung ke sana. Kunci API saja tidak cukup — tanpa proksi,
+   ESV tidak akan pernah tampil di aplikasi. Sekalian, kunci jadi tersimpan
+   di sisi server, bukan di perangkat pengguna.
 
-   Catatan: tanpa ALLOW_ORIGIN, worker ini terbuka untuk siapa saja dan
-   kuota API-mu bisa dipakai orang lain. Isi selalu di pemakaian nyata.
+   ── UNTUK MENDEPLOY WORKER BARU (mis. mengganti yang sudah ada) ─────────
+   Cara cepat, lewat dashboard, tanpa memasang apa pun:
+   1. dash.cloudflare.com → Workers & Pages → Create → Start with Hello
+      World → Deploy → Edit code.
+   2. Hapus isinya, tempel seluruh berkas ini, isi ESV_KEY di bawah, Deploy.
+   3. Salin alamat worker-nya, lalu ganti DEFAULT_PROXY di index.html
+      dengan alamat itu + akhiran "/?url=".
+
+   Cara rapi, kunci disimpan sebagai secret (tidak ikut ke git):
+   1. npm i -g wrangler && wrangler login
+   2. wrangler secret put ESV_KEY
+      wrangler secret put NLT_KEY
+      wrangler secret put ALLOW_ORIGIN     # mis. https://<akun>.github.io
+   3. wrangler deploy
+   Kalau secret dipakai, kosongkan kembali konstanta di bawah.
 */
+
+/* Diisi hanya kalau memakai cara cepat di atas, DAN hanya di dalam
+   dashboard Cloudflare — jangan pernah di berkas yang ikut ke git. */
+const ESV_KEY_INLINE = "";
+const NLT_KEY_INLINE = "";
+/* Kosong = siapa pun boleh memakai proksi ini, termasuk di luar aplikasi
+   ini (alamat proksi kini publik, ikut terlihat di index.html). Isi dengan
+   alamat GitHub Pages-mu sendiri, mis. "https://<akun>.github.io", supaya
+   jatah API tidak dipakai orang lain. */
+const ALLOW_ORIGIN_INLINE = "";
 
 const UPSTREAM = {
   "api.esv.org": "esv",
@@ -30,7 +49,10 @@ const UPSTREAM = {
 
 export default {
   async fetch(req, env) {
-    const allow = env.ALLOW_ORIGIN || "*";
+    const ESV_KEY = env.ESV_KEY || ESV_KEY_INLINE;
+    const NLT_KEY = env.NLT_KEY || NLT_KEY_INLINE;
+    const ORIGIN_OK = env.ALLOW_ORIGIN || ALLOW_ORIGIN_INLINE;
+    const allow = ORIGIN_OK || "*";
     const cors = {
       "Access-Control-Allow-Origin": allow,
       "Access-Control-Allow-Methods": "GET,OPTIONS",
@@ -46,7 +68,7 @@ export default {
 
     // Tolak pemanggil dari luar aplikasi kalau ALLOW_ORIGIN diisi.
     const origin = req.headers.get("Origin");
-    if (env.ALLOW_ORIGIN && origin && origin !== env.ALLOW_ORIGIN)
+    if (ORIGIN_OK && origin && origin !== ORIGIN_OK)
       return fail(403, "Origin tidak diizinkan.");
 
     const raw = new URL(req.url).searchParams.get("url");
@@ -62,11 +84,11 @@ export default {
     // Kunci HANYA dari worker. Apa pun yang dikirim klien dibuang.
     const headers = new Headers();
     if (kind === "esv") {
-      if (!env.ESV_KEY) return fail(500, "ESV_KEY belum diatur di worker.");
-      headers.set("Authorization", "Token " + env.ESV_KEY);
+      if (!ESV_KEY) return fail(500, "Kunci ESV belum diisi di worker (ESV_KEY_INLINE atau secret ESV_KEY).");
+      headers.set("Authorization", "Token " + ESV_KEY);
     } else {
-      if (!env.NLT_KEY) return fail(500, "NLT_KEY belum diatur di worker.");
-      target.searchParams.set("key", env.NLT_KEY);
+      if (!NLT_KEY) return fail(500, "Kunci NLT belum diisi di worker (NLT_KEY_INLINE atau secret NLT_KEY).");
+      target.searchParams.set("key", NLT_KEY);
     }
 
     let upstream;
