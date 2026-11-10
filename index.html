@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23201e19'/%3E%3Cpath d='M32 15C25 9 15 11 8 14v36c11-4 19-2 24 4 6-6 14-8 24-4V14C48 11 39 9 32 15Z' fill='none' stroke='%23e4b75a' stroke-width='3'/%3E%3Cpath d='M32 15v39m12-31v16m-8-8h16' stroke='%23e4b75a' stroke-width='3'/%3E%3C/svg%3E">
 <meta name="theme-color" content="#aa873e"><meta name="description" content="Intermediate Bible — pembaca multi-versi, anotasi lokal, dan pencarian bahasa asli.">
-<title>Intermediate Bible — Reader v7 · Local</title>
+<title>Intermediate Bible — Reader v8.2 · Local</title>
 <style>
 :root{--bg:#fbfaf6;--panel:#fff;--raised:#f2eee6;--line:#ded8cc;--ink:#252018;--mute:#786f64;--accent:#9b762b;--soft:#f7edcf;--shadow:0 18px 55px rgba(30,25,17,.13);--fs:18px}
 html[data-theme=dark]{--bg:#13120f;--panel:#201e19;--raised:#29261f;--line:#3d382e;--ink:#ece5d7;--mute:#afa596;--accent:#e4b75a;--soft:#40341f;--shadow:0 18px 55px rgba(0,0,0,.38)}
@@ -173,6 +173,8 @@ html[data-theme=dark]{--bg:#13120f;--panel:#201e19;--raised:#29261f;--line:#3d38
 }
 .reader-shell .vrow .verse-pin:hover,.reader-shell .vrow .verse-pin:focus-visible,.reader-shell .vrow .verse-pin.is-pinned{opacity:1}
 .reader-shell .vrow .verse-pin.is-pinned{color:var(--accent);background:var(--soft);border-color:var(--accent)}
+/* Hanya tampilkan pin untuk bookmark aktif; pemasangan melalui tahan ayat ±½ detik. */
+.reader-shell .vrow .verse-pin[hidden]{display:none!important}
 .reader-shell .mark-group .vrow .verse-pin{right:7px}
 .palette-legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:7px;padding:10px 0;margin:5px 0 10px}
 .palette-item{display:flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:8px;background:var(--raised);font-size:11px;padding:7px}
@@ -302,6 +304,40 @@ html[data-theme=dark]{--bg:#13120f;--panel:#201e19;--raised:#29261f;--line:#3d38
  .version-picker-intro{margin-bottom:9px}
 }
 @media(prefers-reduced-motion:reduce){.version-card{transition:none}}
+
+/* v8.2 — highlight is independent from the edition palette and golden UI accent.
+   On a marked run, the selected highlight is the ONLY source of its outline
+   and background colour. Unmarked versions retain their 11 individual tints. */
+html{--highlight-neutral:#ffffff}
+html[data-theme="dark"]{--highlight-neutral:#1a1a1a}
+.reader-shell .mark-group{
+  border-color:var(--mark)!important;
+  background:color-mix(in srgb,var(--mark) 22%,var(--highlight-neutral))!important;
+}
+.reader-shell .mark-group > .vrow.marked,
+.reader-shell .mark-group > .vrow.marked:hover{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.reader-shell .mark-group > .vrow.marked .vcell.edition-cell{
+  background:transparent!important;
+  border-inline-start:0!important;
+}
+.reader-shell .mark-group > .vrow.marked .vnum,
+.reader-shell .mark-group > .vrow.marked .inline-version{color:var(--mark)!important}
+.reader-shell .mark-group > .vrow.marked .original-lane{
+  border-color:color-mix(in srgb,var(--mark) 36%,transparent);
+}
+/* Reading room discoverability inside the general Settings menu. */
+.settings-reading-entry{display:grid;gap:10px;padding:14px;background:var(--raised);border:1px solid var(--line);border-radius:13px;margin:9px 0 14px}
+.settings-reading-header{display:flex;align-items:flex-start;gap:11px}
+.settings-reading-icon{width:39px;height:39px;display:grid;place-items:center;flex-shrink:0;border-radius:11px;background:var(--soft);color:var(--accent);font-size:20px}
+.settings-reading-title{font-size:15px;font-weight:750;color:var(--ink)}
+.settings-reading-desc{font-size:12px;color:var(--mute);line-height:1.55;margin-top:3px}
+.settings-reading-actions{display:flex;gap:8px;flex-wrap:wrap}
+.settings-reading-actions .btn{flex:1;min-width:145px}
+@media(max-width:440px){.settings-reading-actions .btn{min-width:0;flex-basis:100%}}
 </style>
 </head>
 <body>
@@ -1043,7 +1079,7 @@ function patchBookmarkDom(n){
  const row=document.getElementById('v'+n);if(!row)return;
  const k=keyOf(S.book,S.ch,n);const marked=!!valueOf(k,'bookmark'),note=valueOf(k,'note');
  row.classList.toggle('pinned',marked);
-  const pin=row.querySelector('.verse-pin');if(pin){pin.textContent='📌';pin.classList.toggle('is-pinned',marked);pin.setAttribute('aria-label',marked?'Lepas bookmark ayat '+n:'Bookmark ayat '+n);pin.setAttribute('aria-pressed',String(marked))}
+  const pin=row.querySelector('.verse-pin');if(pin){pin.textContent='📌';pin.classList.toggle('is-pinned',marked);pin.hidden=!marked;pin.setAttribute('aria-label',marked?'Lepas bookmark ayat '+n:'Bookmark ayat '+n);pin.setAttribute('aria-pressed',String(marked))}
   const marker=row.querySelector('.annotation-indicators');if(marker)marker.textContent=note?'  ✎':'';
 }
 function bindVerseTap(node,k){let timer=null,longFired=false;const n=Number(k.split('.').at(-1));
@@ -1137,7 +1173,7 @@ async function render(){const seq=++renderSeq;updateChrome();const target=$('ver
    bindVerseTap(cell,k);row.append(cell);
   }
   const pin=rowButton('📌',()=>{const old=!!valueOf(k,'bookmark');recordChanged(k,'bookmark',!old);patchBookmarkDom(n);toast(old?'Bookmark dilepas':'Bookmark dipasang')},'verse-pin'+(pinned?' is-pinned':''));
-  pin.setAttribute('aria-label',pinned?'Lepas bookmark ayat '+n:'Bookmark ayat '+n);pin.setAttribute('aria-pressed',String(pinned));pin.title='Bookmark · '+ch+':'+n;row.append(pin);
+  pin.hidden=!pinned;pin.setAttribute('aria-label',pinned?'Lepas bookmark ayat '+n:'Bookmark ayat '+n);pin.setAttribute('aria-pressed',String(pinned));pin.title='Bookmark · '+ch+':'+n;row.append(pin);
   if(S.showOriginal){const lane=elt('div','original-lane');lane.style.gridColumn='1 / -1';
    lane.append(elt('div','small muted',T('original')+' · '+(b.nt?'Greek':'Hebrew / Aramaic')));
    if(original?.ok)lane.append(originalWordPanel(original.m.get(n)));
@@ -1470,7 +1506,7 @@ function esvSettingsPicker(){modal('API ESV — konfigurasi terpisah',body=>{
  body.append(rowButton('Salin template Worker',()=>{navigator.clipboard?.writeText(ESV_WORKER_TEMPLATE).then(()=>toast('Template Worker tersalin')).catch(()=>toast('Browser menolak salin otomatis'))},'btn'));
  const details=elt('details');const summary=elt('summary',null,'Lihat kode Worker');details.append(summary);textBlock(details,ESV_WORKER_TEMPLATE);body.append(details);
 })}
-function readingSettingsPicker(){modal(T('view'),body=>{
+function readingSettingsPicker(returnToSettings=false){const backToSettings=returnToSettings===true;modal(T('view'),body=>{
  body.append(elt('p','small muted',appLang()==='en'?'All reader settings are saved locally and work without Firebase. Changes apply immediately.':appLang()==='zh'?'阅读设置保存在此设备，无需 Firebase，修改立即生效。':'Pengaturan disimpan lokal di perangkat ini; perubahan berlaku langsung.'));
  function refresh(){save();updateChrome()}
  function selectRow(label,value,options,setter){const r=elt('div','setting-row');r.append(elt('strong','small',label));const sel=elt('select','input');for(const [val,name] of options){const o=elt('option',null,name);o.value=val;sel.append(o)}sel.value=value;sel.onchange=()=>{setter(sel.value);refresh()};r.append(sel);body.append(r)}
@@ -1485,7 +1521,7 @@ function readingSettingsPicker(){modal(T('view'),body=>{
  function ranger(name,key,min,max,step,unit){const card=elt('div','setting-card');const label=elt('label','field',name+' · ');const out=elt('output',null,String(S[key])+unit);label.append(out);const input=elt('input');input.type='range';input.min=min;input.max=max;input.step=step;input.value=S[key];input.oninput=()=>{S[key]=Number(input.value);out.textContent=String(S[key])+unit;refresh()};card.append(label,input);grid.append(card)}
  ranger(appLang()==='en'?'Font size':appLang()==='zh'?'字号':'Ukuran huruf','fs',13,32,1,' px');ranger(appLang()==='en'?'Line height':appLang()==='zh'?'行间距':'Jarak antarbaris','lineHeight',1.25,2.4,.05,'×');ranger(appLang()==='en'?'Column gap':appLang()==='zh'?'栏间距':'Jarak kolom','columnGap',4,50,2,' px');ranger(appLang()==='en'?'Verse spacing':appLang()==='zh'?'节间距':'Jarak antar ayat','verseSpacing',0,28,1,' px');
  const cb=elt('label','setting-row');cb.append(elt('strong','small',appLang()==='en'?'Show verse numbers':appLang()==='zh'?'显示节号':'Tampilkan nomor ayat'));const toggle=elt('input');toggle.type='checkbox';toggle.checked=S.showVerseNumbers;toggle.onchange=()=>{S.showVerseNumbers=toggle.checked;refresh()};cb.append(toggle);body.append(cb);
- const footer=elt('div','flex');footer.append(rowButton(appLang()==='en'?'Reset settings':appLang()==='zh'?'重置':'Reset tampilan',()=>{const defaults=blank();for(const k of ['fs','widthMode','layout','lineHeight','columnGap','verseSpacing','fontFamily','versionTint','showVerseNumbers'])S[k]=defaults[k];refresh();readingSettingsPicker()}),rowButton(appLang()==='en'?'Done':appLang()==='zh'?'完成':'Selesai',closeModal,'btn primary'));body.append(footer);
+ const footer=elt('div','flex');footer.append(rowButton(appLang()==='en'?'Reset settings':appLang()==='zh'?'重置':'Reset tampilan',()=>{const defaults=blank();for(const k of ['fs','widthMode','layout','lineHeight','columnGap','verseSpacing','fontFamily','versionTint','showVerseNumbers'])S[k]=defaults[k];refresh();readingSettingsPicker(backToSettings)}),rowButton(backToSettings?(appLang()==='en'?'← Back to Settings':appLang()==='zh'?'← 返回设置':'← Kembali ke Pengaturan'):(appLang()==='en'?'Done':appLang()==='zh'?'完成':'Selesai'),backToSettings?settingsPicker:closeModal,'btn primary'));body.append(footer);
 })}
 async function toggleReaderFocus(){
  S.readerFocus=!S.readerFocus;save();updateChrome();
@@ -1494,7 +1530,17 @@ async function toggleReaderFocus(){
 }
 function settingsPicker(){modal(T('settings'),body=>{
  const section=(heading,text)=>{body.append(elt('div','divider'),elt('div','caps',heading));if(text)body.append(elt('p','small muted',text))};
- section(T('settings'));const r=elt('div','flex');r.append(rowButton('🌐 '+T('bibleLang')+' · '+appLang().toUpperCase(),languagePicker));r.append(rowButton(S.dark?'Mode terang':'Mode gelap',()=>{S.dark=!S.dark;save();updateChrome();settingsPicker()}));r.append(rowButton('A−',()=>{S.fs=Math.max(13,S.fs-1);save();updateChrome()}),rowButton('A＋',()=>{S.fs=Math.min(32,S.fs+1);save();updateChrome()}));r.append(rowButton('☷ Pengaturan pembaca lengkap',readingSettingsPicker,'btn primary'));body.append(r);
+ section(T('settings'));const r=elt('div','flex');r.append(rowButton('🌐 '+T('bibleLang')+' · '+appLang().toUpperCase(),languagePicker));r.append(rowButton(S.dark?'Mode terang':'Mode gelap',()=>{S.dark=!S.dark;save();updateChrome();settingsPicker()}));body.append(r);
+ section(T('reader'),appLang()==='en'?'Adjust your reading experience here or with the shortcut inside the reader.':appLang()==='zh'?'在这里或阅读区快捷入口调整阅读体验。':'Atur tampilan membaca dari sini atau lewat pintasan di ruang baca.');
+ const readerEntry=elt('div','settings-reading-entry');const readerHead=elt('div','settings-reading-header');
+ const readerIcon=elt('span','settings-reading-icon','☷');readerIcon.setAttribute('aria-hidden','true');
+ const readerMeta=elt('div');readerMeta.append(elt('div','settings-reading-title',T('reader')+' · '+T('view')));
+ readerMeta.append(elt('div','settings-reading-desc',`${S.fs}px · ${T(S.layout==='parallel'?'layoutParallel':'layoutStacked')} · ${T(S.widthMode==='wide'?'wide':'comfort')}`));
+ readerHead.append(readerIcon,readerMeta);readerEntry.append(readerHead);
+ const readActions=elt('div','settings-reading-actions');
+ readActions.append(rowButton(T('view'),()=>readingSettingsPicker(true),'btn primary'));
+ readActions.append(rowButton(T(S.readerFocus?'focusExit':'focus'),()=>{toggleReaderFocus();settingsPicker()},'btn'));
+ readerEntry.append(readActions);body.append(readerEntry);
  section('NLT / ESV (penerbit resmi)','NLT memakai API resmi. ESV membutuhkan endpoint server dengan kunci API yang disimpan rahasia; Firebase tidak diperlukan. Jangan tempel kunci ESV di HTML atau kolom NLT.');
  body.append(rowButton('⚙ Konfigurasi ESV resmi (opsional)',esvSettingsPicker,'btn primary'));
  const nlt=control('Kunci NLT (kosong = TEST anonim)',SETTINGS.nltKey||'',v=>{SETTINGS.nltKey=v;saveSettings();memory.clear();render()});nlt.querySelector('input').autocomplete='off';body.append(nlt);
