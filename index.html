@@ -249,6 +249,59 @@ html[data-theme=dark]{--bg:#13120f;--panel:#201e19;--raised:#29261f;--line:#3d38
 }
 @media(max-width:360px){.booknav-bookgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.booknav-tab{padding:9px 12px;font-size:12px}.booknav-field-value{height:55px;min-width:55px;font-size:27px}}
 
+
+/* v8 — mobile-first translation library. Only the picker UI changes; text APIs stay untouched. */
+.modal:has(.version-picker-modal){align-items:center;padding:12px}
+.modal:has(.version-picker-modal) .modal-box{max-width:690px;max-height:calc(100dvh - 24px);display:flex;flex-direction:column;overflow:hidden;padding:17px 19px 15px}
+.modal:has(.version-picker-modal) .modal-head{flex-shrink:0;padding:2px 0 12px}
+#modalBody.version-picker-modal{display:flex;flex-direction:column;min-height:0;flex:1;overflow:hidden;padding:0}
+.version-picker-top{flex:none;padding-bottom:11px;border-bottom:1px solid var(--line)}
+.version-picker-intro{font-size:12px;line-height:1.55;color:var(--mute);margin:0 0 12px}
+.version-picker-stats{display:flex;align-items:center;gap:9px;margin-bottom:11px}
+.version-picker-count{font-size:12px;font-weight:750;color:var(--ink)}
+.version-picker-slots{display:flex;gap:4px;flex:1;max-width:155px}
+.version-picker-slot{flex:1;height:5px;border-radius:999px;background:var(--line)}
+.version-picker-slot.filled{background:var(--slot-tint,var(--accent))}
+.version-picker-search{position:relative;display:flex;align-items:center;margin:0 0 11px}
+.version-picker-search-symbol{position:absolute;left:13px;font-size:19px;color:var(--mute);pointer-events:none}
+.version-picker-search .input{padding-left:42px;min-height:47px;font-size:16px;border-radius:12px;background:var(--raised)}
+.version-picker-search-clear{position:absolute;right:6px;top:6px;bottom:6px;min-width:35px;border:0;background:transparent;color:var(--mute);font-size:21px;border-radius:8px}
+.version-picker-search-clear:hover{background:var(--panel);color:var(--ink)}
+.version-picker-filters{display:flex;gap:6px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;padding:1px 0 3px}
+.version-picker-filters::-webkit-scrollbar{display:none}
+.version-picker-filter{flex:0 0 auto;border-radius:999px;border:1px solid var(--line);background:var(--raised);color:var(--mute);padding:8px 12px;font-size:12px;line-height:1.1;font-weight:650}
+.version-picker-filter.active{background:var(--soft);border-color:var(--accent);color:var(--accent)}
+.version-picker-scroll{min-height:0;flex:1;overflow:auto;overscroll-behavior:contain;padding:12px 2px max(18px,env(safe-area-inset-bottom));scrollbar-gutter:stable}
+.version-group{margin-bottom:18px}
+.version-group-heading{display:flex;align-items:center;gap:9px;font-size:11px;text-transform:uppercase;letter-spacing:.10em;color:var(--mute);font-weight:800;margin:0 0 8px;padding:0 1px}
+.version-group-heading .group-count{margin-left:auto;color:var(--mute);font-size:11px;letter-spacing:0;font-weight:600}
+.version-group-list{display:grid;grid-template-columns:1fr;gap:7px}
+.version-card{--edition-tint:var(--accent);width:100%;display:grid;grid-template-columns:46px minmax(0,1fr) 32px;gap:11px;align-items:center;text-align:left;border:1px solid var(--line);border-radius:12px;background:var(--raised);color:var(--ink);padding:9px 10px;min-height:69px;transition:border-color .14s,background-color .14s}
+.version-card:hover{border-color:color-mix(in srgb,var(--edition-tint) 65%,var(--line))}
+.version-card.selected{border-color:color-mix(in srgb,var(--edition-tint) 70%,var(--line));background:color-mix(in srgb,var(--edition-tint) 12%,var(--panel))}
+.version-card-code{display:flex;align-items:center;justify-content:center;min-width:0;min-height:43px;border-radius:9px;background:color-mix(in srgb,var(--edition-tint) 24%,var(--panel));color:var(--ink);font-size:10px;line-height:1.15;text-align:center;font-weight:850;overflow-wrap:anywhere;padding:5px}
+.version-card-info{min-width:0;display:grid;gap:5px}
+.version-card-name{font-size:13px;line-height:1.35;font-weight:680;min-width:0;overflow-wrap:anywhere}
+.version-card-meta{display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap;font-size:10px;color:var(--mute);line-height:1.2}
+.version-card-dot{width:5px;height:5px;border-radius:50%;background:var(--edition-tint)}
+.version-card-action{justify-self:end;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:50%;width:29px;height:29px;background:var(--panel);color:var(--mute);font-size:19px;font-weight:500;line-height:1}
+.version-card.selected .version-card-action{background:var(--edition-tint);color:#191919;border-color:var(--edition-tint);font-size:16px;font-weight:900}
+.version-picker-empty{border:1px dashed var(--line);border-radius:11px;padding:23px 12px;text-align:center;font-size:12px;color:var(--mute);line-height:1.6}
+.version-picker-catalog-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;border-radius:11px;background:var(--raised);border:1px dashed var(--line);color:var(--ink);padding:13px 10px;font-size:12px;font-weight:650;min-height:45px}
+.version-picker-catalog-btn:hover{border-color:var(--accent)}
+.version-picker-catalog-btn:disabled{opacity:.6;cursor:wait}
+.version-picker-note{font-size:11px;line-height:1.55;color:var(--mute);padding:10px 2px 2px}
+.version-picker-status{color:var(--mute);font-size:11px;line-height:1.45;margin:6px 0 0}
+@media(max-width:700px){
+ .modal:has(.version-picker-modal){padding:0;align-items:stretch}
+ .modal:has(.version-picker-modal) .modal-box{width:100%;height:100dvh;max-height:100dvh;max-width:none;border-radius:0;padding:calc(12px + env(safe-area-inset-top)) 14px 0}
+ .modal:has(.version-picker-modal) .modal-head{padding:4px 0 12px}
+ .version-picker-scroll{scrollbar-gutter:auto}
+ .version-card{min-height:65px;gap:9px;padding:8px 9px;grid-template-columns:43px minmax(0,1fr) 30px}
+ .version-card-code{min-height:41px}
+ .version-picker-intro{margin-bottom:9px}
+}
+@media(prefers-reduced-motion:reduce){.version-card{transition:none}}
 </style>
 </head>
 <body>
@@ -730,19 +783,101 @@ function renderVersions(){const strip=$('versionStrip');strip.replaceChildren();
  strip.append(rowButton(T('addVersion'),versionPicker,'pill'));
 }
 function versionPicker(){modal(T('versions'),body=>{
- body.append(elt('p','small muted',appLang()==='id'?'Versi bawaan tidak dihapus. Maksimal 8 versi aktif. Katalog tambahan diambil dari API bila jaringan tersedia.':'Built-in editions remain available. Up to 8 active versions. Additional editions load from the online catalog.'));
- const query=elt('input','input');query.placeholder=appLang()==='en'?'Filter translations or languages':'Cari nama terjemahan / bahasa';body.append(query);
- const status=elt('div','small muted'),list=elt('div','version-catalog');body.append(status,list);
- function draw(){list.replaceChildren();let matches=0;const q=query.value.trim().toLocaleLowerCase();const chosen=VERSIONS.filter(v=>S.cols.includes(v.id));const other=VERSIONS.filter(v=>!S.cols.includes(v.id));
-  for(const v of [...chosen,...other]){if(q&&!(v.name+' '+v.abbr+' '+v.lang+' '+v.id).toLocaleLowerCase().includes(q))continue;
-   const btn=rowButton(`${S.cols.includes(v.id)?'✓':'＋'}  ${v.abbr} — ${v.name} (${v.lang})`,()=>{
-    if(S.cols.includes(v.id)){if(S.cols.length<2){toast('Minimal satu terjemahan');return}S.cols=S.cols.filter(x=>x!==v.id)}else{if(S.cols.length>=8){toast('Maksimal 8 versi aktif');return}S.cols.push(v.id);if(v.dynamic){v.selectedPersist=true;storeCustomVersions()}}
-    save();draw();render();},'btn');btn.style.width='100%';btn.style.textAlign='left';list.append(btn);matches++;if(matches>=150)break;
-  }status.textContent=`${matches} / ${VERSIONS.length} · ${S.cols.length} ${appLang()==='en'?'selected':appLang()==='zh'?'已选择':'aktif'}`;
+ body.classList.add('version-picker-modal');
+ const L=()=>appLang();
+ const lex={
+  id:{intro:'Pilih dan bandingkan hingga 8 terjemahan. Ketuk versi untuk menampilkan atau menyembunyikannya.',active:'Versi aktif',all:'Semua',indo:'Indonesia',english:'English',chinese:'中文',other:'Lainnya',search:'Cari versi atau bahasa…',noResults:'Tidak ada versi yang cocok. Coba kata kunci atau bahasa lain.',catalog:'Muat lebih banyak terjemahan',loading:'Mengambil katalog…',loaded:'Katalog telah diperbarui.',catalogFail:'Gagal memuat katalog:',limit:'Maksimal 8 versi aktif',atLeast:'Minimal satu terjemahan harus aktif',selected:'aktif',license:'API berlisensi',extra:'Katalog',builtIn:'Bawaan',more:'Setiap terjemahan memiliki ketentuan lisensi tersendiri; versi berlisensi tidak otomatis dapat diunduh untuk offline.',show:'Tampilkan',hide:'Sembunyikan'},
+  en:{intro:'Choose and compare up to 8 translations. Tap an edition to show or hide it.',active:'Selected translations',all:'All',indo:'Indonesia',english:'English',chinese:'中文',other:'Others',search:'Find a translation or language…',noResults:'No matching translations. Try another search or language.',catalog:'Browse more translations',loading:'Loading catalog…',loaded:'Catalog updated.',catalogFail:'Could not load catalog:',limit:'Up to 8 translations can be selected',atLeast:'Keep at least one translation selected',selected:'selected',license:'Licensed API',extra:'Catalog',builtIn:'Built-in',more:'Each translation has its own license; licensed editions are not automatically available offline.',show:'Show',hide:'Hide'},
+  zh:{intro:'最多可同时选择 8 个译本。点击译本即可添加或移除。',active:'已选译本',all:'全部',indo:'印尼语',english:'英语',chinese:'中文',other:'其他',search:'搜索译本或语言…',noResults:'没有匹配的译本，请更改搜索或语言筛选。',catalog:'加载更多译本',loading:'正在加载目录…',loaded:'目录已更新。',catalogFail:'目录加载失败：',limit:'最多只能选择 8 个译本',atLeast:'至少保留一个译本',selected:'已选',license:'授权 API',extra:'目录',builtIn:'内置',more:'每种译本有独立的使用条款，受许可的译本不会自动提供离线下载。',show:'显示',hide:'移除'}
+ };
+ const tx=k=>(lex[L()]||lex.id)[k];
+ const top=elt('div','version-picker-top');
+ const intro=elt('p','version-picker-intro');top.append(intro);
+ const stats=elt('div','version-picker-stats');const count=elt('span','version-picker-count');const slots=elt('div','version-picker-slots');stats.append(count,slots);top.append(stats);
+ const searchWrap=elt('div','version-picker-search');const searchIcon=elt('span','version-picker-search-symbol','⌕');searchIcon.setAttribute('aria-hidden','true');
+ const query=elt('input','input');query.type='search';query.autocomplete='off';query.setAttribute('aria-label',tx('search'));
+ const clear=rowButton('×',()=>{query.value='';draw();query.focus()},'version-picker-search-clear');clear.setAttribute('aria-label',L()==='id'?'Bersihkan pencarian':L()==='zh'?'清除搜索':'Clear search');
+ searchWrap.append(searchIcon,query,clear);top.append(searchWrap);
+ const filters=elt('div','version-picker-filters');filters.setAttribute('role','group');filters.setAttribute('aria-label',L()==='id'?'Filter bahasa':'Language filter');top.append(filters);
+ const scroll=elt('div','version-picker-scroll');const results=elt('div','version-picker-results');scroll.append(results);
+ const load= rowButton('',async()=>{
+  load.disabled=true;load.textContent=tx('loading');notice.textContent='';
+  try{await loadRemoteCatalog();notice.textContent=tx('loaded');draw();}
+  catch(e){notice.textContent=tx('catalogFail')+' '+String(e.message||e)}
+  finally{load.disabled=false;load.textContent='↻  '+tx('catalog')}
+ },'version-picker-catalog-btn');
+ const notice=elt('p','version-picker-status');notice.setAttribute('role','status');const foot=elt('p','version-picker-note');
+ scroll.append(load,notice,foot);body.append(top,scroll);
+ let languageFilter='all';
+ const groupOf=v=>{
+  if(!v.dynamic)return languageCode(v);
+  const l=String(v.lang||'').toLowerCase();
+  if(/indonesia|bahasa indonesia|\bind\b/.test(l))return 'id';
+  if(/中文|chinese|mandarin|\bcmn\b|\bzho\b/.test(l))return 'zh';
+  if(/english|\beng\b/.test(l))return 'en';
+  return 'other';
+ };
+ function labelLang(id){return id==='id'?tx('indo'):id==='en'?tx('english'):id==='zh'?tx('chinese'):tx('other')}
+ function makeCard(v,selected){
+  const btn=elt('button','version-card'+(selected?' selected':''));btn.type='button';
+  btn.style.setProperty('--edition-tint',editionTint(v.id));
+  btn.setAttribute('aria-pressed',String(selected));
+  btn.setAttribute('aria-label',`${selected?tx('hide'):tx('show')} ${v.abbr} — ${v.name}`);
+  const code=elt('span','version-card-code',v.abbr);
+  const info=elt('span','version-card-info');
+  const name=elt('span','version-card-name',v.name);const meta=elt('span','version-card-meta');
+  const dot=elt('span','version-card-dot');dot.setAttribute('aria-hidden','true');
+  meta.append(dot,elt('span','',String(v.lang)));
+  if(v.licensed)meta.append(elt('span','',`· ${tx('license')}`));
+  else if(v.dynamic)meta.append(elt('span','',`· ${tx('extra')}`));
+  info.append(name,meta);
+  const act=elt('span','version-card-action',selected?'✓':'+');act.setAttribute('aria-hidden','true');
+  btn.append(code,info,act);
+  btn.addEventListener('click',()=>{
+   if(S.cols.includes(v.id)){
+    if(S.cols.length<=1){toast(tx('atLeast'));return;}
+    S.cols=S.cols.filter(id=>id!==v.id);
+   }else{
+    if(S.cols.length>=8){toast(tx('limit'));return;}
+    S.cols.push(v.id);
+    if(v.dynamic){v.selectedPersist=true;storeCustomVersions();}
+   }
+   save();render();draw();
+  });
+  return btn;
  }
- query.oninput=draw;draw();
- const reload=rowButton('↻ '+(appLang()==='en'?'Load more Bible translations':'Muat katalog terjemahan lain'),async()=>{reload.disabled=true;status.textContent='Loading…';try{await loadRemoteCatalog();draw();toast(`${VERSIONS.length} terjemahan tersedia`)}catch(e){status.textContent='Katalog gagal: '+e.message}finally{reload.disabled=false}},'btn');body.insertBefore(reload,status);
- body.append(elt('p','more',appLang()==='en'?'Each Bible edition has its own license. Editions with unverified permissions are not downloaded offline.':appLang()==='zh'?'每个译本有独立的授权条款。授权未核实的译本不会离线下载。':'Penerbit dan setiap terjemahan memiliki izin penggunaan tersendiri. Versi tambahan dengan lisensi belum diverifikasi tidak diunduh offline.'));
+ function addGroup(label,versions){if(!versions.length)return;
+  const section=elt('section','version-group');const head=elt('h3','version-group-heading',label);
+  const amount=elt('span','group-count',String(versions.length));head.append(amount);
+  const grid=elt('div','version-group-list');for(const v of versions)grid.append(makeCard(v,S.cols.includes(v.id)));
+  section.append(head,grid);results.append(section);
+ }
+ function draw(){
+  $('modalTitle').textContent=T('versions');intro.textContent=tx('intro');query.placeholder=tx('search');query.setAttribute('aria-label',tx('search'));
+  count.textContent=`${S.cols.length}/8 ${tx('selected')}`;
+  slots.replaceChildren();for(let i=0;i<8;i++){
+   const segment=elt('span','version-picker-slot'+(i<S.cols.length?' filled':''));
+   if(i<S.cols.length)segment.style.setProperty('--slot-tint',editionTint(S.cols[i]));
+   slots.append(segment);
+  }
+  clear.hidden=!query.value;
+  filters.replaceChildren();
+  const cats=[['all',tx('all')],['id',tx('indo')],['en',tx('english')],['zh',tx('chinese')]];
+  if(remoteCatalogLoaded||VERSIONS.some(v=>groupOf(v)==='other'))cats.push(['other',tx('other')]);
+  for(const [id,label] of cats){const b=rowButton(label,()=>{languageFilter=id;draw()},'version-picker-filter'+(languageFilter===id?' active':''));b.setAttribute('aria-pressed',String(languageFilter===id));filters.append(b)}
+  results.replaceChildren();
+  const q=query.value.trim().toLocaleLowerCase();
+  const match=v=>(languageFilter==='all'||groupOf(v)===languageFilter)&&(!q||`${v.abbr} ${v.name} ${v.lang} ${v.id}`.toLocaleLowerCase().includes(q));
+  const selected=S.cols.map(id=>VMAP[id]).filter(v=>v&&match(v));
+  addGroup(tx('active'),selected);
+  let shown=selected.length;
+  const notSelected=VERSIONS.filter(v=>!S.cols.includes(v.id)&&match(v));
+  for(const lang of ['id','en','zh','other']){const group=notSelected.filter(v=>groupOf(v)===lang);if(group.length){addGroup(labelLang(lang),group.slice(0,150-shown));shown+=group.length;}if(shown>=150)break}
+  if(!selected.length&&!notSelected.length)results.append(elt('p','version-picker-empty',tx('noResults')));
+  load.textContent='↻  '+tx('catalog');foot.textContent=tx('more');
+ }
+ query.addEventListener('input',draw);
+ draw();
 })}
 function navigate(book,chapter,scroll=true){if(!BMAP[book])return Promise.resolve();S.book=book;S.ch=Math.max(1,Math.min(BMAP[book].ch,Number(chapter)||1));save();closeModal();const done=render();if(scroll)window.scrollTo({top:0,behavior:'instant'});return done}
 function shiftChapter(delta){const ix=BOOKS.findIndex(x=>x.id===S.book);let ch=S.ch+delta;let bix=ix;if(ch<1){bix=Math.max(0,ix-1);ch=BOOKS[bix].ch}else if(ch>BOOKS[ix].ch){bix=Math.min(BOOKS.length-1,ix+1);ch=1}navigate(BOOKS[bix].id,ch)}
