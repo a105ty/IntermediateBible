@@ -1,46 +1,63 @@
-# IntermediateBible
-Menandai ayat — Sorot
-Ketuk tombol 🎨 di kiri atas untuk MEMBUKA mode menandai sekaligus memilih warnanya. Selama 🎨 menyala, ketuk ayat → disorot; ketuk lagi → batal. Ketuk 🎨 sekali lagi untuk menutup, dan ayat tidak akan berubah lagi walau tersenggol.
+📖 Intermediate Bible
+Pembaca dan ruang studi Alkitab multiterjemahan dalam satu halaman web. Bandingkan terjemahan, telusuri bahasa asli Ibrani/Yunani, sorot ayat, simpan bookmark, dan kelola catatan di perangkat sendiri.
 
-Pilih warna dengan mengetuk salah satu lingkaran di baris yang muncul.
+Status: aplikasi berorientasi local-first. Catatan, bookmark, highlight, dan pengaturan disimpan di browser pengguna. Firebase tidak diperlukan untuk menggunakan aplikasi. Ketersediaan ayat online bergantung pada layanan penyedia terjemahan.
 
-Ayat sorot yang bersebelahan dan berwarna sama otomatis menyatu jadi satu blok.
+✨ Fitur utama
+Fitur	Keterangan
+Multiterjemahan	11 versi bawaan, maksimal 8 versi aktif ditampilkan bersamaan; katalog versi tambahan dapat dimuat secara online.
+Warna setiap versi	Setiap terjemahan bawaan memiliki warna identitas yang berbeda dan latar lembut agar mudah dibandingkan.
+Ruang Baca	Pengaturan ukuran dan jenis font, lebar area baca, jarak, tata letak, dan mode fokus/layar penuh.
+Navigasi kitab–pasal–ayat	Dua mode: Papan angka dan Daftar kitab (PL/PB), termasuk pemilihan pasal.
+Pencarian ayat	Cari kata/frasa di beberapa versi sekaligus, nomor Strong's, transliterasi, dan sebagian data Ibrani/Yunani.
+Sorot	Pilih warna, lalu ketuk ayat. Ayat bersebelahan dengan warna sama bergabung menjadi satu outline.
+Bookmark	Tekan lama ayat (sekitar 0,5 detik); ikon 📌 hanya tampak pada ayat yang tersimpan.
+Catatan	Tulis catatan per ayat dan lampirkan foto/audio apabila didukung browser.
+Offline	Unduh terjemahan yang mengizinkan penyimpanan; ada progres serta opsi hentikan dan lanjutkan.
+Indikator loading	Animasi saat teks diambil, dan satu label diagnostik jika suatu versi gagal dimuat.
+🚀 Cara menggunakan
+Kunjungi website Intermediate Bible di browser. Akses lewat HTTPS lebih disarankan daripada membuka berkas HTML langsung melalui file:// atau content:// di ponsel.
+Gunakan tombol 📖 untuk membuka pemilih kitab. Pilih Papan angka atau Daftar kitab, lalu tentukan pasal dan ayat.
+Tekan + Tambah versi untuk memilih terjemahan. Terjemahan yang dipilih muncul di pembaca, dengan warna identitasnya masing-masing.
+Gunakan ⌕ Cari untuk mencari kata, referensi (misalnya Yohanes 3:16), atau lema/nomor Strong's. Pilih cakupan pencarian: Pasal ini, Kitab ini, atau Pasal tersimpan offline.
+Tekan 🎨 untuk masuk/keluar mode sorot; ketuk ayat untuk menandai. Untuk bookmark, tekan lama ayat. Bukalah ⚙ Pengaturan → Ruang Baca untuk menyesuaikan tampilan.
+11 terjemahan bawaan
+Bahasa	Versi
+Indonesia	AYT — Alkitab Yang Terbuka; TSI — Terjemahan Sederhana Indonesia; AGS — Alkitab Gratis untuk Semua
+English	BSB — Berean Standard Bible; KJV — King James Version; ASV — American Standard Version; WEB — World English Bible; NLT — New Living Translation; ESV — English Standard Version
+中文	CUV 简体; CUV 繁體
+Daftar tambahan berasal dari katalog online. Ketersediaan teks, izin penggunaan, dan fitur offline tiap terjemahan tidak selalu sama.
 
-Ketuk dan tahan ±½ detik → memasang atau melepas bookmark 📌.
+⬇️ Unduhan dan penyimpanan lokal
+Buka Download / Perpustakaan offline. Tab Tersimpan menunjukkan progres lokal, sedangkan Jelajahi & unduh menampilkan versi yang dapat dipilih dan Load other versions.
+Untuk terjemahan dengan izin offline yang sesuai, aplikasi menyediakan unduhan 66 kitab / 1.189 pasal, dengan penghentian dan kelanjutan unduhan. Keberhasilan bergantung koneksi, ruang penyimpanan, dan ketersediaan API.
+ESV dan NLT tidak tersedia untuk unduhan seluruh Alkitab. Keduanya menggunakan API resmi penerbit dan mengikuti batas lisensi masing-masing.
+Highlight, bookmark, catatan, serta pengaturan tersimpan per browser/perangkat. Gunakan fitur ekspor cadangan secara berkala. Menghapus data situs atau berpindah domain/browser dapat menghilangkan data lokal.
+Pencarian menyeluruh hanya berlaku untuk konten yang telah tersedia secara offline; pencarian online dibatasi oleh cakupan, kuota, dan koneksi.
+🌍 Arsitektur dan deployment
+Aplikasi frontend disimpan dalam satu index.html, berisi HTML, CSS, dan JavaScript. Ia tetap mengambil data dari layanan eksternal saat diperlukan. Satu file frontend tidak berarti seluruh backend/API disematkan ke file tersebut.
 
-Catatan (📑)
-Semua catatan diurus dari tombol 📑, bukan dari ketukan di ayat.
+GitHub Pages / index.html
+  ├── Pembaca & pengaturan
+  ├── Data lokal browser (localStorage / IndexedDB)
+  ├── Katalog dan teks Alkitab yang tersedia
+  └── Cloudflare Worker → API ESV / NLT (sesuai konfigurasi server)
+Deploy di GitHub Pages: unggah/perbarui index.html di branch main, kemudian pastikan Settings → Pages menggunakan branch dan folder yang benar. README.md ini hanya dokumentasi; tidak perlu dimasukkan ke dalam HTML.
 
-Di dalamnya: “✎ Tulis catatan baru” untuk menulis, ikon ✎ pada tiap baris untuk mengubah, dan 🗑 untuk menghapus.
+Keamanan API: jangan menaruh token Crossway/ESV, token layanan lain, atau service-account key di HTML maupun README. Kunci API berprivilegi disimpan sebagai secret di backend Worker. Sumber Worker di repository adalah kode backend, bukan script yang harus dimuat berdampingan dengan HTML. Akses Worker dapat gagal karena jaringan atau kebijakan browser; pengujian dari server tidak otomatis membuktikan akses dari semua perangkat.
 
-Satu catatan bisa dipasang ke beberapa ayat sekaligus — pilih nomor ayatnya di kartu catatan sebelum menyimpan. Ayat berurutan dengan isi catatan sama akan tampil sebagai satu baris, mis. “10:8–10”.
+🛠️ Masalah umum
+Masalah	Yang perlu diperiksa
+ESV tidak tampil	Koneksi ke Worker ESV, izin CORS/origin, jangkauan domain Worker dari jaringan pengguna, dan status API penerbit.
+Sebagian terjemahan gagal	Periksa label diagnostik di atas pembaca dan koneksi API; versi yang gagal tidak perlu menampilkan kartu kosong per ayat.
+Unduhan offline terhenti	Cek koneksi, kuota penyimpanan browser, dan gunakan Lanjutkan.
+Data lokal tidak muncul	Pastikan memakai browser, profil, dan alamat website yang sama; periksa apakah data situs dibersihkan.
+Input Search terasa sempit	Tutup keyboard untuk melihat daftar hasil/versi; gunakan filter cakupan dan pilihan versi.
+🥚 Easter eggs — pesan tersembunyi
+Ada beberapa kode tersembunyi yang membuka ayat Alkitab pilihan. Masukkan kode persis (huruf besar/kecil tidak berpengaruh) ke kolom ⌕ Cari ayat, lalu tekan Cari atau Enter. Aplikasi akan berpindah ke referensi tersebut dengan terjemahan yang saat itu aktif. Karena teks diambil dari sumber terjemahan, kode tidak menyimpan salinan ayat berhak cipta di dalam aplikasi.
 
-Mengetuk isi baris catatan akan pindah ke ayatnya dan langsung menggulir ke sana.
+🔐 Klik untuk mengungkap kode rahasia (spoiler)
+📚 Sumber dan hak cipta
+Konten Alkitab berasal dari berbagai penyedia/terjemahan dengan ketentuan masing-masing. ESV merupakan terjemahan berlisensi Crossway; NLT milik Tyndale. Periksa ketentuan penggunaan masing-masing sebelum mengutip, menyimpan, mendistribusikan, atau menggunakan secara komersial. Ketersediaan teks dan definisi bahasa asli juga bergantung pada sumber datanya. Lisensi kode aplikasi, jika diperlukan untuk kontribusi atau distribusi ulang, harus dinyatakan terpisah dalam berkas LICENSE.
 
-Foto & rekaman suara
-Di kartu catatan ada “🖼 Tambah foto” dan “🎤 Rekam suara”. Lampiran menempel pada satu ayat jangkar, yaitu ayat pertama yang kamu pilih saat kartu dibuka.
-
-Foto diperkecil otomatis supaya tidak memakan tempat. Rekaman dibatasi 5 menit.
-
-Foto dan rekaman tersimpan di perangkat ini, dan ikut tersinkron ke akun (👤) bila kamu masuk — sama seperti teks catatan, stabilo, sorot, dan bookmark.
-
-Mikrofon hanya bisa dipakai kalau halaman ini dibuka lewat https:// atau localhost. Kalau berkasnya dibuka langsung sebagai file://, peramban memblokir mikrofon.
-
-Membaca & membandingkan
-📖 di kiri atas: pilih kitab dan pasal lewat papan angka. Bisa langsung tekan nomor ayat juga.
-
-Baris pil di bawah topbar: tambah/kurangi kolom terjemahan. Ikon ⇄ di kepala kolom untuk menukar versi kolom itu.
-
-א menampilkan bahasa asli (Ibrani/Yunani) di bawah tiap ayat. Ketuk sebuah kata untuk melihat entri Strong's.
-
-Mencari (🔍)
-Kotak yang sama menerima dua hal: kata biasa, atau referensi ayat seperti “kejadian 10:10”, “kej 10 10”, atau “genesis 10 10”. Untuk referensi, tekan Enter untuk langsung ke ayat itu — ayatnya distabilo dan halaman menggulir ke sana.
-
-Pilih terjemahan yang mau dicari lewat baris pil “Cari di terjemahan”.
-
-Batasnya: pencarian seluruh Alkitab hanya bisa kalau terjemahan itu sudah diunduh lewat ⬇. Kalau belum, pencarian dibatasi pada pasal atau kitab yang sedang dibuka karena harus mengambil teks lewat jaringan satu per satu.
-
-Lain-lain
-📅 renungan harian · 🎓 silabus tiap kitab · ⬇ unduh terjemahan untuk dipakai tanpa jaringan · 👤 akun & sinkronisasi · ⚙ ukuran huruf, tema, cadangan .json.
-
-Arti kata bahasa asli dalam bahasa Indonesia dan 中文 tersedia untuk 346 kata tersering (197 Yunani, 149 Ibrani). Di luar itu ditampilkan transliterasi atau definisi Inggris asli Strong's — bukan terjemahan karangan.
+Intermediate Bible — Read, compare, study, remember.
