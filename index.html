@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23201e19'/%3E%3Cpath d='M32 15C25 9 15 11 8 14v36c11-4 19-2 24 4 6-6 14-8 24-4V14C48 11 39 9 32 15Z' fill='none' stroke='%23e4b75a' stroke-width='3'/%3E%3Cpath d='M32 15v39m12-31v16m-8-8h16' stroke='%23e4b75a' stroke-width='3'/%3E%3C/svg%3E">
 <meta name="theme-color" content="#aa873e"><meta name="description" content="Intermediate Bible — pembaca multi-versi, anotasi lokal, dan pencarian bahasa asli.">
-<title>Intermediate Bible — Reader v8.2 · Local</title>
+<title>Intermediate Bible — Reader v8.5 · Local</title>
 <style>
 :root{--bg:#fbfaf6;--panel:#fff;--raised:#f2eee6;--line:#ded8cc;--ink:#252018;--mute:#786f64;--accent:#9b762b;--soft:#f7edcf;--shadow:0 18px 55px rgba(30,25,17,.13);--fs:18px}
 html[data-theme=dark]{--bg:#13120f;--panel:#201e19;--raised:#29261f;--line:#3d382e;--ink:#ece5d7;--mute:#afa596;--accent:#e4b75a;--soft:#40341f;--shadow:0 18px 55px rgba(0,0,0,.38)}
@@ -126,11 +126,12 @@ html[data-theme=dark]{--bg:#13120f;--panel:#201e19;--raised:#29261f;--line:#3d38
 .loading-chapter{display:grid;justify-items:center;gap:14px;min-height:310px;padding:clamp(22px,4vw,45px) 12px 30px;text-align:center}
 .loading-chapter h3{margin:0;font-size:19px;font-weight:650}.loading-sub{font-size:12px;color:var(--mute);max-width:450px;min-height:22px}
 .loading-art{width:105px;height:105px;display:grid;place-items:center;position:relative;animation:ibFloat 2.8s ease-in-out infinite}
-.loading-book{width:67px;height:59px;position:relative;display:flex;filter:drop-shadow(0 9px 12px rgba(0,0,0,.14));perspective:350px}
-.loading-book .page{width:50%;border:2px solid var(--accent);background:linear-gradient(120deg,var(--panel),var(--soft));height:57px}
-.loading-book .page.left{border-radius:6px 1px 2px 8px;transform:skewY(-8deg);transform-origin:right bottom}
-.loading-book .page.right{border-radius:1px 7px 8px 2px;transform:skewY(8deg);transform-origin:left bottom}
-.loading-book .leaf{position:absolute;left:50%;width:32px;height:54px;border:1px solid var(--accent);background:linear-gradient(100deg,var(--panel),var(--soft));border-radius:0 8px 8px 0;transform-origin:left center;animation:ibLeaf 1.8s cubic-bezier(.3,0,.4,1) infinite}
+.loading-book{width:88px;height:82px;position:relative;display:grid;place-items:center;filter:drop-shadow(0 9px 12px rgba(0,0,0,.14))}
+.loading-book svg{width:88px;height:82px;overflow:visible}
+.loading-book .book-page{fill:color-mix(in srgb,var(--accent) 12%,var(--panel));stroke:var(--accent);stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+.loading-book .book-spine{stroke:var(--accent);stroke-width:2.4;stroke-linecap:round;fill:none}
+.loading-book .book-lines{stroke:color-mix(in srgb,var(--accent) 68%,var(--panel));stroke-width:1.6;fill:none;stroke-linecap:round}
+.loading-book .book-shimmer{stroke:var(--accent);stroke-width:2.5;fill:none;stroke-linecap:round;stroke-dasharray:16 110;animation:ibBookGlide 2.4s ease-in-out infinite}
 .loading-orbit{position:absolute;inset:5px;border-radius:50%;border:1px dashed color-mix(in srgb,var(--accent) 50%,transparent);animation:ibSpin 10s linear infinite}
 .loading-orbit::after{content:'✦';position:absolute;top:-10px;left:50%;font-size:18px;color:var(--accent)}
 .loading-progress{height:5px;width:min(300px,80vw);border-radius:999px;background:var(--raised);overflow:hidden}
@@ -142,27 +143,27 @@ html[data-theme=dark]{--bg:#13120f;--panel:#201e19;--raised:#29261f;--line:#3d38
 .search-original-card{padding:10px 12px;background:var(--soft);border-radius:10px;border:1px solid var(--line);display:flex;gap:8px;align-items:flex-start;margin:7px 0}
 .search-original-card input{margin-top:4px}.search-original-card small{display:block;color:var(--mute);margin-top:4px;line-height:1.5}
 @keyframes ibFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-@keyframes ibLeaf{0%{transform:rotateY(0);opacity:.85}65%,100%{transform:rotateY(-172deg);opacity:.65}}
+@keyframes ibBookGlide{0%{stroke-dashoffset:20;opacity:0}30%{opacity:.9}75%{stroke-dashoffset:-93;opacity:.85}100%{stroke-dashoffset:-115;opacity:0}}
 @keyframes ibSpin{to{transform:rotate(360deg)}}
 @keyframes ibShimmer{to{background-position-x:-220%}}
-@media(prefers-reduced-motion:reduce){.loading-art,.loading-book .leaf,.loading-orbit,.loading-line{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.loading-art,.loading-book .book-shimmer,.loading-orbit,.loading-line{animation:none!important}}
 @media(max-width:700px){.loading-skeleton{gap:5px}.loading-lines{padding:9px 5px}.reader-shell .headrow .vh.edition-header{padding:6px 5px}}
 
 /* v7: eleven stable, individually identifiable edition colours. */
 .reader-shell .vrow{position:relative}
 .reader-shell .vcell.edition-cell{
- background:color-mix(in srgb,var(--edition-tint) var(--version-tint-strength,23%),var(--panel));
- border-inline-start:3px solid color-mix(in srgb,var(--edition-tint) 75%,var(--line));
+ background:color-mix(in srgb,var(--edition-tint) var(--version-tint-strength,4%),var(--panel));
+ border-inline-start:3px solid color-mix(in srgb,var(--edition-tint) 65%,var(--line));
  border-radius:9px;
 }
 .reader-shell .headrow .vh.edition-header{
- background:color-mix(in srgb,var(--edition-tint) var(--version-tint-strength,23%),var(--panel));
+ background:color-mix(in srgb,var(--edition-tint) var(--version-tint-strength,4%),var(--panel));
  border-top:3px solid var(--edition-tint);
  color:var(--ink);
 }
 .reader-shell .mark-group > .vrow.marked .vcell.edition-cell{
  background:color-mix(in srgb,var(--edition-tint) 20%,transparent)!important;
- border-inline-start:3px solid color-mix(in srgb,var(--edition-tint) 75%,var(--line))!important;
+ border-inline-start:3px solid color-mix(in srgb,var(--edition-tint) 65%,var(--line))!important;
 }
 #versionStrip .edition-chip{--edition-tint:var(--accent);background:color-mix(in srgb,var(--edition-tint) 20%,var(--panel));border-color:color-mix(in srgb,var(--edition-tint) 75%,var(--line));color:var(--ink)}
 .reader-shell .vrow .vcell:last-of-type{padding-inline-end:45px}
@@ -338,6 +339,90 @@ html[data-theme="dark"]{--highlight-neutral:#1a1a1a}
 .settings-reading-actions{display:flex;gap:8px;flex-wrap:wrap}
 .settings-reading-actions .btn{flex:1;min-width:145px}
 @media(max-width:440px){.settings-reading-actions .btn{min-width:0;flex-basis:100%}}
+
+/* v8.3 — intentionally subtle edition washes; marked verses keep full highlight colours. */
+.reader-shell .vcell.edition-cell,.reader-shell .headrow .vh.edition-header{--version-tint-strength:var(--version-tint-strength,4%)}
+.reader-shell .mark-group{border-width:2px!important}
+/* Offline library: one scroll area with explicit progress + per-version actions. */
+.modal:has(.offline-modal-content){align-items:center;padding:12px}
+.modal:has(.offline-modal-content) .modal-box{max-width:720px;max-height:calc(100dvh - 24px);display:flex;flex-direction:column;overflow:hidden}
+#modalBody.offline-modal-content{overflow:auto;overscroll-behavior:contain;min-height:0;padding:0 1px 16px}
+.offline-library{display:grid;gap:13px}
+.offline-filterbar{display:flex;gap:7px;flex-wrap:wrap}
+.offline-filter{border:1px solid var(--line);border-radius:999px;background:var(--raised);color:var(--ink);padding:9px 12px;font-size:12px}
+.offline-filter.active{color:var(--accent);border-color:var(--accent);background:var(--soft)}
+.offline-stats{margin:0;color:var(--mute);font-size:12px}
+.offline-running{border:1px solid var(--accent);border-radius:12px;background:var(--raised);padding:12px;display:grid;grid-template-columns:1fr auto;gap:9px;align-items:center}
+.offline-running[hidden]{display:none}
+.offline-run-label{font-size:12px;line-height:1.4;min-width:0}
+.offline-run-track,.offline-card-track{height:6px;border-radius:999px;background:var(--line);overflow:hidden}
+.offline-run-track{grid-row:2;grid-column:1/-1}
+.offline-run-track i,.offline-card-track i{display:block;height:100%;width:0;background:var(--accent);border-radius:inherit;transition:width .2s ease}
+.offline-section+.offline-section{margin-top:16px}
+.offline-heading{margin:7px 0 9px;font-size:13px;color:var(--accent);font-weight:750}
+.offline-list{display:grid;gap:9px}
+.offline-card{--edition-tint:var(--accent);display:grid;grid-template-columns:49px minmax(0,1fr);align-items:center;gap:9px;background:var(--raised);border:1px solid var(--line);border-radius:12px;padding:9px}
+.offline-code{min-height:43px;border-radius:8px;background:color-mix(in srgb,var(--edition-tint) 17%,var(--panel));border-inline-start:3px solid var(--edition-tint);display:grid;place-items:center;font-size:12px;font-weight:800;overflow-wrap:anywhere;text-align:center;padding:5px}
+.offline-card-content{min-width:0;display:grid;gap:5px}
+.offline-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+.offline-card-title{min-width:0;flex:1;font-size:13px;font-weight:700;line-height:1.3;overflow-wrap:anywhere}
+.offline-card-meta{font-size:11px;color:var(--mute);line-height:1.3}
+.offline-card-track i{background:var(--edition-tint)}
+.offline-download-btn{font-size:12px;flex-shrink:0;min-width:0;padding:7px 10px;white-space:nowrap;line-height:1.2}
+.offline-catalog-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.offline-catalog-btn{flex:0 0 auto;padding:9px 12px;font-size:12px}
+.offline-catalog-message{flex:1 1 180px;margin:0;color:var(--mute);font-size:12px;line-height:1.35}
+.offline-search{width:100%;font-size:13px;padding:10px 12px;border:1px solid var(--line);background:var(--raised);color:var(--ink);border-radius:10px}
+.offline-search[hidden]{display:none}
+.offline-online-toggle{width:100%;text-align:left;font-size:12px;padding:11px 12px}
+.offline-online-list{display:grid;gap:6px;margin-top:8px}
+.offline-online-item{display:grid;grid-template-columns:65px minmax(0,1fr);gap:9px;align-items:center;background:var(--raised);padding:8px;border-radius:9px;border:1px solid var(--line);font-size:12px;overflow-wrap:anywhere}
+.offline-online-item strong{font-size:11px}
+.offline-license{border-inline-start:3px solid var(--accent);background:var(--raised);padding:10px 12px;font-size:12px;line-height:1.6;border-radius:8px;margin:0}
+@media(max-width:650px){
+ .modal:has(.offline-modal-content){padding:0;align-items:stretch}
+ .modal:has(.offline-modal-content) .modal-box{height:100dvh;max-height:100dvh;width:100%;max-width:none;border-radius:0;padding:16px 14px 0}
+ .offline-card{grid-template-columns:43px minmax(0,1fr);gap:8px;padding:8px}
+ .offline-code{min-height:39px;font-size:10px}
+ .offline-download-btn{padding:7px 9px;font-size:11px}
+ .offline-filterbar{flex-wrap:nowrap;overflow-x:auto}
+}
+
+
+/* v8.5 — translation fetch failures are reported once, above the reader. */
+.edition-error-banner{display:grid;grid-template-columns:26px minmax(0,1fr) 34px;gap:10px;align-items:center;padding:11px 12px;margin:2px 0 12px;border:1px solid color-mix(in srgb,#e2ad55 40%,var(--line));border-radius:11px;background:color-mix(in srgb,#dba95f 6%,var(--panel));color:var(--ink);font:12px system-ui,sans-serif}
+.edition-error-icon{width:23px;height:23px;border-radius:50%;border:1px solid #dbaa60;color:#dbaa60;display:grid;place-items:center;font-weight:800}
+.edition-error-content{display:grid;gap:3px;min-width:0}
+.edition-error-content strong{font-size:12px;line-height:1.35;overflow-wrap:anywhere}
+.edition-error-desc{color:var(--mute);font-size:11px;line-height:1.4}
+.edition-error-retry{border:1px solid var(--line);background:var(--raised);color:var(--ink);height:32px;width:32px;border-radius:9px;font-size:18px}
+/* v8.5 — separate "Saved" and "Discover & download" tabs, not the old stacked list. */
+.offline-library{gap:12px}
+.offline-dashboard{padding:14px 14px 13px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 7%,var(--panel)),var(--panel) 62%);display:grid;gap:8px}
+.offline-dashboard-top{display:flex;align-items:center;justify-content:space-between;gap:9px}
+.offline-dashboard-count{font-size:21px;font-weight:850;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.offline-dashboard-meta{font-size:11px;color:var(--mute)}
+.offline-dashboard-track{height:5px;border-radius:99px;background:var(--line);overflow:hidden}
+.offline-dashboard-track i{display:block;width:0;height:100%;border-radius:inherit;background:var(--accent);transition:width .25s}
+.offline-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:4px;gap:4px;border:1px solid var(--line);border-radius:12px;background:var(--raised)}
+.offline-tab{min-width:0;display:flex;gap:7px;align-items:center;justify-content:center;border:0;border-radius:9px;padding:10px 7px;background:transparent;color:var(--mute);font-size:12px;font-weight:750}
+.offline-tab.active{color:var(--ink);background:var(--panel);box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.offline-tab em{font-style:normal;font-size:10px;color:var(--accent);font-weight:700}
+.offline-toolbar{display:grid;gap:9px}
+.offline-toolbar[hidden],.offline-dashboard[hidden]{display:none}
+.offline-search{min-height:42px;font-size:14px;border-radius:10px}
+.offline-catalog-tools{display:grid;gap:5px}
+.offline-catalog-btn{min-height:42px;justify-self:stretch;text-align:center;border-radius:10px;border-style:dashed}
+.offline-catalog-message{margin:0;line-height:1.45}
+.offline-section+.offline-section{margin-top:10px}
+.offline-heading{margin:4px 0 9px;color:var(--mute);font-size:11px;text-transform:uppercase;letter-spacing:.1em}
+.offline-card{border-radius:13px;gap:9px}
+.offline-empty{padding:22px 13px;border:1px dashed var(--line);border-radius:13px;background:color-mix(in srgb,var(--raised) 50%,var(--panel));display:grid;gap:11px;justify-items:center;text-align:center}
+.offline-empty p{margin:0;color:var(--mute);font-size:12px;line-height:1.5}
+.offline-empty button{min-width:154px}
+.offline-license{border-color:var(--line);background:transparent;color:var(--mute);font-size:11px}
+@media(max-width:650px){.offline-dashboard{padding:12px}.offline-tab{font-size:11px;padding:10px 4px}.offline-tab em{font-size:10px}.offline-download-btn{min-height:32px}}
+
 </style>
 </head>
 <body>
@@ -469,7 +554,7 @@ let remoteCatalogLoaded=false, remoteCatalogError='';
 const languageCode=v=>{const l=String(v?.lang||'').toLowerCase();return /ind|indo|idn/.test(l)?'id':/zho|cmn|chi|chin|中文|zh/.test(l)?'zh':'en'};
 function appendCustomVersions(items){for(const v of items||[]){if(!v?.id||VMAP[v.id]||!/^[a-z0-9_.-]+$/i.test(v.id))continue;
  const x={id:v.id,abbr:String(v.abbr||v.id).slice(0,22),name:v.name||v.id,lang:v.lang||'English',noOffline:v.noOffline!==false,licenseUrl:v.licenseUrl||'',dynamic:true,dir:v.dir||'ltr'};
- VERSIONS.push(x);VMAP[x.id]=x;
+ x.selectedPersist=!!v.selectedPersist;VERSIONS.push(x);VMAP[x.id]=x;
 }}
 appendCustomVersions(safeReadCustomVersions());
 function safeReadCustomVersions(){try{return JSON.parse(localStorage.getItem('ib:customVersions')||'[]')}catch{return []}}
@@ -500,7 +585,7 @@ const TEXT_ENGINE=6;
 const MAX_FILE=4*1024*1024;
 const randomId=()=>globalThis.crypto?.randomUUID?.()||String(Date.now())+'_'+Math.random().toString(36).slice(2);
 let DEVICE_ID=localStorage.getItem('ib:deviceId')||randomId();localStorage.setItem('ib:deviceId',DEVICE_ID);
-const blank=()=>({book:'kej',ch:1,cols:['ind_ayt','BSB'],dark:true,fs:18,widthMode:'wide',layout:'parallel',lineHeight:1.8,columnGap:20,verseSpacing:7,fontFamily:'serif',uiLang:'auto',versionTint:'medium',showVerseNumbers:true,readerFocus:false,highlightMode:false,highlightColor:COLORS[0],records:{},dirty:{},showOriginal:false,version:2});
+const blank=()=>({book:'kej',ch:1,cols:['ind_ayt','BSB'],dark:true,fs:18,widthMode:'wide',layout:'parallel',lineHeight:1.8,columnGap:20,verseSpacing:7,fontFamily:'serif',uiLang:'auto',versionTint:'subtle',showVerseNumbers:true,readerFocus:false,highlightMode:false,highlightColor:COLORS[0],records:{},dirty:{},showOriginal:false,version:2});
 // ADMIN BUILD CONFIG (non-secret Firebase Web configuration): supplied only when the
 // project owner connects and authorizes a Google/Firebase project. The application
 // intentionally has no public Firebase administration form. Never paste a service
@@ -548,7 +633,7 @@ function restore(){
  S.columnGap=Math.min(50,Math.max(4,Number(S.columnGap)||20));
  S.verseSpacing=Math.min(28,Math.max(0,Number(S.verseSpacing)??7));
  S.fontFamily=['serif','sans'].includes(S.fontFamily)?S.fontFamily:'serif';
- S.versionTint=['none','subtle','medium'].includes(S.versionTint)?S.versionTint:'medium';
+ S.versionTint=['none','subtle','medium'].includes(S.versionTint)?S.versionTint:'subtle';
  S.uiLang=['auto','id','en','zh'].includes(S.uiLang)?S.uiLang:'auto';
  S.showVerseNumbers=S.showVerseNumbers!==false;
  S.cols=(S.cols||[]).filter(c=>VMAP[c]).slice(0,8);if(!S.cols.length)S.cols=['ind_ayt'];
@@ -799,7 +884,7 @@ function updateChrome(){
  shell.style.setProperty('--reader-gap',`${S.columnGap||20}px`);
  shell.style.setProperty('--reader-row-gap',`${S.verseSpacing??7}px`);
  shell.style.setProperty('--reader-leading',String(S.lineHeight||1.8));
- shell.style.setProperty('--version-tint-strength',S.versionTint==='medium'?'23%':S.versionTint==='none'?'0%':'15%');
+ shell.style.setProperty('--version-tint-strength',S.versionTint==='medium'?'9%':S.versionTint==='none'?'0%':'4%');
  shell.style.setProperty('--reader-typeface',S.fontFamily==='sans'?'system-ui,-apple-system,"Segoe UI",sans-serif':'Georgia,"Times New Roman",serif');
  $('readerLayoutInfo').textContent=T(S.layout==='parallel'?'layoutParallel':'layoutStacked')+' · '+T(S.widthMode==='wide'?'wide':'comfort');
  $('readerWidthBtn').textContent='↔ '+T(S.widthMode==='wide'?'comfort':'wide');
@@ -1118,7 +1203,10 @@ function loadingLabel(key){const items={id:{title:'Membuka Kitab Suci…',desc:'
 
 function createChapterLoading(target,ids){
  const root=elt('section','loading-chapter');root.setAttribute('role','status');root.setAttribute('aria-live','polite');root.setAttribute('aria-label',loadingLabel('title'));
- const art=elt('div','loading-art');art.setAttribute('aria-hidden','true');const orb=elt('div','loading-orbit');const book=elt('div','loading-book');book.append(elt('div','page left'),elt('div','page right'),elt('div','leaf'));art.append(orb,book);
+ const art=elt('div','loading-art');art.setAttribute('aria-hidden','true');const orb=elt('div','loading-orbit');const book=elt('div','loading-book');
+  // V-shaped open book: outer page edges are HIGHER than the central fold.
+  book.innerHTML=`<svg viewBox="0 0 100 92" focusable="false" aria-hidden="true"><path class="book-page" d="M50 40 Q34 25 10 27 L10 71 Q34 69 50 84 Z"/><path class="book-page" d="M50 40 Q66 25 90 27 L90 71 Q66 69 50 84 Z"/><path class="book-spine" d="M50 40 L50 84"/><path class="book-lines" d="M16 37 Q30 36 43 46 M16 46 Q30 45 43 54 M84 37 Q70 36 57 46 M84 46 Q70 45 57 54"/><path class="book-shimmer" d="M12 27 Q35 26 50 40 Q65 26 88 27"/></svg>`;
+  art.append(orb,book);
  const title=elt('h3',null,loadingLabel('title'));const subtitle=elt('div','loading-sub',loadingLabel('desc'));subtitle.id='load-detail';
  const pb=elt('div','loading-progress');pb.setAttribute('role','progressbar');pb.setAttribute('aria-valuemin','0');pb.setAttribute('aria-valuemax',String(ids.length));pb.setAttribute('aria-valuenow','0');const bar=elt('i');pb.append(bar);
  const skeleton=elt('div','loading-skeleton');skeleton.style.setProperty('--cols',Math.min(ids.length,8));for(let i=0;i<Math.min(ids.length,8);i++){const lines=elt('div','loading-lines');for(let j=0;j<3;j++)lines.append(elt('div','loading-line'));skeleton.append(lines)}
@@ -1137,15 +1225,33 @@ async function render(){const seq=++renderSeq;updateChrome();const target=$('ver
  if(S.showOriginal)licensed.push(fetchInterlinear(b,ch).then(v=>{original=v}).finally(()=>done(T('original'))));
  await Promise.all(licensed);
  if(seq!==renderSeq)return;
- target.replaceChildren();target.setAttribute('aria-busy','false');const results=ids.map(id=>rById[id]);const max=getMaxVerse(results);const failed=results.filter(r=>!r?.ok);
- const head=elt('div','headrow');head.style.setProperty('--cols',ids.length);
- for(const id of ids){const h=elt('div','vh edition-header',VMAP[id].name);h.style.setProperty('--edition-tint',editionTint(id));h.append(rowButton('⇄',()=>swapVersion(id),'vh button'));head.append(h)}target.append(head);
- if(!max){target.append(elt('div','placeholder','Tidak ada teks yang berhasil dimuat. Periksa koneksi dan pengaturan API.'))}
+  target.replaceChildren();target.setAttribute('aria-busy','false');
+  const failedIds=ids.filter(id=>!rById[id]?.ok);
+  const visibleIds=ids.filter(id=>rById[id]?.ok);
+  const results=visibleIds.map(id=>rById[id]);
+  const max=getMaxVerse(results);
+  const originalFailed=S.showOriginal&&!original?.ok;
+  const unavailable=[...failedIds.map(id=>({id,name:VMAP[id]?.abbr||id,reason:rById[id]?.error||'Unavailable'})),...(originalFailed?[{id:'ORIGINAL',name:T('original'),reason:original?.error||'Unavailable'}]:[])];
+  if(unavailable.length){
+   const warning=elt('div','edition-error-banner');warning.setAttribute('role','status');
+   const icon=elt('span','edition-error-icon','!');icon.setAttribute('aria-hidden','true');
+   const content=elt('div','edition-error-content');
+   const heading=appLang()==='en'?'Could not load: ':appLang()==='zh'?'无法加载：':'Gagal memuat: ';
+   content.append(elt('strong',null,heading+unavailable.map(e=>e.name).join(', ')));
+   const hint=appLang()==='en'?'Unavailable editions are hidden from the verses below.':appLang()==='zh'?'下方已隐藏无法加载的译本。':'Versi yang gagal tidak ditampilkan dalam daftar ayat.';
+   content.append(elt('span','edition-error-desc',hint));
+   const retry=rowButton('↻',()=>render(),'edition-error-retry');retry.title=appLang()==='en'?'Try again':appLang()==='zh'?'重试':'Coba muat ulang';retry.setAttribute('aria-label',retry.title);
+   warning.append(icon,content,retry);target.append(warning);
+  }
+  if(!visibleIds.length){target.append(elt('div','placeholder',appLang()==='en'?'No translation is available. Check your connection and try again.':appLang()==='zh'?'当前没有可用译本，请检查网络后重试。':'Belum ada terjemahan yang berhasil dimuat. Periksa koneksi lalu coba lagi.'));}
+  const head=elt('div','headrow');head.style.setProperty('--cols',visibleIds.length||1);
+  for(const id of visibleIds){const h=elt('div','vh edition-header',VMAP[id].name);h.style.setProperty('--edition-tint',editionTint(id));h.append(rowButton('⇄',()=>swapVersion(id),'vh button'));head.append(h)}
+  if(visibleIds.length)target.append(head);
  let prevMarkColor=null,prevMarkRow=null,activeGroup=null;
  for(let n=1;n<=max;n++){
   const k=keyOf(b.id,ch,n),h=valueOf(k,'highlight'),pinned=!!valueOf(k,'bookmark');const note=valueOf(k,'note');
   const validMark=typeof h==='string'&&/^#[0-9a-f]{6}$/i.test(h)?h.toLowerCase():null;
-  const row=elt('section','vrow'+(validMark?' marked':'')+(pinned?' pinned':''));row.id='v'+n;row.style.setProperty('--cols',ids.length);
+  const row=elt('section','vrow'+(validMark?' marked':'')+(pinned?' pinned':''));row.id='v'+n;row.style.setProperty('--cols',visibleIds.length||1);
   if(validMark){
    row.style.setProperty('--mark',validMark);
    row.style.setProperty('--mark-bg',`color-mix(in srgb, ${validMark} ${S.dark?'24%':'18%'}, var(--panel))`);
@@ -1156,36 +1262,25 @@ async function render(){const seq=++renderSeq;updateChrome();const target=$('ver
   }else{activeGroup=null;target.append(row)}
   prevMarkColor=validMark;prevMarkRow=validMark?row:null;
   row.setAttribute('aria-label',`${b.name} ${ch}:${n}`);
-  for(let i=0;i<ids.length;i++){
-   const cell=elt('div','vcell edition-cell');cell.style.setProperty('--edition-tint',editionTint(ids[i]));const ver=elt('span','inline-version',VMAP[ids[i]].abbr+' · '+VMAP[ids[i]].name);cell.append(ver);const num=elt('span','vnum',n);cell.append(num);
-   const r=results[i];const text=r?.ok?r.m.get(n):null;
-   if(text)cell.append(document.createTextNode(text));
-   else if(ids[i]==='ESV'&&!r?.ok&&n===1){
-    const tip=elt('div','esv-fallback');
-    tip.append(elt('div','small muted','ESV melalui proxy bawaan repository. '+(r?.error||'Periksa konfigurasi Worker.')));
-    const link=elt('a','btn','↗ Baca ESV resmi');link.href=esvOfficialUrl(b,ch);link.target='_blank';link.rel='noopener noreferrer';tip.append(link);
-    tip.append(rowButton('⚙ Diagnostik ESV',esvSettingsPicker,'btn'));
-    const testUrl=esvRequestUrl(b,ch);if(testUrl){const test=elt('a','btn','↗ Tes proxy');test.href=testUrl;test.target='_blank';test.rel='noopener noreferrer';test.style.marginLeft='6px';tip.append(test)}
-    cell.append(tip);
-   }else cell.append(elt('span','small muted',r?.ok?'—':(n===1?'Tidak tersedia':'·')));
-   if(i===0&&note){const marker=elt('span','small annotation-indicators','  ✎');cell.append(marker)}
+  for(let i=0;i<visibleIds.length;i++){
+    const vid=visibleIds[i];
+    const cell=elt('div','vcell edition-cell');cell.style.setProperty('--edition-tint',editionTint(vid));const ver=elt('span','inline-version',VMAP[vid].abbr+' · '+VMAP[vid].name);cell.append(ver);const num=elt('span','vnum',n);cell.append(num);
+    const r=results[i];const text=r.m.get(n);
+    if(text)cell.append(document.createTextNode(text));
+    else cell.append(elt('span','small muted','—'));
+    if(i===0&&note){const marker=elt('span','small annotation-indicators','  ✎');cell.append(marker)}
 
    bindVerseTap(cell,k);row.append(cell);
   }
   const pin=rowButton('📌',()=>{const old=!!valueOf(k,'bookmark');recordChanged(k,'bookmark',!old);patchBookmarkDom(n);toast(old?'Bookmark dilepas':'Bookmark dipasang')},'verse-pin'+(pinned?' is-pinned':''));
   pin.hidden=!pinned;pin.setAttribute('aria-label',pinned?'Lepas bookmark ayat '+n:'Bookmark ayat '+n);pin.setAttribute('aria-pressed',String(pinned));pin.title='Bookmark · '+ch+':'+n;row.append(pin);
-  if(S.showOriginal){const lane=elt('div','original-lane');lane.style.gridColumn='1 / -1';
+  if(S.showOriginal&&original?.ok){const lane=elt('div','original-lane');lane.style.gridColumn='1 / -1';
    lane.append(elt('div','small muted',T('original')+' · '+(b.nt?'Greek':'Hebrew / Aramaic')));
-   if(original?.ok)lane.append(originalWordPanel(original.m.get(n)));
-   else if(n===1)lane.append(elt('div','original-note','Interlinear: '+(original?.error||'unavailable')));
+    lane.append(originalWordPanel(original.m.get(n)));
    row.append(lane);
   }
  }
- if(failed.length){const details=elt('div','notice');details.append(elt('strong',null,'Diagnostik terjemahan'));for(let i=0;i<results.length;i++)if(!results[i]?.ok)details.append(elt('p','small',`${VMAP[ids[i]].abbr}: ${results[i]?.error||'Tidak berhasil dimuat'}`));
-  target.insertBefore(details,head.nextSibling);
-  if(ids.includes('NLT')&&rById.NLT?.nltFallback)target.append(nltIframe(b,ch));
- }
- $('pageMeta').textContent=`${ids.map(x=>VMAP[x].abbr).join(' · ')}  |  ${max} ${T('verse')}${failed.length?(appLang()==='en'?' · some versions unavailable':appLang()==='zh'?' · 部分译本未加载':' · sebagian versi gagal dimuat'):''}`;
+  $('pageMeta').textContent=`${visibleIds.map(x=>VMAP[x].abbr).join(' · ')||'—'} | ${max} ${T('verse')}${unavailable.length?(appLang()==='en'?' · some editions unavailable':appLang()==='zh'?' · 部分译本未加载':' · beberapa versi gagal dimuat'):''}`;
  if(ids.includes('ESV')&&rById.ESV?.ok){const attr=elt('div','more');attr.append('Scripture quotations are from the ESV® Bible (The Holy Bible, English Standard Version®), copyright © 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved. ');const a=elt('a',null,'ESV.org');a.href=esvOfficialUrl(b,ch);a.target='_blank';a.rel='noopener noreferrer';attr.append(a);target.append(attr)}
 }
 function swapVersion(id){modal('Ganti versi '+VMAP[id].abbr,body=>{const pos=S.cols.indexOf(id);for(const v of VERSIONS){const b=rowButton(`${v.abbr} — ${v.name}`,()=>{if(S.cols.includes(v.id)&&v.id!==id){const other=S.cols.indexOf(v.id);S.cols[other]=id}S.cols[pos]=v.id;save();closeModal();render()},'btn');b.style.display='block';b.style.width='100%';b.style.textAlign='left';b.style.marginTop='5px';body.append(b)}})}
@@ -1304,16 +1399,170 @@ function searchPicker(){modal(T('search'),body=>{
  }
 })}
 
-function offlinePicker(){modal('Unduhan teks offline',body=>{
- body.append(elt('p','small muted',`Unduh ${getBook().name}, semua pasal, untuk versi non-berlisensi. Terjemahan berlisensi NLT/ESV tidak diunduh demi batas lisensi.`));
- const sel=elt('select','input');for(const v of VERSIONS.filter(x=>!x.licensed&&!x.noOffline)){const o=elt('option',null,`${v.abbr} — ${v.name}`);o.value=v.id;sel.append(o)}sel.value=S.cols.find(v=>!VMAP[v].licensed)||'ind_ayt';body.append(sel);
- const prog=elt('p','progress');body.append(prog);
- body.append(rowButton('Unduh kitab ini',async()=>{cancelDownload=false;const b=getBook();let ok=0;for(let ch=1;ch<=b.ch&&!cancelDownload;ch++){
-  prog.textContent=`Mengunduh ${b.name} ${ch}/${b.ch} — berhasil ${ok}`;const res=await fetchOpenChapter(sel.value,b,ch);if(res.ok)ok++;else prog.textContent=`Gagal pasal ${ch}: ${res.error}`;
- }prog.textContent=cancelDownload?'Unduhan dihentikan':`Selesai: ${ok}/${b.ch} pasal berhasil`;
- },'btn primary'));
- modalCleanup=()=>{cancelDownload=true};
- })}
+/* Offline library v8.3 — complete-book downloads only for offline-eligible editions.
+   A chapter is persisted by fetchOpenChapter() in IndexedDB. Resume means skip
+   cached keys, with a readback check before counting a newly fetched chapter. */
+const OFFLINE_CHAPTER_TOTAL=BOOKS.reduce((sum,b)=>sum+b.ch,0);
+const OFFLINE_TEXT={
+ id:{title:'Perpustakaan offline',intro:'Simpan seluruh 66 kitab dari setiap versi yang mengizinkan penyimpanan offline. Kamu bisa menghentikan dan melanjutkan unduhan.',saved:'Tersimpan di perangkat',available:'Tersedia untuk diunduh',all:'Semua',id:'Indonesia',en:'English',zh:'中文',download:'Unduh 66 kitab',resume:'Lanjutkan unduhan',complete:'Sudah lengkap',stop:'Hentikan unduhan',chapters:'pasal',version:'versi',progress:'Mengunduh',done:'Selesai',stopped:'Dihentikan; unduhan dapat dilanjutkan',failed:'gagal',network:'Gagal terhubung',none:'Belum ada versi yang diunduh pada perangkat ini.',noMatch:'Tidak ada versi yang cocok dengan filter.',licensed:'ESV dan NLT tidak tersedia untuk unduhan seluruh kitab. Keduanya tetap dapat dibaca secara online melalui API penerbit.',quota:'Jumlah data bergantung versi; proses memerlukan jaringan, ruang penyimpanan, dan waktu. Jangan menutup halaman selama mengunduh.',storage:'Penyimpanan browser',retry:'Periksa jaringan atau ruang penyimpanan, lalu tekan Lanjutkan.',ready:'Siap diunduh',active:'Sedang diunduh',ver:'terjemahan',quotaWarn:'Penyimpanan hampir penuh. Unduhan dihentikan agar data lain aman.',offline:'Tersimpan lokal',filter:'Bahasa terjemahan',downloadShort:'Unduh',resumeShort:'Lanjutkan',completeShort:'✓ Lengkap',activeShort:'Proses…',moreVersions:'↻ Muat versi lain',loadingVersions:'Memuat katalog…',catalogLoaded:'Katalog diperbarui. Versi dengan izin offline kini tersedia di daftar.',catalogNoOffline:'Versi dengan lisensi belum terverifikasi hanya bisa dibaca online.',catalogFailed:'Katalog gagal dimuat:',onlineOnly:'Versi lain (online saja)',onlineHint:'Izin offline belum terverifikasi. Tambahkan melalui menu + Tambah versi untuk membaca online.',searchVersions:'Cari versi untuk diunduh…'},
+ en:{title:'Offline library',intro:'Save all 66 books for each edition that permits offline storage. Stop and resume whenever needed.',saved:'On this device',available:'Available to download',all:'All',id:'Indonesian',en:'English',zh:'中文',download:'Download 66 books',resume:'Resume download',complete:'Complete',stop:'Stop download',chapters:'chapters',version:'editions',progress:'Downloading',done:'Finished',stopped:'Stopped; download can be resumed',failed:'failed',network:'Could not connect',none:'No offline editions on this device yet.',noMatch:'No editions match the filter.',licensed:'ESV and NLT cannot be downloaded as complete Bibles. They remain available online through their publishers’ APIs.',quota:'Download size depends on the edition; allow time, network access and sufficient storage. Keep the page open during a download.',storage:'Browser storage',retry:'Check network or storage, then select Resume.',ready:'Ready',active:'Downloading',ver:'edition',quotaWarn:'Browser storage is nearly full; the download was stopped to protect other data.',offline:'Saved locally',filter:'Translation language',downloadShort:'Download',resumeShort:'Resume',completeShort:'✓ Saved',activeShort:'Working…',moreVersions:'↻ Load other versions',loadingVersions:'Loading catalog…',catalogLoaded:'Catalog updated. Versions permitted for offline use are now listed.',catalogNoOffline:'Versions without verified offline permission remain online-only.',catalogFailed:'Catalog unavailable:',onlineOnly:'Other versions (online only)',onlineHint:'Offline use is not verified. Choose them in + Add version to read online.',searchVersions:'Search versions to download…'},
+ zh:{title:'离线译本库',intro:'下载允许离线储存的译本全套 66 卷书。可随时停止并继续下载。',saved:'已保存到此设备',available:'可下载的译本',all:'全部',id:'印尼语',en:'英语',zh:'中文',download:'下载全套 66 卷',resume:'继续下载',complete:'已完成',stop:'停止下载',chapters:'章',version:'译本',progress:'正在下载',done:'完成',stopped:'已暂停，可继续下载',failed:'失败',network:'连接失败',none:'此设备尚无离线译本。',noMatch:'此语言下没有可下载的译本。',licensed:'ESV 和 NLT 不支持整本离线下载；仍可通过出版社 API 在线阅读。',quota:'下载需要网络、储存空间和时间，请在下载期间保持页面开启。',storage:'浏览器储存空间',retry:'检查网络或储存空间后继续下载。',ready:'可下载',active:'正在下载',ver:'译本',quotaWarn:'储存空间不足；已停止下载以保护其他数据。',offline:'本机储存',filter:'译本语言',downloadShort:'下载',resumeShort:'继续',completeShort:'✓ 完成',activeShort:'处理中…',moreVersions:'↻ 加载其他译本',loadingVersions:'加载目录中…',catalogLoaded:'目录已更新，可离线下载的译本已显示。',catalogNoOffline:'授权未确认的译本仅支持在线阅读。',catalogFailed:'目录加载失败：',onlineOnly:'其他译本（仅在线）',onlineHint:'离线许可尚未核实，可通过“添加译本”选择在线阅读。',searchVersions:'搜索可下载的译本…'}
+};
+async function offlineSavedKeys(){
+ const d=await db();return await new Promise((resolve,reject)=>{
+  const tx=d.transaction('chapters','readonly'),r=tx.objectStore('chapters').getAllKeys();
+  r.onsuccess=()=>resolve(new Set(r.result.map(String)));r.onerror=()=>reject(r.error);
+ });
+}
+function offlinePicker(){
+ const lang=appLang(),t=OFFLINE_TEXT[lang]||OFFLINE_TEXT.id;
+ modal(t.title,body=>{
+  body.classList.add('offline-modal-content');
+  const root=elt('div','offline-library');body.append(root);
+  root.append(elt('p','small muted',t.intro));
+   const dashboard=elt('div','offline-dashboard');const boardTop=elt('div','offline-dashboard-top');
+   const boardCount=elt('strong','offline-dashboard-count','0');const boardMeta=elt('span','offline-dashboard-meta','');
+   boardTop.append(boardCount,boardMeta);const boardTrack=elt('div','offline-dashboard-track'),boardFill=elt('i');boardTrack.append(boardFill);dashboard.append(boardTop,boardTrack);root.append(dashboard);
+   const tabs=elt('div','offline-tabs');tabs.setAttribute('role','tablist');root.append(tabs);
+   const toolbar=elt('div','offline-toolbar');root.append(toolbar);
+   const filterbar=elt('div','offline-filterbar');filterbar.setAttribute('role','group');filterbar.setAttribute('aria-label',t.filter);toolbar.append(filterbar);
+  const catalog=elt('div','offline-catalog-tools');
+  const loadMore=rowButton(t.moreVersions,async()=>{
+   loadMore.disabled=true;loadMore.textContent=t.loadingVersions;catalogMessage.textContent='';
+   try{
+    const before=VERSIONS.length;
+    await loadRemoteCatalog();
+    const added=VERSIONS.length-before;
+    catalogMessage.textContent=`${t.catalogLoaded} ${added>0?'+'+added+' · ':''}${t.catalogNoOffline}`;
+    searchBox.hidden=false;draw();
+   }catch(e){catalogMessage.textContent=`${t.catalogFailed} ${String(e?.message||e)}`}
+   finally{loadMore.disabled=false;loadMore.textContent=t.moreVersions}
+  },'btn offline-catalog-btn');
+  const catalogMessage=elt('p','offline-catalog-message');catalogMessage.setAttribute('role','status');
+  catalog.append(loadMore,catalogMessage);toolbar.append(catalog);
+  const searchBox=elt('input','offline-search');searchBox.type='search';searchBox.placeholder=t.searchVersions;searchBox.setAttribute('aria-label',t.searchVersions);
+  searchBox.hidden=!remoteCatalogLoaded;toolbar.insertBefore(searchBox,catalog);
+  const stats=elt('p','offline-stats');dashboard.append(stats);
+  const runbox=elt('div','offline-running');runbox.hidden=true;
+  const runlabel=elt('div','offline-run-label'),runtrack=elt('div','offline-run-track');
+  const runfill=elt('i');runtrack.append(runfill);
+  const stop=rowButton(t.stop,()=>{cancelDownload=true;stop.disabled=true},'btn');
+  runbox.append(runlabel,runtrack,stop);root.append(runbox);
+  const sections=elt('div','offline-groups');root.append(sections);
+  root.append(elt('p','offline-license',t.licensed),elt('p','tiny muted',t.quota));
+  let filter=lang;let saved=new Set(),running=false,runEdition=null,lastFailure='',progressInfo=null,showOnlineOnly=false,tab='browse';
+  const isVisible=()=>$('modal').classList.contains('show')&&$('modalBody').contains(root);
+  const eligible=()=>VERSIONS.filter(v=>!v.licensed&&!v.noOffline);
+  const vlanguage=v=>languageCode(v);
+  const total=OFFLINE_CHAPTER_TOTAL;
+  const code=(vid,b,ch)=>`${vid}|${b.id}|${ch}`;
+  const count=vid=>BOOKS.reduce((n,b)=>{for(let ch=1;ch<=b.ch;ch++)if(saved.has(code(vid,b,ch)))n++;return n},0);
+  const displayFilter=()=>{filterbar.replaceChildren();for(const [key,label] of [['all',t.all],['id',t.id],['en',t.en],['zh',t.zh]]){
+   const button=rowButton(label,()=>{filter=key;draw()},'offline-filter'+(filter===key?' active':''));button.setAttribute('aria-pressed',String(filter===key));filterbar.append(button);
+  }};
+   function tabButton(id,label,count){const b=rowButton('',()=>{tab=id;draw()},'offline-tab'+(tab===id?' active':''));b.setAttribute('role','tab');b.setAttribute('aria-selected',String(tab===id));b.append(elt('span',null,label),elt('em',null,String(count)));tabs.append(b)}
+   function renderTabs(savedCount,availableCount){tabs.replaceChildren();tabButton('saved',lang==='en'?'On device':lang==='zh'?'已保存':'Tersimpan',savedCount);tabButton('browse',lang==='en'?'Explore & download':lang==='zh'?'查找与下载':'Jelajahi & unduh',availableCount)}
+   function group(title,arr,empty){const wrap=elt('section','offline-section');wrap.append(elt('h3','offline-heading',title));
+   if(!arr.length)wrap.append(elt('p','small muted',empty));else{const list=elt('div','offline-list');arr.forEach(v=>list.append(card(v)));wrap.append(list)}sections.append(wrap);
+  }
+  function card(v){const n=count(v.id);const complete=n===total;
+   const card=elt('div','offline-card');card.style.setProperty('--edition-tint',editionTint(v.id));
+   const codeTag=elt('span','offline-code',v.abbr);const content=elt('div','offline-card-content');
+   const title=elt('div','offline-card-title',v.name);const meta=elt('div','offline-card-meta',`${v.lang} · ${n.toLocaleString(lang)}/${total.toLocaleString(lang)} ${t.chapters}`);
+   const bar=elt('div','offline-card-track'),fill=elt('i');fill.style.width=(n/total*100).toFixed(1)+'%';bar.append(fill);
+   const action=rowButton(complete?t.completeShort:running&&runEdition===v.id?t.activeShort:n?t.resumeShort:t.downloadShort,()=>startDownload(v.id),'btn'+(!complete?' primary':''));
+   action.disabled=complete||running;action.classList.add('offline-download-btn');
+   action.setAttribute('aria-label',`${complete?t.complete:n?t.resume:t.download}: ${v.name}`);
+   const header=elt('div','offline-card-header');header.append(title,action);
+   content.append(header,meta,bar);card.append(codeTag,content);return card;
+  }
+   function draw(){if(!isVisible())return;
+    displayFilter();sections.replaceChildren();const q=searchBox.value.trim().toLocaleLowerCase();
+    const candidates=eligible();const matches=v=>(filter==='all'||vlanguage(v)===filter)&&(!q||`${v.id} ${v.abbr} ${v.name} ${v.lang}`.toLocaleLowerCase().includes(q));
+    const have=candidates.filter(v=>count(v.id)>0).sort((a,b)=>count(b.id)-count(a.id));
+    const remaining=candidates.filter(v=>count(v.id)===0&&matches(v));
+    const allSaved=candidates.filter(v=>count(v.id)>0);
+    const countAll=candidates.reduce((sum,v)=>sum+count(v.id),0);
+    boardCount.textContent=countAll.toLocaleString(lang)+' '+t.chapters;
+    boardMeta.textContent=allSaved.length+' '+t.version+' · '+t.offline;
+    boardFill.style.width=Math.min(100,countAll/Math.max(1,allSaved.length*total)*100).toFixed(1)+'%';
+    stats.textContent=countAll.toLocaleString(lang)+' / '+(allSaved.length*total).toLocaleString(lang)+' '+t.chapters;
+    renderTabs(allSaved.length,candidates.length);
+    toolbar.hidden=tab==='saved';
+    if(tab==='saved'){
+     if(have.length)group(t.saved,have,t.none);
+     else{
+      const blank=elt('div','offline-empty');
+      blank.append(elt('div',null,'📚'),elt('p',null,t.none));
+      blank.append(rowButton(lang==='en'?'Explore translations':lang==='zh'?'浏览译本':'Jelajahi terjemahan',()=>{tab='browse';draw()},'btn primary'));
+      sections.append(blank);
+     }
+     return;
+    }
+    // Every downloadable edition is discoverable even when it is partially saved.
+    group(t.available,candidates.filter(matches),t.noMatch);
+    if(remoteCatalogLoaded){
+     const online=VERSIONS.filter(v=>v.dynamic&&v.noOffline&&matches(v));
+     if(online.length){
+      const wrap=elt('section','offline-section');
+      const toggle=rowButton(`${t.onlineOnly} (${online.length}) ${showOnlineOnly?'▴':'▾'}`,()=>{showOnlineOnly=!showOnlineOnly;draw()},'btn offline-online-toggle');
+      toggle.setAttribute('aria-expanded',String(showOnlineOnly));wrap.append(toggle);
+      if(showOnlineOnly){
+       const list=elt('div','offline-online-list');
+       for(const v of online.slice(0,35)){
+        const row=elt('div','offline-online-item');const tag=elt('strong',null,v.abbr);tag.style.color=editionTint(v.id);
+        row.append(tag,elt('span',null,`${v.name} · ${v.lang}`));list.append(row);
+       }
+       wrap.append(elt('p','tiny muted',t.onlineHint),list);
+      }
+      sections.append(wrap);
+     }
+    }
+   }
+  async function storageLow(){if(!navigator.storage?.estimate)return false;
+   try{const {usage,quota}=await navigator.storage.estimate();return quota>0&&quota-usage<7*1024*1024}catch{return false}
+  }
+  function updateProgress(done,failed,all){if(!isVisible())return;
+   const pct=Math.round(done/all*100);
+   runlabel.textContent=`${t.progress} ${VMAP[runEdition].abbr} · ${done.toLocaleString(lang)}/${all.toLocaleString(lang)} ${t.chapters}`+(failed?` · ${failed} ${t.failed}`:'');
+   runfill.style.width=pct+'%';
+  }
+  async function startDownload(vid){
+   if(running||!VMAP[vid]||VMAP[vid].licensed||VMAP[vid].noOffline)return;
+   // A downloaded catalogue edition must remain available after page reload.
+   if(VMAP[vid].dynamic){VMAP[vid].selectedPersist=true;storeCustomVersions()}
+   running=true;runEdition=vid;cancelDownload=false;lastFailure='';stop.disabled=false;
+   runbox.hidden=false;runfill.style.width='0%';
+   // Refresh keys to avoid stale counts after downloads in another tab.
+   try{saved=await offlineSavedKeys()}catch(e){running=false;runbox.hidden=true;toast(t.network+': '+e.message);return}
+   const pending=[];for(const b of BOOKS)for(let ch=1;ch<=b.ch;ch++)if(!saved.has(code(vid,b,ch)))pending.push({b,ch});
+   if(!pending.length){running=false;runbox.hidden=true;draw();return}
+   draw();let next=0,finished=0,failures=0,failureStreak=0,haltedForErrors=false;const totalPending=pending.length;
+   updateProgress(0,0,totalPending);
+   const work=async()=>{while(!cancelDownload){const ix=next++;if(ix>=pending.length)break;
+    const {b,ch}=pending[ix],key=code(vid,b,ch);
+    try{const r=await fetchOpenChapter(vid,b,ch);
+     if(!r.ok)throw new Error(r.error||'API error');
+     // Network success alone does NOT imply data survived browser quota limits.
+     const cached=await idbGet('chapters',key);
+     if(!cached||cached.engine!==TEXT_ENGINE||!Array.isArray(cached.verses)||!cached.verses.length)throw new Error('IndexedDB quota/write failed');
+     saved.add(key);failureStreak=0;
+    }catch(e){failures++;failureStreak++;lastFailure=String(e?.message||e);if(failureStreak>=6){cancelDownload=true;haltedForErrors=true}}
+    finished++;if(finished%7===0||finished===totalPending){updateProgress(finished,failures,totalPending);draw()}
+    if(finished%45===0&&await storageLow()){cancelDownload=true;lastFailure=t.quotaWarn}
+    // Keep requests gentle for the public Bible API.
+    await new Promise(resolve=>setTimeout(resolve,85));
+   }};
+   await Promise.all(Array.from({length:Math.min(2,totalPending)},work));
+   running=false;runEdition=null;runbox.hidden=true;
+   try{saved=await offlineSavedKeys()}catch{}
+   draw();if(isVisible())toast(haltedForErrors?`${t.network}: ${lastFailure}. ${t.retry}`:cancelDownload?t.stopped:(failures?`${t.done}: ${finished-failures}/${totalPending} · ${failures} ${t.failed}. ${t.retry}`:t.done+': '+VMAP[vid].abbr));
+  }
+  searchBox.addEventListener('input',draw);
+  modalCleanup=()=>{cancelDownload=true};
+  offlineSavedKeys().then(keys=>{saved=keys;tab=keys.size?'saved':'browse';draw()}).catch(e=>{stats.textContent=t.network+': '+String(e?.message||e);draw()});
+ });
+}
 const FIRESTORE_RULES=`rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
